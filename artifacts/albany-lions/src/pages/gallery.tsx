@@ -1,6 +1,20 @@
 import { motion } from "framer-motion";
 import { Camera, Calendar, FolderOpen, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import springPhoto1 from "@assets/657170638_27329824959940877_7160008379873549711_n_1777736796621.jpg";
+import springPhoto2 from "@assets/658138737_27329818183274888_5144718517033310575_n_1777736796622.jpg";
+import springPhoto3 from "@assets/658368733_27329813153275391_7675333575341318947_n_1777736796622.jpg";
+import springPhoto4 from "@assets/658953008_27329812339942139_6719885944769756001_n_1777736796622.jpg";
+import springPhoto5 from "@assets/659080083_27329814346608605_345116296583840873_n_1777736796622.jpg";
+import springPhoto6 from "@assets/659080083_27329819236608116_8403862632037547446_n_1777736796622.jpg";
+import springPhoto7 from "@assets/659142810_27329814616608578_7127971519937103089_n_1777736796623.jpg";
+import springPhoto8 from "@assets/659142988_27329831493273557_8666769162277819709_n_1777736805936.jpg";
+import springPhoto9 from "@assets/659190846_27338065105783529_5936683302501544713_n_1777736805936.jpg";
+import springPhoto10 from "@assets/659634467_27329829429940430_2589865739915104268_n_1777736805937.jpg";
+import springPhoto11 from "@assets/659827450_27338064329116940_7936053785895768580_n_1777736805937.jpg";
+import springPhoto12 from "@assets/659829676_27338067249116648_1986983784978650012_n_1777736805937.jpg";
+import springPhoto13 from "@assets/659838771_27329812919942081_5536429888456845101_n_1777736805937.jpg";
+import springPhoto14 from "@assets/660159449_27329829713273735_2326270760096400055_n_1777736805938.jpg";
 import districtPhoto1 from "@assets/_DSC4848_1777736679657.JPG";
 import districtPhoto2 from "@assets/651138768_27123701403886568_1823916708111424254_n_1777736679657.jpg";
 import districtPhoto3 from "@assets/WhatsApp_Image_2026-04-24_at_1.31.09_AM_1777736679657.jpeg";
@@ -83,7 +97,22 @@ const albums = [
     date: "March 22, 2026",
     category: "Convention",
     description: "District 20-R2 Spring Convention — Lions leaders from across the district united for service.",
-    photos: [],
+    photos: [
+      { src: springPhoto9, caption: "Lion Sonia Mahtab at the Spring Convention step-and-repeat" },
+      { src: springPhoto12, caption: "President Sonia Mahtab at District 20-R2 Spring Convention" },
+      { src: springPhoto4, caption: "Lion Sonia Mahtab receives Award of Excellence" },
+      { src: springPhoto3, caption: "Charter presentation — Albany Capital Region Lions Club" },
+      { src: springPhoto5, caption: "Charter reading ceremony — Spring Convention" },
+      { src: springPhoto7, caption: "Albany Lions members at the Spring Convention" },
+      { src: springPhoto1, caption: "Albany Lions delegation at the District 20-R2 Spring Convention" },
+      { src: springPhoto6, caption: "Gift presentation — Spring Convention" },
+      { src: springPhoto10, caption: "Award presentation — Spring Convention" },
+      { src: springPhoto2, caption: "International Director Nazmul Haque recognition ceremony" },
+      { src: springPhoto8, caption: "Presentation with International Director" },
+      { src: springPhoto13, caption: "Recognition ceremony — Spring Convention" },
+      { src: springPhoto14, caption: "Club charter and award presentation" },
+      { src: springPhoto11, caption: "President Sonia Mahtab with the Lions flag display" },
+    ],
   },
   {
     id: 5,
