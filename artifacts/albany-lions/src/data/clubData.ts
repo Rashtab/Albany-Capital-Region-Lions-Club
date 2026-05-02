@@ -139,8 +139,14 @@ export const executiveMembers = [
   { id: 2, name: "Nusrat Sharmin", phone: "334.552.0344" },
   { id: 3, name: "Laila Khaleda", phone: "929.543.9857" },
   { id: 4, name: "Montasina Haider", phone: "718.902.1944" },
-  { id: 5, name: "Farhana Islam", phone: "" },
-  { id: 6, name: "Nasima Akter Nisha", phone: "" },
+];
+
+// ============================================================
+// NEW MEMBERS
+// ============================================================
+export const newMembers = [
+  { id: 1, name: "Farhana Islam", phone: "" },
+  { id: 2, name: "Nasima Akter Nisha", phone: "" },
 ];
 
 // ============================================================

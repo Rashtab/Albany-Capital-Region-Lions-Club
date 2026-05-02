@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
-import { officers, directors, executiveMembers } from "@/data/clubData";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { officers, directors, executiveMembers, newMembers } from "@/data/clubData";
 import { Badge } from "@/components/ui/badge";
-import { Info, Phone } from "lucide-react";
+import { Info, Phone, X, ZoomIn } from "lucide-react";
 import charterPhoto from "@assets/IMG_2594_1777764422490.jpeg";
 
 // ── Member photos ────────────────────────────────────────────
@@ -26,6 +27,8 @@ import photoTahminaSonia from "@assets/Tahmina_Sharif_Sonia_1777729510381.jpeg";
 import photoTaniaZaman from "@assets/Tania_Zaman_1777729510382.jpeg";
 import photoTofazzalHossain from "@assets/Tofazzal_Hossain_1777729510382.jpeg";
 import photoZakiaNizam from "@assets/Zakia_Nizam_1777729510382.jpeg";
+import photoFarhanaIslam from "@assets/Farhana_Islam_cropped.jpeg";
+import photoNasimaAkterNisha from "@assets/Nasima_Akter_Nisha_cropped.jpeg";
 
 // Map member names to their photos
 const photoMap: Record<string, string> = {
@@ -50,6 +53,8 @@ const photoMap: Record<string, string> = {
   "Tania Zaman": photoTaniaZaman,
   "Tofazzal Hossain": photoTofazzalHossain,
   "Zakia Nizam": photoZakiaNizam,
+  "Farhana Islam": photoFarhanaIslam,
+  "Nasima Akter Nisha": photoNasimaAkterNisha,
 };
 
 const fadeUp = {
@@ -97,8 +102,48 @@ function MemberPhoto({ name, size = "lg" }: { name: string; size?: "sm" | "lg" }
 }
 
 export default function Leadership() {
+  const [charterOpen, setCharterOpen] = useState(false);
+
   return (
     <div className="flex flex-col">
+      {/* Charter Photo Lightbox */}
+      <AnimatePresence>
+        {charterOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+            onClick={() => setCharterOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 28 }}
+              className="relative max-w-2xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setCharterOpen(false)}
+                className="absolute -top-4 -right-4 z-10 bg-white text-primary rounded-full p-1.5 shadow-lg hover:bg-secondary hover:text-white transition-colors"
+                aria-label="Close"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <img
+                src={charterPhoto}
+                alt="Charter Members Executive Committee — Albany Capital Region Lions Club"
+                className="w-full rounded-2xl shadow-2xl"
+              />
+              <p className="text-center text-white/70 text-sm mt-3">
+                Charter Members Executive Committee · Albany Capital Region Lions Club · District 20-R2, NY
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />
@@ -121,17 +166,28 @@ export default function Leadership() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
               className="lg:w-1/2 shrink-0"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-secondary/40">
+              <div
+                className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-secondary/40 cursor-pointer group"
+                onClick={() => setCharterOpen(true)}
+              >
                 <img
                   src={charterPhoto}
                   alt="Charter Members Executive Committee — Albany Capital Region Lions Club"
-                  className="w-full object-cover"
+                  className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">
+                    <ZoomIn className="h-6 w-6 text-primary" />
+                  </div>
+                </div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/90 to-transparent px-6 py-5">
                   <p className="text-white font-black text-base leading-tight">Charter Members Executive Committee</p>
                   <p className="text-secondary text-xs font-semibold mt-0.5">Albany Capital Region Lions Club · District 20-R2, New York, USA</p>
                 </div>
               </div>
+              <p className="text-center text-xs text-muted-foreground mt-2 flex items-center justify-center gap-1">
+                <ZoomIn className="h-3.5 w-3.5" /> Click image to enlarge
+              </p>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
               className="lg:w-1/2"
@@ -147,7 +203,7 @@ export default function Leadership() {
                 As charter members, they have committed to building a club that lives by the Lions motto: <em className="text-primary font-semibold">We Serve.</em> Their leadership and sacrifice in launching this club will be remembered as part of its history for generations to come.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                {["Officers", "Directors", "Executive Members"].map((label) => (
+                {["Officers", "Directors", "Executive Members", "New Members"].map((label) => (
                   <span key={label} className="bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full border border-primary/20">
                     {label}
                   </span>
@@ -226,7 +282,7 @@ export default function Leadership() {
             <span className="text-secondary font-bold tracking-widest uppercase text-sm">Team</span>
             <h2 className="text-3xl font-black text-primary mt-2">Executive Members</h2>
           </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
             {executiveMembers.map((m, i) => (
               <motion.div key={m.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                 className="bg-card border border-card-border rounded-xl p-5 text-center hover:border-primary/30 hover:shadow-md transition-all" data-testid={`exec-member-${m.id}`}
@@ -240,8 +296,32 @@ export default function Leadership() {
         </div>
       </section>
 
+      {/* New Members */}
+      <section className="py-16 bg-muted/40">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-10">
+            <span className="text-secondary font-bold tracking-widest uppercase text-sm">Growing Our Pride</span>
+            <h2 className="text-3xl font-black text-primary mt-2">New Members</h2>
+          </motion.div>
+          <div className="flex justify-center gap-4 flex-wrap">
+            {newMembers.map((m, i) => (
+              <motion.div key={m.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                className="bg-card border border-card-border rounded-xl p-5 text-center hover:border-secondary/50 hover:shadow-md transition-all w-40" data-testid={`new-member-${m.id}`}
+              >
+                <div className="relative mx-auto w-14 h-14 mb-4">
+                  <MemberPhoto name={m.name} size="sm" />
+                  <span className="absolute -bottom-1 -right-1 bg-secondary text-[10px] font-black text-secondary-foreground px-1.5 py-0.5 rounded-full leading-none">NEW</span>
+                </div>
+                <p className="text-sm font-bold text-foreground leading-tight">{m.name}</p>
+                {m.phone && <p className="text-xs text-muted-foreground mt-1">{m.phone}</p>}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Disclaimer */}
-      <section className="pb-16 bg-background">
+      <section className="pb-16 bg-muted/40">
         <div className="container mx-auto px-4 max-w-2xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
             className="bg-muted/50 border border-border rounded-xl p-6 flex gap-4 items-start" data-testid="leadership-disclaimer"
