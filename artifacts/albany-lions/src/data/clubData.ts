@@ -444,6 +444,6 @@ export const dignitaries = [
     title: "2nd Vice District Governor & Elect 1st Vice Governor 2026–2027, District 20-R2, Lions Clubs International",
     message: "Your continued commitment to service, leadership, and community support reflects the true spirit of Lions Clubs International.",
     fullMessage: "I am pleased to extend my heartfelt greetings to the Albany Capital Region Lions Club on your Installation Ceremony.\n\nYour continued commitment to service, leadership, and community support reflects the true spirit of Lions Clubs International. The dedication shown by your members in serving those in need and strengthening community bonds is truly commendable.\n\nI appreciate the efforts of the Club in advancing meaningful service initiatives and upholding the values of compassion, integrity, and volunteerism. Your work continues to make a positive difference in the Capital Region and beyond.\n\nAs you begin this new chapter of leadership, I wish you a successful Installation Ceremony and continued success in all your endeavors.",
-    photo: null,
+    photo: "shah",
   },
 ];
