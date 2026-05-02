@@ -408,8 +408,8 @@ export const dignitaries = [
     name: "Jennifer Rajkumar",
     title: "Assembly Member, NYS Assembly District 38",
     message: "Your unwavering commitment to uplifting communities, supporting those in need, and advancing humanitarian causes reflects the very best of our shared values.",
-    fullMessage: null,
-    photo: null,
+    fullMessage: "I extend my warmest congratulations and best wishes to the Albany Capital Region Lions Club on your Installation Ceremony.\n\nThe Lions Club has long been a beacon of service, compassion, and community leadership. Your unwavering commitment to uplifting communities, supporting those in need, and advancing humanitarian causes reflects the very best of our shared values. I commend the leadership and members for their dedication to making a meaningful difference across the Capital Region. Your efforts not only strengthen local communities but also contribute to a broader mission of service and global solidarity.\n\nAs you begin a new chapter of leadership, I wish you continued success, growth, and impact in all your endeavors. May your work continue to inspire positive change and empower future generations of leaders.",
+    photo: "jennifer",
   },
   {
     name: "A.P. Singh",
