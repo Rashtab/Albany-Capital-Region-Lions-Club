@@ -3,6 +3,40 @@ import { officers, directors, executiveMembers } from "@/data/clubData";
 import { Badge } from "@/components/ui/badge";
 import { Info, Phone } from "lucide-react";
 
+// ── Member photos ────────────────────────────────────────────
+import photoAbdusSalam from "@assets/Abdus_Salam_1777729404919.jpeg";
+import photoAdityaShaheen from "@assets/Aditya_Shaheen_1777729404920.jpeg";
+import photoAnikaSubah from "@assets/Anika_Subah_Ahmed_1777729404920.jpeg";
+import photoDewanSarowar from "@assets/Dewan_A_Sarowar_1777729404920.jpeg";
+import photoHenryRashid from "@assets/Henry_Rashid_1777729404920.jpeg";
+import photoLailaKhaleda from "@assets/Laila_Khaleda_1777729404921.jpeg";
+import photoMaksudulHasanKhan from "@assets/Maksudul_Hasan_Khan_1777729404921.jpeg";
+import photoMarzanaKhandoker from "@assets/Marzana_Khandoker_1777729412560.jpeg";
+import photoMontasinaHaider from "@assets/Montasina_Haider_1777729412560.jpeg";
+import photoMoshfaqAhmedAsif from "@assets/Moshfaq_Ahmed_Asif_1777729412561.jpeg";
+import photoMossaNurunnahar from "@assets/Mossa._Nurunnahar_1777729412561.jpeg";
+import photoNadiraMujumdar from "@assets/Nadira_Mujumdar_1777729412561.jpeg";
+import photoNusratSharmin from "@assets/Nusrat_Sharmin_1777729412562.jpeg";
+import photoQuaziMahtab from "@assets/Quazi_Mahtab_Uddin_1777729412562.jpeg";
+
+// Map member names to their photos
+const photoMap: Record<string, string> = {
+  "Abdus Salam": photoAbdusSalam,
+  "Aditya Shaheen": photoAdityaShaheen,
+  "Anika Subah Ahmad Upoma": photoAnikaSubah,
+  "Dewan A Sarowar": photoDewanSarowar,
+  "Henry Rashid": photoHenryRashid,
+  "Laila Khaleda": photoLailaKhaleda,
+  "Maksudul Hasan Khan": photoMaksudulHasanKhan,
+  "Marzana Khandoker": photoMarzanaKhandoker,
+  "Montasina Haider": photoMontasinaHaider,
+  "Moshfaq Ahmed Asif": photoMoshfaqAhmedAsif,
+  "Mossa. Nurrunnahar": photoMossaNurunnahar,
+  "Nadira Mujumdar": photoNadiraMujumdar,
+  "Nusrat Sharmin": photoNusratSharmin,
+  "Quazi Mahtab Uddin": photoQuaziMahtab,
+};
+
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
@@ -22,6 +56,30 @@ const avatarColors = [
   "bg-secondary/80 text-secondary-foreground",
   "bg-primary/60 text-primary-foreground",
 ];
+
+function MemberPhoto({ name, size = "lg" }: { name: string; size?: "sm" | "lg" }) {
+  const photo = photoMap[name];
+  const sizeClass = size === "lg" ? "w-24 h-24" : "w-14 h-14";
+  const textClass = size === "lg" ? "text-2xl" : "text-sm";
+  const borderClass = size === "lg" ? "border-4" : "border-2";
+
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt={name}
+        className={`${sizeClass} rounded-full object-cover object-top ${borderClass} border-secondary/30 mb-4 mx-auto`}
+      />
+    );
+  }
+
+  const colorIndex = name.charCodeAt(0) % avatarColors.length;
+  return (
+    <div className={`${sizeClass} rounded-full flex items-center justify-center ${textClass} font-black mb-4 mx-auto ${borderClass} border-secondary/30 ${avatarColors[colorIndex]}`}>
+      {getInitials(name)}
+    </div>
+  );
+}
 
 export default function Leadership() {
   return (
@@ -63,13 +121,7 @@ export default function Leadership() {
               >
                 <div className="h-1.5 bg-secondary" />
                 <div className="p-6 flex flex-col items-center text-center flex-1">
-                  {officer.photo ? (
-                    <img src={officer.photo} alt={officer.name} className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-secondary/30" />
-                  ) : (
-                    <div className={`w-20 h-20 rounded-full flex items-center justify-center text-xl font-black mb-4 border-4 border-secondary/30 ${avatarColors[i % avatarColors.length]}`}>
-                      {getInitials(officer.name)}
-                    </div>
-                  )}
+                  <MemberPhoto name={officer.name} size="lg" />
                   <h3 className="text-lg font-bold text-foreground mb-1">{officer.name}</h3>
                   <Badge className="bg-primary/10 text-primary border-primary/20 font-semibold text-xs mb-3">
                     {officer.title}
@@ -99,9 +151,7 @@ export default function Leadership() {
               <motion.div key={d.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                 className="bg-card border border-card-border rounded-xl p-5 text-center hover:border-primary/30 hover:shadow-md transition-all" data-testid={`director-${d.id}`}
               >
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-black mx-auto mb-3 border-2 border-secondary/30 ${avatarColors[i % avatarColors.length]}`}>
-                  {getInitials(d.name)}
-                </div>
+                <MemberPhoto name={d.name} size="sm" />
                 <p className="text-sm font-bold text-foreground leading-tight">{d.name}</p>
                 {d.phone && <p className="text-xs text-muted-foreground mt-1">{d.phone}</p>}
               </motion.div>
@@ -122,9 +172,7 @@ export default function Leadership() {
               <motion.div key={m.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                 className="bg-card border border-card-border rounded-xl p-5 text-center hover:border-primary/30 hover:shadow-md transition-all" data-testid={`exec-member-${m.id}`}
               >
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-black mx-auto mb-3 border-2 border-secondary/30 ${avatarColors[i % avatarColors.length]}`}>
-                  {getInitials(m.name)}
-                </div>
+                <MemberPhoto name={m.name} size="sm" />
                 <p className="text-sm font-bold text-foreground leading-tight">{m.name}</p>
                 {m.phone && <p className="text-xs text-muted-foreground mt-1">{m.phone}</p>}
               </motion.div>
