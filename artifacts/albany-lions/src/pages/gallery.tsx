@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { Camera, Calendar, FolderOpen, ImageOff } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Camera, Calendar, FolderOpen, ImageOff, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import eidPhoto1 from "@assets/660302350_27351706501086056_6964347259712242193_n_1777737102946.jpg";
 import eidPhoto2 from "@assets/660312857_27351712484418791_1133339746705830951_n_1777737102946.jpg";
@@ -205,7 +206,41 @@ const categoryColors: Record<string, string> = {
   Health: "bg-blue-100 text-blue-800",
 };
 
+type LightboxState = { albumId: number; photoIndex: number } | null;
+
 export default function Gallery() {
+  const [lightbox, setLightbox] = useState<LightboxState>(null);
+
+  const openLightbox = (albumId: number, photoIndex: number) => {
+    setLightbox({ albumId, photoIndex });
+  };
+
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+
+  const navigate = useCallback((dir: 1 | -1) => {
+    setLightbox((prev) => {
+      if (!prev) return null;
+      const album = albums.find((a) => a.id === prev.albumId);
+      if (!album) return null;
+      const count = album.photos.length;
+      return { albumId: prev.albumId, photoIndex: (prev.photoIndex + dir + count) % count };
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") navigate(1);
+      if (e.key === "ArrowLeft") navigate(-1);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [lightbox, closeLightbox, navigate]);
+
+  const activeAlbum = lightbox ? albums.find((a) => a.id === lightbox.albumId) : null;
+  const activePhoto = activeAlbum ? activeAlbum.photos[lightbox!.photoIndex] : null;
+
   return (
     <div className="flex flex-col">
       {/* Page Header */}
@@ -277,18 +312,20 @@ export default function Gallery() {
                 {album.photos.length > 0 ? (
                   <div className="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                     {album.photos.map((photo: { src: string; caption?: string }, pi: number) => (
-                      <div key={pi} className="relative aspect-square rounded-lg overflow-hidden group cursor-pointer">
+                      <button
+                        key={pi}
+                        onClick={() => openLightbox(album.id, pi)}
+                        className="relative aspect-square rounded-lg overflow-hidden group cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
                         <img
                           src={photo.src}
                           alt={photo.caption ?? `${album.title} photo ${pi + 1}`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        {photo.caption && (
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
-                            <p className="text-white text-xs">{photo.caption}</p>
-                          </div>
-                        )}
-                      </div>
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                          {photo.caption && <p className="text-white text-xs line-clamp-2">{photo.caption}</p>}
+                        </div>
+                      </button>
                     ))}
                   </div>
                 ) : (
@@ -332,6 +369,105 @@ export default function Gallery() {
           </motion.div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox && activeAlbum && activePhoto && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            onClick={closeLightbox}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-5xl bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
+                <div>
+                  <p className="text-white font-semibold text-sm">{activeAlbum.title}</p>
+                  <p className="text-white/50 text-xs mt-0.5">{lightbox.photoIndex + 1} / {activeAlbum.photos.length}</p>
+                </div>
+                <button
+                  onClick={closeLightbox}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                  aria-label="Close"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Image Area */}
+              <div className="relative flex items-center justify-center bg-black" style={{ minHeight: "420px", maxHeight: "70vh" }}>
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`${lightbox.albumId}-${lightbox.photoIndex}`}
+                    src={activePhoto.src}
+                    alt={activePhoto.caption ?? `Photo ${lightbox.photoIndex + 1}`}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ duration: 0.18 }}
+                    className="max-w-full max-h-full object-contain"
+                    style={{ maxHeight: "70vh" }}
+                  />
+                </AnimatePresence>
+
+                {/* Prev / Next */}
+                {activeAlbum.photos.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => navigate(-1)}
+                      className="absolute left-3 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors"
+                      aria-label="Previous photo"
+                    >
+                      <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                      onClick={() => navigate(1)}
+                      className="absolute right-3 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors"
+                      aria-label="Next photo"
+                    >
+                      <ChevronRight className="h-6 w-6" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Caption */}
+              {activePhoto.caption && (
+                <div className="px-5 py-3 border-t border-white/10">
+                  <p className="text-white/80 text-sm text-center">{activePhoto.caption}</p>
+                </div>
+              )}
+
+              {/* Thumbnail strip */}
+              {activeAlbum.photos.length > 1 && (
+                <div className="flex gap-1.5 overflow-x-auto px-4 py-3 border-t border-white/10 scrollbar-thin">
+                  {activeAlbum.photos.map((p, pi) => (
+                    <button
+                      key={pi}
+                      onClick={() => setLightbox({ albumId: lightbox.albumId, photoIndex: pi })}
+                      className={`shrink-0 w-14 h-14 rounded-md overflow-hidden border-2 transition-all ${
+                        pi === lightbox.photoIndex ? "border-secondary scale-105" : "border-transparent opacity-50 hover:opacity-80"
+                      }`}
+                    >
+                      <img src={p.src} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
