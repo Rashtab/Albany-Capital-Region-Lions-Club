@@ -14,9 +14,9 @@ export const clubInfo = {
   phone: "845.216.5523",
   address: "3311 East Lydius St, Schenectady, NY 12303",
   website: "https://albanylionsclub.org",
-  facebook: "https://www.facebook.com", // UPDATE: Replace with actual Facebook page URL
-  instagram: "https://www.instagram.com", // UPDATE: Replace with actual Instagram URL
-  twitter: "https://www.twitter.com", // UPDATE: Replace with actual Twitter/X URL
+  facebook: "https://www.facebook.com/albanycapitalregionlionsclub",
+  instagram: "https://www.instagram.com/albanycapitalregionlionsclub/",
+  twitter: "https://x.com/AlbanyCRLC",
   missionStatement:
     "To empower volunteers to serve their communities, meet humanitarian needs, encourage peace and promote international understanding through Lions Clubs.",
   vision:
