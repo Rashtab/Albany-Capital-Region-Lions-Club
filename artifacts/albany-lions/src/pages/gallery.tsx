@@ -2,6 +2,16 @@ import { motion } from "framer-motion";
 import { Camera, Calendar, FolderOpen, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import springPhoto1 from "@assets/657170638_27329824959940877_7160008379873549711_n_1777736796621.jpg";
+import springPhoto15 from "@assets/660532668_27329815713275135_8307670286658515926_n_1777736906026.jpg";
+import springPhoto16 from "@assets/660970208_27329815199941853_5232342538291491060_n_1777736906026.jpg";
+import springPhoto17 from "@assets/661047750_27342935765296463_6855499252572700307_n_1777736906026.jpg";
+import springPhoto18 from "@assets/661213735_27329821953274511_2613966495426069028_n_1777736906027.jpg";
+import springPhoto19 from "@assets/662403874_27329811583275548_6050078312485094749_n_1777736906027.jpg";
+import springPhoto20 from "@assets/662509903_27329817939941579_7055871740958051907_n_1777736906027.jpg";
+import springPhoto21 from "@assets/663042370_27329814116608628_8525675026473977089_n_1777736906028.jpg";
+import springPhoto22 from "@assets/DSC_0784_1777736906028.jpg";
+import springPhoto23 from "@assets/DSC_0805_1777736906028.jpg";
+import springPhoto24 from "@assets/WhatsApp_Image_2026-04-18_at_4.51.41_AM_1777736906029.jpeg";
 import springPhoto2 from "@assets/658138737_27329818183274888_5144718517033310575_n_1777736796622.jpg";
 import springPhoto3 from "@assets/658368733_27329813153275391_7675333575341318947_n_1777736796622.jpg";
 import springPhoto4 from "@assets/658953008_27329812339942139_6719885944769756001_n_1777736796622.jpg";
@@ -112,6 +122,16 @@ const albums = [
       { src: springPhoto13, caption: "Recognition ceremony — Spring Convention" },
       { src: springPhoto14, caption: "Club charter and award presentation" },
       { src: springPhoto11, caption: "President Sonia Mahtab with the Lions flag display" },
+      { src: springPhoto15, caption: "Albany Lions officers at the Spring Convention step-and-repeat" },
+      { src: springPhoto16, caption: "With International Director Nazmul Haque — Spring Convention" },
+      { src: springPhoto17, caption: "President Sonia Mahtab and 1st VP Ahsan Habib — Spring Convention" },
+      { src: springPhoto18, caption: "Albany Lions members at District 20-R2 Spring Convention" },
+      { src: springPhoto19, caption: "President Sonia Mahtab at the Spring Convention step-and-repeat" },
+      { src: springPhoto20, caption: "Albany Lions officers — Spring Convention" },
+      { src: springPhoto21, caption: "Recognition ceremony with International Director" },
+      { src: springPhoto22, caption: "President Sonia Mahtab with fellow Lions at Leonard's Palazzo" },
+      { src: springPhoto23, caption: "Albany Lions officers at Leonard's Palazzo" },
+      { src: springPhoto24, caption: "Albany Lions members at the Spring Convention" },
     ],
   },
   {
