@@ -1,6 +1,19 @@
 import { motion } from "framer-motion";
 import { Camera, Calendar, FolderOpen, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import districtPhoto1 from "@assets/_DSC4848_1777736679657.JPG";
+import districtPhoto2 from "@assets/651138768_27123701403886568_1823916708111424254_n_1777736679657.jpg";
+import districtPhoto3 from "@assets/WhatsApp_Image_2026-04-24_at_1.31.09_AM_1777736679657.jpeg";
+import districtPhoto4 from "@assets/WhatsApp_Image_2026-04-24_at_1.31.21_AM_(3)_1777736679657.jpeg";
+import districtPhoto5 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.55_AM_1777736679658.jpeg";
+import districtPhoto6 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(1)_1777736679658.jpeg";
+import districtPhoto7 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(2)_1777736679658.jpeg";
+import districtPhoto8 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(3)_1777736679658.jpeg";
+import districtPhoto9 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(4)_1777736679659.jpeg";
+import districtPhoto10 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(5)_1777736679659.jpeg";
+import districtPhoto11 from "@assets/WhatsApp_Image_2026-04-24_at_10.01.56_AM_1777736679659.jpeg";
+import districtPhoto12 from "@assets/WhatsApp_Image_2026-04-24_at_11.32.02_AM_(1)_1777736679659.jpeg";
+import districtPhoto13 from "@assets/WhatsApp_Image_2026-04-24_at_11.32.02_AM_1777736679660.jpeg";
 import iftarPhoto1 from "@assets/647084174_27055032814086761_5907395881288517276_n_1777736424850.jpg";
 import iftarPhoto2 from "@assets/648101133_27055032100753499_8094953426604179726_n_1777736424851.jpg";
 import iftarPhoto3 from "@assets/649531670_27055033367420039_3542110652252670645_n_1777736424851.jpg";
@@ -36,7 +49,21 @@ const albums = [
     date: "February 2026",
     category: "District Event",
     description: "Lions Club International District 20-R2 second annual meeting attended by our club members.",
-    photos: [],
+    photos: [
+      { src: districtPhoto6, caption: "Second District 20-R2 General Meeting" },
+      { src: districtPhoto7, caption: "District leadership at the head table" },
+      { src: districtPhoto8, caption: "Address at the District General Meeting" },
+      { src: districtPhoto5, caption: "Pin presentation ceremony" },
+      { src: districtPhoto1, caption: "Pin presentation at District 20-R2 Annual Meeting" },
+      { src: districtPhoto4, caption: "District Governor pins a member" },
+      { src: districtPhoto3, caption: "Pin ceremony — District 20-R2 Meeting" },
+      { src: districtPhoto9, caption: "Presentation at the podium" },
+      { src: districtPhoto10, caption: "Pin presentation and recognition" },
+      { src: districtPhoto11, caption: "Members with the District flag display" },
+      { src: districtPhoto12, caption: "Pin ceremony — District 20-R2 Meeting" },
+      { src: districtPhoto2, caption: "Club members at the District meeting" },
+      { src: districtPhoto13, caption: "Albany Lions members at the District Annual Meeting" },
+    ],
   },
   {
     id: 3,
