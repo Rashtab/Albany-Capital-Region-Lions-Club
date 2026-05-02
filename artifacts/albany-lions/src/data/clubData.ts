@@ -259,7 +259,7 @@ export const sponsorshipTiers = [
 // MAGAZINE ADVERTISING — From the 2026 Sponsorship Package
 // ============================================================
 export const magazineAds = [
-  { type: "Full Page", price: "$750", details: "Premium placement, ideal for branding" },
+  { type: "Full Page", price: "$1,000", details: "Premium placement, ideal for branding" },
   { type: "Half Page", price: "$500", details: "Strong visibility" },
   { type: "Quarter Page", price: "$250", details: "Small business friendly" },
 ];
