@@ -15,6 +15,7 @@ import nazmulPhoto from "@assets/Lion_Nazmul_Haque__1777751740226.jpg";
 import asefPhoto from "@assets/Asef_Bari_1777751847293.jpg";
 import ninaPhoto from "@assets/image_1777751996212.png";
 import shahPhoto from "@assets/Shah_Newaz_1777752174421.jpg";
+import ahsanPhoto from "@assets/Ahsan_Habib_1777752313909.jpg";
 
 const dignitaryPhotoMap: Record<string, string> = {
   zohran: zohranPhoto,
@@ -25,6 +26,7 @@ const dignitaryPhotoMap: Record<string, string> = {
   asef: asefPhoto,
   nina: ninaPhoto,
   shah: shahPhoto,
+  ahsan: ahsanPhoto,
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
