@@ -1,22 +1,21 @@
 import { motion } from "framer-motion";
-import { Heart, AlertTriangle, CheckCircle2, ChevronRight } from "lucide-react";
+import { Heart, AlertTriangle, CheckCircle2, ChevronRight, Mail, Phone } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { donationInfo, clubInfo } from "@/data/clubData";
+import { donationInfo, clubInfo, sponsorshipTiers } from "@/data/clubData";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.08, duration: 0.5, ease: "easeOut" },
+    transition: { delay: i * 0.08, duration: 0.5 },
   }),
 };
 
 const impactItems = [
   { amount: "$25", impact: "Provides a pair of eyeglasses for someone in need" },
   { amount: "$50", impact: "Funds a youth scholarship application review" },
-  { amount: "$100", impact: "Supports a family food basket at our holiday drive" },
+  { amount: "$100", impact: "Supports a family food basket at our community drive" },
   { amount: "$250", impact: "Sponsors a vision screening event for 25 people" },
   { amount: "$500", impact: "Underwrites a full community service project" },
   { amount: "$1,000+", impact: "Becomes a named sponsor for a Lions Club event" },
@@ -40,7 +39,7 @@ export default function Donate() {
         </div>
       </section>
 
-      {/* Why Donate */}
+      {/* Impact */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-14">
@@ -49,13 +48,7 @@ export default function Donate() {
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {impactItems.map((item, i) => (
-              <motion.div
-                key={i}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
+              <motion.div key={i} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                 data-testid={`impact-item-${i}`}
                 className="bg-card border border-card-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all"
               >
@@ -87,10 +80,8 @@ export default function Donate() {
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-2">By Check</h3>
                   <p className="text-muted-foreground mb-1">Make check payable to:</p>
-                  <p className="text-foreground font-bold text-lg">{donationInfo.checkPayable}</p>
-                  {donationInfo.mailingAddress && (
-                    <p className="text-muted-foreground mt-2">Mail to: <span className="text-foreground font-medium">{donationInfo.mailingAddress}</span></p>
-                  )}
+                  <p className="text-foreground font-black text-lg mb-2">{donationInfo.checkPayable}</p>
+                  <p className="text-muted-foreground">Mail to: <span className="text-foreground font-medium">{donationInfo.mailingAddress}</span></p>
                 </div>
               </div>
             </motion.div>
@@ -105,36 +96,34 @@ export default function Donate() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-2">Via Zelle</h3>
-                  {donationInfo.zelle ? (
-                    <p className="text-foreground font-semibold">{donationInfo.zelle}</p>
-                  ) : (
-                    <Badge variant="outline" className="text-muted-foreground border-dashed">
-                      {/* UPDATE: Add Zelle email or phone here */}
-                      Contact us for Zelle payment details
-                    </Badge>
-                  )}
+                  <p className="text-muted-foreground mb-1">Send to:</p>
+                  <p className="text-foreground font-semibold">{donationInfo.zelle}</p>
                 </div>
               </div>
             </motion.div>
 
-            {/* PayPal */}
-            {donationInfo.paypal && (
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
-                className="bg-card border border-card-border rounded-xl p-8" data-testid="donate-paypal"
-              >
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">Via PayPal</h3>
-                    <a href={donationInfo.paypal} target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">
-                      Donate via PayPal
+            {/* Contact for other */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
+              className="bg-card border border-card-border rounded-xl p-8" data-testid="donate-contact"
+            >
+              <div className="flex items-start gap-5">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <Mail className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">Contact Us Directly</h3>
+                  <p className="text-muted-foreground mb-3">For other payment arrangements or to discuss major gifts:</p>
+                  <div className="flex flex-wrap gap-4">
+                    <a href={`mailto:${clubInfo.email}`} className="flex items-center gap-2 text-primary font-semibold hover:underline">
+                      <Mail className="h-4 w-4" /> {clubInfo.email}
+                    </a>
+                    <a href={`tel:${clubInfo.phone}`} className="flex items-center gap-2 text-primary font-semibold hover:underline">
+                      <Phone className="h-4 w-4" /> {clubInfo.phone}
                     </a>
                   </div>
                 </div>
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
 
             {/* Disclaimer */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
@@ -144,35 +133,38 @@ export default function Donate() {
               <div>
                 <h4 className="font-bold text-amber-800 mb-1">Important Notice</h4>
                 <p className="text-amber-700 leading-relaxed text-sm">{donationInfo.disclaimer}</p>
-                {donationInfo.taxId && (
-                  <p className="text-amber-700 text-sm mt-2">Tax ID / EIN: <span className="font-semibold">{donationInfo.taxId}</span></p>
-                )}
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Sponsorship Tiers */}
+      {/* Sponsorship Tiers Preview */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-12">
             <span className="text-secondary font-bold tracking-widest uppercase text-sm">Business Support</span>
             <h2 className="text-3xl font-black text-primary mt-3">Corporate &amp; Business Sponsorship</h2>
             <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
-              Is your business looking to give back to the Albany community? Sponsoring our club puts your brand alongside a century of trusted service.
+              We offer six sponsorship tiers for businesses of all sizes — from $100 Friend sponsorships to $10,000+ Platinum packages.
             </p>
           </motion.div>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
-            className="bg-primary text-primary-foreground rounded-2xl p-10 text-center"
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+            {sponsorshipTiers.map((tier, i) => (
+              <motion.div key={tier.tier} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                className="bg-card border border-card-border rounded-xl p-5 text-center hover:border-primary/30 hover:shadow-md transition-all" data-testid={`donate-tier-${tier.tier.toLowerCase()}`}
+              >
+                <div className="font-black text-primary text-xl">{tier.amount}</div>
+                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">{tier.tier}</div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={sponsorshipTiers.length}
+            className="text-center"
           >
-            <h3 className="text-2xl font-black mb-4">Interested in Sponsoring?</h3>
-            <p className="text-primary-foreground/80 mb-8 max-w-lg mx-auto">
-              Contact us to learn about our current sponsorship packages, magazine advertising, and event sponsorship opportunities.
-            </p>
-            <Link href="/contact">
-              <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold px-10" data-testid="donate-sponsor-cta">
-                Get in Touch <ChevronRight className="ml-1 h-5 w-5" />
+            <Link href="/sponsors">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-10" data-testid="donate-view-packages">
+                View Full Sponsorship Packages <ChevronRight className="ml-1 h-5 w-5" />
               </Button>
             </Link>
           </motion.div>

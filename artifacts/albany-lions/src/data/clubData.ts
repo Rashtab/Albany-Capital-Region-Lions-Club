@@ -6,14 +6,14 @@
 export const clubInfo = {
   name: "Albany Capital Region Lions Club",
   tagline: "We Serve",
-  fullTagline: "Serving Our Community, Changing Lives",
-  founded: "1917",
+  fullTagline: "We Serve • We Lead • We Impact",
+  founded: "2026",
   internationalAffiliation: "Lions Clubs International",
-  district: "District 20-Y1",
-  email: "info@albanycapitalregionlions.org", // UPDATE: Replace with actual club email
-  phone: "", // UPDATE: Add club phone number if available
-  address: "Albany, New York", // UPDATE: Add full mailing address if available
-  website: "https://www.lionsclubs.org",
+  district: "District 20-R2, New York",
+  email: "lionsclubalbanycapitalregion@gmail.com",
+  phone: "845.216.5523",
+  address: "3311 East Lydius St, Schenectady, NY 12303",
+  website: "https://albanylionsclub.org",
   facebook: "https://www.facebook.com", // UPDATE: Replace with actual Facebook page URL
   instagram: "https://www.instagram.com", // UPDATE: Replace with actual Instagram URL
   twitter: "https://www.twitter.com", // UPDATE: Replace with actual Twitter/X URL
@@ -22,7 +22,7 @@ export const clubInfo = {
   vision:
     "To be the global leader in community and humanitarian service.",
   description:
-    "The Albany Capital Region Lions Club is a proud chapter of Lions Clubs International, dedicated to serving the greater Albany, New York community. Our members volunteer their time, talents, and resources to make a meaningful difference — from supporting vision care and youth programs to disaster relief and hunger initiatives.",
+    "The Albany Capital Region Lions Club is a newly chartered chapter of Lions Clubs International, proudly serving the greater Albany and Schenectady area of New York's Capital Region. Our diverse, passionate members come together under the banner of 'We Serve' to make a lasting difference — from vision care and youth programs to hunger relief and community development.",
 };
 
 // ============================================================
@@ -31,60 +31,116 @@ export const clubInfo = {
 export const officers = [
   {
     id: 1,
-    name: "Lion President", // UPDATE: Replace with current president's name
-    title: "Club President",
-    bio: "Leading our chapter with dedication and vision for the Albany community.",
-    photo: null, // UPDATE: Add photo path e.g. "/images/officers/president.jpg"
+    name: "Tahmina Sharif Sonia",
+    title: "Charter President",
+    bio: "A dedicated homemaker and mother of two, Tahmina holds a Master's in Management and an MBA in Human Resource Management from Empire State University. Inspired by her parents' legacy as Lions, she is committed to community service and humanitarian work. She is preparing to begin her PhD in Organizational and Strategic Leadership.",
+    phone: "845.216.5523",
+    photo: null,
   },
   {
     id: 2,
-    name: "Lion First Vice President", // UPDATE: Replace with name
-    title: "First Vice President",
-    bio: "Committed to growing our membership and expanding community impact.",
+    name: "Zakia Nizam",
+    title: "Vice President",
+    bio: "Zakia Nilufar Nizam is a Special Education Consultant at a state agency, specializing in literacy. She holds master's degrees from Dhaka University and SUNY Albany. Passionate about inclusion and service, she is committed to community impact through volunteerism and is a proud mother of two.",
+    phone: "518.221.4145",
     photo: null,
   },
   {
     id: 3,
-    name: "Lion Second Vice President", // UPDATE: Replace with name
-    title: "Second Vice President",
-    bio: "Dedicated to organizing impactful service projects across the Capital Region.",
+    name: "Anika Subah Ahmad Upoma",
+    title: "General Secretary",
+    bio: "Ed.M. from Harvard (2023), Anika is the Assistant Director at SUNY Albany, a UN Representative, and Youth Advisory member. She is Director of Sustainable Development at the ManUp Campaign and Founder of Evolution360, with deep commitment to youth leadership and global development.",
+    phone: "617.397.8771",
     photo: null,
   },
   {
     id: 4,
-    name: "Lion Secretary", // UPDATE: Replace with name
-    title: "Club Secretary",
-    bio: "Keeping our club organized and our records in order.",
+    name: "Abdus Salam",
+    title: "Treasurer",
+    bio: "A Professional Engineer focused on transportation innovation, Abdus works to reduce carbon emissions and improve public health and safety. He brings a strong background in community service and youth leadership to the Lions Club.",
+    phone: "646.284.2605",
     photo: null,
   },
   {
     id: 5,
-    name: "Lion Treasurer", // UPDATE: Replace with name
-    title: "Treasurer",
-    bio: "Stewarding club resources to maximize community benefit.",
+    name: "Rashtab Mahmud",
+    title: "LCIF Coordinator",
+    bio: "An IT Specialist at NYS ITS, Rashtab builds scalable solutions for state operations. A former Microsoft Student Partner, he serves as National Corresponding Secretary of ASAAL and Technical Editor for Critique and News Albany. He is a founding leader of the club.",
+    phone: "929.424.1088",
     photo: null,
   },
   {
     id: 6,
-    name: "Lion Tail-Twister", // UPDATE: Replace with name
-    title: "Tail-Twister",
-    bio: "Keeping meetings fun, energetic, and full of Lions spirit.",
+    name: "Aditya Shaheen",
+    title: "Public Relations Secretary",
+    bio: "A journalist with over three decades of experience in print and electronic media, Aditya served as Chief Researcher and Senior News Editor in the Development Journalism Department of Channel i, one of Bangladesh's leading television networks.",
+    phone: "929.586.8404",
     photo: null,
   },
   {
     id: 7,
-    name: "Lion Lion Tamer", // UPDATE: Replace with name
-    title: "Lion Tamer",
-    bio: "Welcoming members and maintaining club discipline and camaraderie.",
+    name: "Nadira Mujumdar",
+    title: "Cultural Secretary",
+    bio: "Dedicated to celebrating the cultural richness of our community and bringing members together through arts and cultural programming.",
+    phone: "267.521.6234",
     photo: null,
   },
   {
     id: 8,
-    name: "Lion Board Director", // UPDATE: Replace with name
-    title: "Board Director",
-    bio: "Providing governance and strategic direction for our club.",
+    name: "Mossa. Nurrunnahar",
+    title: "Women Affairs Secretary",
+    bio: "Committed to advocating for and empowering women in the Capital Region community through meaningful Lions Club initiatives and programs.",
+    phone: "718.300.1960",
     photo: null,
   },
+  {
+    id: 9,
+    name: "Tofazzal Hossain",
+    title: "Tail Twister & Director",
+    bio: "Keeping club meetings lively and members engaged while providing strategic direction as a club director.",
+    phone: "518.253.2439",
+    photo: null,
+  },
+  {
+    id: 10,
+    name: "Marzana Khandoker",
+    title: "Health & Wellness Coordinator",
+    bio: "Leading our health and wellness initiatives to promote the well-being of our members and the broader Capital Region community.",
+    phone: "646.591.6046",
+    photo: null,
+  },
+  {
+    id: 11,
+    name: "Tania Zaman",
+    title: "Club Service Executive",
+    bio: "Coordinating and executing our club's service programs to maximize impact across the Albany and Schenectady communities.",
+    phone: "518.653.8232",
+    photo: null,
+  },
+];
+
+// ============================================================
+// DIRECTORS
+// ============================================================
+export const directors = [
+  { id: 1, name: "Quazi Mahtab Uddin", phone: "518.944.6902" },
+  { id: 2, name: "Henry Rashid", phone: "312.774.6859" },
+  { id: 3, name: "Sajedur Akanda", phone: "614.867.2807" },
+  { id: 4, name: "Dewan A Sarowar", phone: "518.610.2426" },
+  { id: 5, name: "Maksudul Hasan Khan", phone: "718.902.1955" },
+  { id: 6, name: "Shanaz Mashud", phone: "518.253.5801" },
+];
+
+// ============================================================
+// EXECUTIVE MEMBERS
+// ============================================================
+export const executiveMembers = [
+  { id: 1, name: "Moshfaq Ahmed Asif", phone: "518.788.8921" },
+  { id: 2, name: "Nusrat Sharmin", phone: "334.552.0344" },
+  { id: 3, name: "Laila Khaleda", phone: "929.543.9857" },
+  { id: 4, name: "Montasina Haider", phone: "718.902.1944" },
+  { id: 5, name: "Farhana Islam", phone: "" },
+  { id: 6, name: "Nasima Akter Nisha", phone: "" },
 ];
 
 // ============================================================
@@ -93,184 +149,273 @@ export const officers = [
 export const events = [
   {
     id: 1,
+    title: "Charter Night & Installation Ceremony",
+    date: "April 26, 2026",
+    time: "Evening",
+    location: "Albany, New York",
+    description:
+      "The historic Charter Night and Installation Ceremony marking the official founding of the Albany Capital Region Lions Club. Distinguished guests included messages from the Mayor of NYC, Mayor of Albany, Assembly Member Jennifer Rajkumar, and Lions Clubs International leadership.",
+    category: "Milestone",
+    image: null,
+    registrationLink: null,
+  },
+  {
+    id: 2,
     title: "Annual Vision Screening",
-    date: "June 14, 2025",
-    time: "9:00 AM – 2:00 PM",
-    location: "Albany Community Center, Albany, NY", // UPDATE: Verify location
+    date: "TBD — Summer 2026",
+    time: "TBD",
+    location: "Capital Region, New York", // UPDATE: Add specific location when confirmed
     description:
-      "Free vision screenings for community members of all ages. Bring the family! Our trained volunteers will screen for vision issues and provide referrals as needed.",
+      "Free vision screenings for community members of all ages. Our trained volunteers will screen for vision issues and provide referrals as needed — continuing the Lions' century-old mission of sight conservation.",
     category: "Health",
-    image: null, // UPDATE: Add image path if available
-    registrationLink: null, // UPDATE: Add link if online registration is available
-  },
-  {
-    id: 2,
-    title: "Lions Club International Day of Service",
-    date: "August 16, 2025",
-    time: "8:00 AM – 12:00 PM",
-    location: "Albany Capital Park, Albany, NY", // UPDATE: Verify location
-    description:
-      "Join us for a day of giving back! Volunteers will participate in park cleanup, food drives, and community outreach as part of the global Lions Day of Service.",
-    category: "Community Service",
     image: null,
     registrationLink: null,
   },
   {
     id: 3,
-    title: "Annual Golf Tournament Fundraiser",
-    date: "September 20, 2025",
-    time: "7:30 AM Shotgun Start",
-    location: "Albany Country Club, Albany, NY", // UPDATE: Verify location
+    title: "Community Service Day",
+    date: "TBD — 2026",
+    time: "TBD",
+    location: "Capital Region, New York", // UPDATE: Add specific location when confirmed
     description:
-      "Our signature annual fundraiser benefiting local vision care programs and youth scholarships. Sponsorship opportunities available. All skill levels welcome.",
-    category: "Fundraiser",
-    image: null,
-    registrationLink: null,
-  },
-  {
-    id: 4,
-    title: "Holiday Food Drive & Basket Distribution",
-    date: "December 13, 2025",
-    time: "10:00 AM – 3:00 PM",
-    location: "TBD — Albany area", // UPDATE: Replace with actual location
-    description:
-      "Help us fill baskets with food and essentials for families in need this holiday season. Volunteer sign-ups and donation drop-offs welcome.",
+      "Join us for a day of giving back to the Albany and Schenectady community. Volunteers will participate in outreach activities as part of our inaugural service programming.",
     category: "Community Service",
     image: null,
     registrationLink: null,
   },
+  // UPDATE: Add new events as they are announced
 ];
 
 // ============================================================
-// SPONSORS — Update with actual magazine advertisers
+// SPONSORSHIP TIERS — From the 2026 Sponsorship Package
 // ============================================================
-export const sponsors = [
+export const sponsorshipTiers = [
   {
-    id: 1,
-    name: "Platinum Sponsor", // UPDATE: Replace with actual sponsor name
     tier: "Platinum",
-    description: "Supporting our vision for a stronger Capital Region.",
-    website: null, // UPDATE: Add sponsor website
-    logo: null, // UPDATE: Add logo path
-    phone: null,
-    address: null,
+    amount: "$10,000+",
+    benefits: [
+      "Top branding on all materials",
+      "Speaking slot at events",
+      "VIP seating",
+      "Full promotion across all channels",
+      "Social media spotlight",
+      "Banner placement",
+    ],
+    color: "platinum",
   },
   {
-    id: 2,
-    name: "Gold Sponsor", // UPDATE: Replace with actual sponsor name
     tier: "Gold",
-    description: "Proud community partner of the Albany Capital Region Lions Club.",
-    website: null,
-    logo: null,
-    phone: null,
-    address: null,
+    amount: "$5,000",
+    benefits: [
+      "Prominent logo placement",
+      "VIP table at events",
+      "Social media promotion",
+      "Program listing",
+      "Event acknowledgment",
+    ],
+    color: "gold",
   },
   {
-    id: 3,
-    name: "Silver Sponsor", // UPDATE: Replace with actual sponsor name
     tier: "Silver",
-    description: "Dedicated to serving Albany alongside our Lions family.",
-    website: null,
-    logo: null,
-    phone: null,
-    address: null,
+    amount: "$2,500",
+    benefits: [
+      "Logo placement on materials",
+      "Reserved seating at events",
+      "Program listing",
+      "Social media mention",
+    ],
+    color: "silver",
   },
   {
-    id: 4,
-    name: "Community Partner", // UPDATE: Replace with actual sponsor name
+    tier: "Bronze",
+    amount: "$1,000",
+    benefits: [
+      "Website recognition",
+      "Event acknowledgment",
+      "Program listing",
+    ],
+    color: "bronze",
+  },
+  {
     tier: "Community",
-    description: "Committed to the growth and wellbeing of our community.",
-    website: null,
-    logo: null,
-    phone: null,
-    address: null,
+    amount: "$500",
+    benefits: [
+      "Program listing",
+      "Social media mention",
+    ],
+    color: "community",
+  },
+  {
+    tier: "Friend",
+    amount: "$100–$499",
+    benefits: [
+      "Donor recognition",
+    ],
+    color: "friend",
   },
 ];
 
 // ============================================================
-// DONATION INFORMATION — Update with actual payment details
+// MAGAZINE ADVERTISING — From the 2026 Sponsorship Package
+// ============================================================
+export const magazineAds = [
+  { type: "Full Page", price: "$750", details: "Premium placement, ideal for branding" },
+  { type: "Half Page", price: "$500", details: "Strong visibility" },
+  { type: "Quarter Page", price: "$250", details: "Small business friendly" },
+];
+
+// ============================================================
+// SPONSORS — Update with actual confirmed sponsors
+// ============================================================
+export const sponsors: {
+  id: number;
+  name: string;
+  tier: string;
+  description: string;
+  website: string | null;
+  logo: string | null;
+  phone: string | null;
+  address: string | null;
+}[] = [
+  // UPDATE: Add confirmed sponsors here as they sign on
+  // Example:
+  // {
+  //   id: 1,
+  //   name: "Acme Business Name",
+  //   tier: "Platinum",
+  //   description: "...",
+  //   website: "https://example.com",
+  //   logo: null,
+  //   phone: "518.555.0100",
+  //   address: "Albany, NY",
+  // },
+];
+
+// ============================================================
+// DONATION INFORMATION
 // ============================================================
 export const donationInfo = {
-  checkPayable: "Albany Capital Region Lions Club", // UPDATE: Verify exact payee name
-  mailingAddress: "PO Box XXXX, Albany, NY 12XXX", // UPDATE: Replace with actual mailing address
-  zelle: "", // UPDATE: Add Zelle email or phone number if accepted
+  checkPayable: "Albany Capital Region Lions Club",
+  mailingAddress: "3311 East Lydius St, Schenectady, NY 12303",
+  zelle: "lionsclubalbanycapitalregion@gmail.com", // UPDATE: Confirm if Zelle is active
   paypal: "", // UPDATE: Add PayPal link if accepted
-  other: "", // UPDATE: Add any other payment methods
+  other: "",
   disclaimer:
     "Please contact the club to confirm current payment instructions before sending funds. The Albany Capital Region Lions Club is a nonprofit organization. Donations may be tax-deductible — please consult your tax advisor.",
-  taxId: "", // UPDATE: Add EIN/Tax ID if available for donor records
+  taxId: "", // UPDATE: Add EIN/Tax ID once registered
 };
 
 // ============================================================
 // GALLERY — Add photo paths as images become available
 // ============================================================
-export const galleryImages = [
-  // UPDATE: Replace null values with actual image paths
-  // Example: { id: 1, src: "/images/gallery/event-2024.jpg", alt: "Annual Golf Tournament 2024", caption: "Lions at the 2024 Golf Tournament" }
+export const galleryImages: {
+  id: number;
+  src: string | null;
+  alt: string;
+  caption: string;
+}[] = [
+  // UPDATE: Replace with real event photos as they become available
+  // Example: { id: 1, src: "/images/gallery/charter-night.jpg", alt: "Charter Night 2026", caption: "Charter Night & Installation Ceremony, April 2026" }
   {
     id: 1,
     src: null,
-    alt: "Community service event",
-    caption: "Lions serving the Albany community", // UPDATE: Add real caption
+    alt: "Charter Night 2026",
+    caption: "Charter Night & Installation Ceremony — April 2026",
   },
   {
     id: 2,
     src: null,
-    alt: "Vision screening",
-    caption: "Free vision screening for local families", // UPDATE: Add real caption
+    alt: "Community service",
+    caption: "Lions serving the Capital Region",
   },
   {
     id: 3,
     src: null,
-    alt: "Club meeting",
-    caption: "Albany Capital Region Lions Club members", // UPDATE: Add real caption
+    alt: "Club members",
+    caption: "Albany Capital Region Lions Club members",
   },
   {
     id: 4,
     src: null,
-    alt: "Fundraiser event",
-    caption: "Annual fundraiser bringing the community together", // UPDATE: Add real caption
+    alt: "Vision screening",
+    caption: "Free vision screening for community members",
   },
 ];
 
 // ============================================================
-// SERVICE AREAS — Lions Club focus areas for the About/Home page
+// SERVICE AREAS
 // ============================================================
 export const serviceAreas = [
   {
     icon: "Eye",
     title: "Vision Care",
     description:
-      "Free vision screenings, eyeglasses, and referrals for people in need — our original and enduring mission since 1925.",
+      "Free vision screenings, eyeglasses, and referrals for people in need — continuing Lions' historic mission of sight conservation.",
   },
   {
     icon: "Users",
     title: "Youth Programs",
     description:
-      "Scholarships, youth camps, Leo Clubs, and mentorship programs that invest in the next generation of community leaders.",
+      "Scholarships, youth camps, and mentorship programs that invest in the next generation of community leaders across the Capital Region.",
   },
   {
     icon: "Heart",
     title: "Hunger Relief",
     description:
-      "Food drives, pantry support, and meal programs that help ensure no neighbor goes hungry in the Capital Region.",
+      "Food drives, pantry support, and meal programs that help ensure no neighbor goes hungry in Albany and Schenectady.",
   },
   {
     icon: "Globe",
-    title: "Disaster Relief",
+    title: "Humanitarian Service",
     description:
-      "Rapid response and ongoing support to families and communities affected by natural disasters.",
+      "Responding to community needs with compassion and urgency, in partnership with Lions Clubs International's global network.",
   },
   {
     icon: "Accessibility",
-    title: "Disability Support",
+    title: "Women & Inclusion",
     description:
-      "Hearing care, mobility support, and resources that help community members with disabilities live fuller lives.",
+      "Dedicated programs empowering women and promoting inclusion across our diverse Capital Region community.",
   },
   {
     icon: "TreePine",
-    title: "Environment",
+    title: "Cultural Engagement",
     description:
-      "Tree planting, park cleanups, and sustainability projects that preserve and beautify our Capital Region.",
+      "Celebrating the rich cultural diversity of Albany through community events, programs, and cross-cultural partnerships.",
+  },
+];
+
+// ============================================================
+// DIGNITARIES who recognized our club at Charter Night
+// ============================================================
+export const dignitaries = [
+  {
+    name: "Zohran Mamdani",
+    title: "Mayor, The City of New York",
+    message: "Your dedication to community service and collective action reflects a deep commitment to building stronger, more inclusive communities.",
+  },
+  {
+    name: "Dr. Dorcey L. Applyrs",
+    title: "Mayor, City of Albany",
+    message: "Your continued dedication to humanitarian efforts and local engagement reflects the very best of Albany's spirit, bringing people together to serve, uplift, and create meaningful change.",
+  },
+  {
+    name: "Jennifer Rajkumar",
+    title: "Assembly Member, NYS Assembly District 38",
+    message: "Your unwavering commitment to uplifting communities, supporting those in need, and advancing humanitarian causes reflects the very best of our shared values.",
+  },
+  {
+    name: "A.P. Singh",
+    title: "International President, Lions Clubs International",
+    message: "Your contributions embody our global mission of 'We Serve' and inspire others to lead with compassion and purpose.",
+  },
+  {
+    name: "Lion Nazmul Haque",
+    title: "International Director 2025–2027, Lions Clubs International",
+    message: "Your commitment to service, leadership, and community engagement reflects the true spirit of Lions Clubs International.",
+  },
+  {
+    name: "Asef Bari",
+    title: "District Governor, District 20-R2, Lions Clubs International",
+    message: "Your dedication to service, leadership, and community engagement reflects the core values of Lions Clubs International.",
   },
 ];

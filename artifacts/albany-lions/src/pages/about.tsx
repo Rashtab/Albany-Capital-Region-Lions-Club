@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { Globe, Heart, Users, Award, ChevronRight } from "lucide-react";
+import { Globe, Heart, Users, Award, ChevronRight, Quote } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { clubInfo, serviceAreas } from "@/data/clubData";
+import { clubInfo, serviceAreas, dignitaries } from "@/data/clubData";
 import { Eye, Accessibility, TreePine } from "lucide-react";
 import React from "react";
+import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Eye, Users, Heart, Globe, Accessibility, TreePine,
@@ -14,7 +15,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.09, duration: 0.55, ease: "easeOut" },
+    transition: { delay: i * 0.09, duration: 0.55 },
   }),
 };
 
@@ -42,16 +43,19 @@ export default function About() {
               <h2 className="text-4xl font-black text-primary mt-3 mb-6">Albany Capital Region Lions Club</h2>
               <p className="text-muted-foreground leading-relaxed mb-5 text-lg">{clubInfo.description}</p>
               <p className="text-muted-foreground leading-relaxed">
-                As a chapter of Lions Clubs International, we operate under the shared mission of {clubInfo.missionStatement.toLowerCase()} Our members come from all walks of life — professionals, retirees, and young adults — united by a commitment to service.
+                Chartered in 2026 under Lions Clubs International District 20-R2, our club brings together passionate community members — professionals, educators, engineers, journalists, and community leaders — all united by the Lions motto: <em className="text-primary font-semibold">We Serve.</em>
               </p>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
               <div className="bg-muted/50 rounded-2xl p-8 space-y-6 border border-border">
+                <div className="flex justify-center mb-2">
+                  <img src={clubLogo} alt="Club Logo" className="w-28 h-28 rounded-full object-cover border-4 border-secondary/40 shadow-lg" />
+                </div>
                 {[
                   { icon: Globe, label: "International Affiliation", value: clubInfo.internationalAffiliation },
                   { icon: Award, label: "District", value: clubInfo.district },
-                  { icon: Users, label: "Founded Globally", value: `Since ${clubInfo.founded}` },
-                  { icon: Heart, label: "Our Motto", value: `"${clubInfo.tagline}"` },
+                  { icon: Users, label: "Chartered", value: `${clubInfo.founded} — Albany, New York` },
+                  { icon: Heart, label: "Motto", value: `"We Serve • We Lead • We Impact"` },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4" data-testid={`about-detail-${i}`}>
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -70,7 +74,7 @@ export default function About() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-24 bg-muted/40">
+      <section className="py-20 bg-muted/40">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
@@ -95,8 +99,36 @@ export default function About() {
         </div>
       </section>
 
-      {/* Lions Club International */}
+      {/* Charter Night Recognition */}
       <section className="py-24 bg-background">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-14">
+            <span className="text-secondary font-bold tracking-widest uppercase text-sm">Charter Night 2026</span>
+            <h2 className="text-4xl font-black text-primary mt-3">Recognized by Distinguished Leaders</h2>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+              Our founding was celebrated with congratulatory messages from government officials and Lions Clubs International leadership from around the world.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {dignitaries.map((d, i) => (
+              <motion.div key={i} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                data-testid={`dignitary-about-${i}`}
+                className="bg-card border border-card-border rounded-xl p-7 hover:shadow-md hover:border-primary/30 transition-all"
+              >
+                <Quote className="h-6 w-6 text-secondary mb-3 opacity-70" />
+                <p className="text-muted-foreground text-sm leading-relaxed italic mb-5 line-clamp-3">"{d.message}"</p>
+                <div>
+                  <p className="font-bold text-foreground">{d.name}</p>
+                  <p className="text-xs text-muted-foreground">{d.title}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lions Club International */}
+      <section className="py-24 bg-muted/40">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-14">
             <span className="text-secondary font-bold tracking-widest uppercase text-sm">Our Global Family</span>
@@ -120,13 +152,13 @@ export default function About() {
           <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
             className="text-center text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed"
           >
-            Lions Clubs International is the world's largest service club organization. Founded in 1917 by Melvin Jones in Chicago, Lions has grown into a global force for humanitarian service — from vision care to disaster relief, from youth programs to hunger initiatives.
+            Lions Clubs International is the world's largest service club organization, founded in 1917 by Melvin Jones in Chicago. Today, Lions serves communities in over 200 countries under the shared mission of <em className="text-primary font-semibold">"We Serve."</em> The Albany Capital Region Lions Club is proud to carry that legacy in New York's Capital Region.
           </motion.p>
         </div>
       </section>
 
       {/* Service Areas */}
-      <section className="py-24 bg-muted/40">
+      <section className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-14">
             <span className="text-secondary font-bold tracking-widest uppercase text-sm">Our Focus</span>
@@ -159,7 +191,9 @@ export default function About() {
         <div className="relative container mx-auto px-4 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
             <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Ready to Join Our Pride?</h2>
-            <p className="text-primary-foreground/80 text-lg mb-8 max-w-xl mx-auto">Become a member and help us serve the Albany Capital Region community.</p>
+            <p className="text-primary-foreground/80 text-lg mb-8 max-w-xl mx-auto">
+              Become a member of the Albany Capital Region Lions Club and help us build something extraordinary in the Capital Region.
+            </p>
             <Link href="/contact">
               <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold px-10" data-testid="about-join-cta">
                 Get in Touch <ChevronRight className="ml-1 h-5 w-5" />
