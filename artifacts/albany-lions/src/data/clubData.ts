@@ -387,35 +387,49 @@ export const serviceAreas = [
 // ============================================================
 // DIGNITARIES who recognized our club at Charter Night
 // ============================================================
+// photo: import path string (filled in about.tsx via photoMap), leave as null here
+// fullMessage: complete congratulatory message text
 export const dignitaries = [
   {
     name: "Zohran Mamdani",
     title: "Mayor, The City of New York",
     message: "Your dedication to community service and collective action reflects a deep commitment to building stronger, more inclusive communities.",
+    fullMessage: "I am pleased to extend my warm congratulations to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nYour dedication to community service and collective action reflects a deep commitment to building stronger, more inclusive communities. The work you do to support those in need and bring people together across the Capital Region is both meaningful and impactful.\n\nI commend the leadership and members of the Club for their continued efforts in advancing service, compassion, and civic engagement. Your contributions play an important role in fostering connection and positive change.",
+    photo: "zohran",
   },
   {
     name: "Dr. Dorcey L. Applyrs",
     title: "Mayor, City of Albany",
     message: "Your continued dedication to humanitarian efforts and local engagement reflects the very best of Albany's spirit, bringing people together to serve, uplift, and create meaningful change.",
+    fullMessage: null,
+    photo: null,
   },
   {
     name: "Jennifer Rajkumar",
     title: "Assembly Member, NYS Assembly District 38",
     message: "Your unwavering commitment to uplifting communities, supporting those in need, and advancing humanitarian causes reflects the very best of our shared values.",
+    fullMessage: null,
+    photo: null,
   },
   {
     name: "A.P. Singh",
     title: "International President, Lions Clubs International",
     message: "Your contributions embody our global mission of 'We Serve' and inspire others to lead with compassion and purpose.",
+    fullMessage: null,
+    photo: null,
   },
   {
     name: "Lion Nazmul Haque",
     title: "International Director 2025–2027, Lions Clubs International",
     message: "Your commitment to service, leadership, and community engagement reflects the true spirit of Lions Clubs International.",
+    fullMessage: null,
+    photo: null,
   },
   {
     name: "Asef Bari",
     title: "District Governor, District 20-R2, Lions Clubs International",
     message: "Your dedication to service, leadership, and community engagement reflects the core values of Lions Clubs International.",
+    fullMessage: null,
+    photo: null,
   },
 ];
