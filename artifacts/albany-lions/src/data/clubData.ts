@@ -416,14 +416,14 @@ export const dignitaries = [
     title: "International President, Lions Clubs International",
     message: "Your contributions embody our global mission of 'We Serve' and inspire others to lead with compassion and purpose.",
     fullMessage: null,
-    photo: null,
+    photo: "apsingh",
   },
   {
     name: "Lion Nazmul Haque",
     title: "International Director 2025–2027, Lions Clubs International",
     message: "Your commitment to service, leadership, and community engagement reflects the true spirit of Lions Clubs International.",
-    fullMessage: null,
-    photo: null,
+    fullMessage: "I am ecstatic to share my warm greetings with the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nYour commitment to service, leadership, and community engagement reflects the true spirit of Lions Clubs International. I commend the dedication of your members in serving those in need and strengthening the bonds within your community.\n\nThe impactful initiatives undertaken by your Club demonstrate a strong commitment to compassion, volunteerism, and meaningful service. Your efforts contribute not only to the well-being of the Capital Region but also to the broader global mission of Lions.\n\nAs you begin this new leadership term, I wish you a successful Installation Ceremony and continued growth, unity, and success in all your future endeavors.",
+    photo: "nazmul",
   },
   {
     name: "Asef Bari",

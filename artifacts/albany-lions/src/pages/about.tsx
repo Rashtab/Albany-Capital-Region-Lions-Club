@@ -10,11 +10,15 @@ import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_17
 import zohranPhoto from "@assets/Zohran_Mamdani_1777751125798.jpg";
 import dorceyPhoto from "@assets/Dr._Dorcey_L._Applyrs_1777751283434.jpg";
 import jenniferPhoto from "@assets/Jennifer_Rajkumar_1777751345247.jpg";
+import apsinghPhoto from "@assets/A.P._Singh_int_1777751500469.jpg";
+import nazmulPhoto from "@assets/Lion_Nazmul_Haque__1777751740226.jpg";
 
 const dignitaryPhotoMap: Record<string, string> = {
   zohran: zohranPhoto,
   dorcey: dorceyPhoto,
   jennifer: jenniferPhoto,
+  apsingh: apsinghPhoto,
+  nazmul: nazmulPhoto,
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
