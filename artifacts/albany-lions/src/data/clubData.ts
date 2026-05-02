@@ -415,7 +415,7 @@ export const dignitaries = [
     name: "A.P. Singh",
     title: "International President, Lions Clubs International",
     message: "Your contributions embody our global mission of 'We Serve' and inspire others to lead with compassion and purpose.",
-    fullMessage: null,
+    fullMessage: "It is my great pleasure to extend warm congratulations to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nYour commitment to service, leadership, and community impact reflects the enduring values of Lions Clubs International. Through your dedication and collective efforts, you continue to make a meaningful difference in the lives of those you serve while strengthening the spirit of volunteerism in your community.\n\nI commend the leadership and members of the Club for their passion, teamwork, and unwavering focus on service. Your contributions embody our global mission of \"We Serve\" and inspire others to lead with compassion and purpose.\n\nAs you begin this new term of leadership, I wish you a successful Installation Ceremony and continued growth, unity, and success in all your service initiatives.",
     photo: "apsingh",
   },
   {
