@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { officers, directors, executiveMembers } from "@/data/clubData";
 import { Badge } from "@/components/ui/badge";
 import { Info, Phone } from "lucide-react";
+import charterPhoto from "@assets/IMG_2594_1777764422490.jpeg";
 
 // ── Member photos ────────────────────────────────────────────
 import photoAbdusSalam from "@assets/Abdus_Salam_1777729404919.jpeg";
@@ -110,6 +111,50 @@ export default function Leadership() {
               Meet the founding leadership team of the Albany Capital Region Lions Club — dedicated professionals united by a passion for service.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Charter Members Executive Committee — Featured Photo */}
+      <section className="py-20 bg-muted/40 border-b border-border">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+              className="lg:w-1/2 shrink-0"
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-secondary/40">
+                <img
+                  src={charterPhoto}
+                  alt="Charter Members Executive Committee — Albany Capital Region Lions Club"
+                  className="w-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/90 to-transparent px-6 py-5">
+                  <p className="text-white font-black text-base leading-tight">Charter Members Executive Committee</p>
+                  <p className="text-secondary text-xs font-semibold mt-0.5">Albany Capital Region Lions Club · District 20-R2, New York, USA</p>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+              className="lg:w-1/2"
+            >
+              <span className="text-secondary font-bold tracking-widest uppercase text-sm">Founding Leaders</span>
+              <h2 className="text-4xl font-black text-primary mt-3 mb-5 leading-tight">
+                Charter Members<br />Executive Committee
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-5 text-lg">
+                These dedicated individuals are the founding members of the Albany Capital Region Lions Club — professionals, educators, community leaders, and visionaries who came together in 2026 to establish a new force for service in the Capital Region.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                As charter members, they have committed to building a club that lives by the Lions motto: <em className="text-primary font-semibold">We Serve.</em> Their leadership and sacrifice in launching this club will be remembered as part of its history for generations to come.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {["Officers", "Directors", "Executive Members"].map((label) => (
+                  <span key={label} className="bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full border border-primary/20">
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
