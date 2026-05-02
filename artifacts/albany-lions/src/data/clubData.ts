@@ -150,7 +150,7 @@ export const events = [
   {
     id: 1,
     title: "Charter Night & Installation Ceremony",
-    date: "April 26, 2026",
+    date: "May 3, 2026",
     time: "Evening",
     location: "Albany, New York",
     description:

@@ -12,6 +12,14 @@ const fadeUp = {
   }),
 };
 
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+function getDayOfWeek(dateStr: string): string | null {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return null;
+  return DAYS[d.getUTCDay()];
+}
+
 const categoryColors: Record<string, string> = {
   "Health": "bg-emerald-100 text-emerald-800 border-emerald-200",
   "Community Service": "bg-blue-100 text-blue-800 border-blue-200",
@@ -65,6 +73,9 @@ export default function Events() {
                   <div className="flex flex-col md:flex-row">
                     {/* Date Sidebar */}
                     <div className="bg-primary text-primary-foreground flex flex-col items-center justify-center p-8 md:w-40 md:min-w-[10rem] shrink-0">
+                      {getDayOfWeek(event.date) && (
+                        <div className="text-secondary/80 font-bold text-xs uppercase tracking-widest mb-1">{getDayOfWeek(event.date)}</div>
+                      )}
                       <div className="text-secondary font-black text-5xl leading-none">{event.date.split(" ")[1]?.replace(",", "")}</div>
                       <div className="text-primary-foreground/80 font-bold text-lg uppercase tracking-wide">{event.date.split(" ")[0]}</div>
                       <div className="text-primary-foreground/60 text-sm mt-1">{event.date.split(" ")[2]}</div>
