@@ -18,6 +18,13 @@ import photoMossaNurunnahar from "@assets/Mossa._Nurunnahar_1777729412561.jpeg";
 import photoNadiraMujumdar from "@assets/Nadira_Mujumdar_1777729412561.jpeg";
 import photoNusratSharmin from "@assets/Nusrat_Sharmin_1777729412562.jpeg";
 import photoQuaziMahtab from "@assets/Quazi_Mahtab_Uddin_1777729412562.jpeg";
+import photoRashtabMahmud from "@assets/Rashtab_Mahmud_1777729510381.jpeg";
+import photoSajedurAkanda from "@assets/Sajedur_Akanda_1777729510381.jpeg";
+import photoShanazMashud from "@assets/Shanaz_Mashud_1777729510381.jpeg";
+import photoTahminaSonia from "@assets/Tahmina_Sharif_Sonia_1777729510381.jpeg";
+import photoTaniaZaman from "@assets/Tania_Zaman_1777729510382.jpeg";
+import photoTofazzalHossain from "@assets/Tofazzal_Hossain_1777729510382.jpeg";
+import photoZakiaNizam from "@assets/Zakia_Nizam_1777729510382.jpeg";
 
 // Map member names to their photos
 const photoMap: Record<string, string> = {
@@ -35,6 +42,13 @@ const photoMap: Record<string, string> = {
   "Nadira Mujumdar": photoNadiraMujumdar,
   "Nusrat Sharmin": photoNusratSharmin,
   "Quazi Mahtab Uddin": photoQuaziMahtab,
+  "Rashtab Mahmud": photoRashtabMahmud,
+  "Sajedur Akanda": photoSajedurAkanda,
+  "Shanaz Mashud": photoShanazMashud,
+  "Tahmina Sharif Sonia": photoTahminaSonia,
+  "Tania Zaman": photoTaniaZaman,
+  "Tofazzal Hossain": photoTofazzalHossain,
+  "Zakia Nizam": photoZakiaNizam,
 };
 
 const fadeUp = {
