@@ -8,9 +8,11 @@ import { Eye, Accessibility, TreePine } from "lucide-react";
 import React from "react";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import zohranPhoto from "@assets/Zohran_Mamdani_1777751125798.jpg";
+import dorceyPhoto from "@assets/Dr._Dorcey_L._Applyrs_1777751283434.jpg";
 
 const dignitaryPhotoMap: Record<string, string> = {
   zohran: zohranPhoto,
+  dorcey: dorceyPhoto,
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {

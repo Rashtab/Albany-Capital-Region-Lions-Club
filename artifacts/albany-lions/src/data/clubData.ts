@@ -401,8 +401,8 @@ export const dignitaries = [
     name: "Dr. Dorcey L. Applyrs",
     title: "Mayor, City of Albany",
     message: "Your continued dedication to humanitarian efforts and local engagement reflects the very best of Albany's spirit, bringing people together to serve, uplift, and create meaningful change.",
-    fullMessage: null,
-    photo: null,
+    fullMessage: "In recognition of your commitment to service and innovation in the City of Albany, I commend the leadership and members of the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nThe Lion's Club has long been a symbol of service, compassion, and community leadership. Your continued dedication to humanitarian efforts and local engagement reflects the very best of Albany's spirit, bringing people together to serve, uplift, and create meaningful change. I applaud your ongoing efforts to address community needs, support those most vulnerable, and inspire the next generation of changemakers. Your work strengthens not only our local community, but also contributes to a broader global mission of service and solidarity.\n\nOn behalf of the City of Albany, I extend my best wishes for your continued success, growth, and impact in all your endeavors.",
+    photo: "dorcey",
   },
   {
     name: "Jennifer Rajkumar",
