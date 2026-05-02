@@ -270,43 +270,51 @@ export default function About() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.93, opacity: 0, y: 16 }}
               transition={{ duration: 0.22 }}
-              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden"
+              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col md:flex-row"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header stripe */}
-              <div className="bg-primary px-7 py-5 flex items-center gap-4">
+              {/* Left — portrait */}
+              <div className="md:w-64 shrink-0 bg-primary flex flex-col items-center justify-center py-10 px-6 relative">
                 {selected.photo && dignitaryPhotoMap[selected.photo] ? (
                   <img
                     src={dignitaryPhotoMap[selected.photo]}
                     alt={selected.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-secondary/60 shrink-0"
+                    className="w-44 h-56 object-cover object-top rounded-xl border-4 border-secondary/50 shadow-lg"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                    <UserCircle2 className="h-9 w-9 text-white/50" />
+                  <div className="w-44 h-56 rounded-xl bg-white/10 flex items-center justify-center">
+                    <UserCircle2 className="h-24 w-24 text-white/30" />
                   </div>
                 )}
-                <div className="flex-1 min-w-0">
-                  <p className="text-white font-black text-lg leading-tight">{selected.name}</p>
-                  <p className="text-secondary text-xs font-semibold mt-0.5 leading-snug">{selected.title}</p>
+                <div className="mt-5 text-center">
+                  <p className="text-white font-black text-base leading-tight">{selected.name}</p>
+                  <p className="text-secondary text-xs font-semibold mt-1 leading-snug">{selected.title}</p>
                 </div>
-                <button
-                  onClick={close}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors shrink-0"
-                  aria-label="Close"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+                {/* Decorative accent */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-secondary/60" />
               </div>
 
-              {/* Body */}
-              <div className="px-7 py-6 max-h-[60vh] overflow-y-auto">
-                <Quote className="h-6 w-6 text-secondary mb-4 opacity-70" />
-                {(selected.fullMessage ?? selected.message).split("\n\n").map((para, pi) => (
-                  <p key={pi} className="text-foreground/80 leading-relaxed italic mb-4 last:mb-0">
-                    {para}
-                  </p>
-                ))}
+              {/* Right — message */}
+              <div className="flex-1 flex flex-col min-h-0">
+                {/* Top bar with close button */}
+                <div className="flex items-center justify-between px-7 py-4 border-b border-border">
+                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Congratulatory Message</span>
+                  <button
+                    onClick={close}
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    aria-label="Close"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="px-7 py-6 overflow-y-auto max-h-[60vh] md:max-h-[70vh]">
+                  <Quote className="h-6 w-6 text-secondary mb-4 opacity-70" />
+                  {(selected.fullMessage ?? selected.message).split("\n\n").map((para, pi) => (
+                    <p key={pi} className="text-foreground/80 leading-relaxed italic mb-4 last:mb-0">
+                      {para}
+                    </p>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </motion.div>
