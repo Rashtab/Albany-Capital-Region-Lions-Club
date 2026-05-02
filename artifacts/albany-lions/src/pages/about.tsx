@@ -13,6 +13,7 @@ import jenniferPhoto from "@assets/Jennifer_Rajkumar_1777751345247.jpg";
 import apsinghPhoto from "@assets/A.P._Singh_int_1777751500469.jpg";
 import nazmulPhoto from "@assets/Lion_Nazmul_Haque__1777751740226.jpg";
 import asefPhoto from "@assets/Asef_Bari_1777751847293.jpg";
+import ninaPhoto from "@assets/image_1777751996212.png";
 
 const dignitaryPhotoMap: Record<string, string> = {
   zohran: zohranPhoto,
@@ -21,6 +22,7 @@ const dignitaryPhotoMap: Record<string, string> = {
   apsingh: apsinghPhoto,
   nazmul: nazmulPhoto,
   asef: asefPhoto,
+  nina: ninaPhoto,
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {

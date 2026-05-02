@@ -432,4 +432,11 @@ export const dignitaries = [
     fullMessage: "I am delighted to extend my warm congratulations to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nYour dedication to service, leadership, and community engagement reflects the core values of Lions Clubs International. The work you do to support those in need and strengthen your local community is truly commendable and continues to make a lasting impact across the Capital Region.\n\nI applaud the commitment of your members and leaders as you continue to advance humanitarian service and build stronger community connections. Your efforts are an important part of our shared mission of \"We Serve.\"\n\nAs you begin this new term, I wish you a successful Installation Ceremony and continued achievement in all your service initiatives.",
     photo: "asef",
   },
+  {
+    name: "Nina L. Smith, PMJF",
+    title: "First Vice District Governor & Elect District Governor 2026–2027, District 20-R2, Lions Clubs International",
+    message: "Your dedication to service, leadership, and community engagement exemplifies the mission and values of Lions Clubs International.",
+    fullMessage: "It is my pleasure to extend warm greetings to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nYour dedication to service, leadership, and community engagement exemplifies the mission and values of Lions Clubs International. I commend the commitment of your members in addressing community needs, fostering unity, and making a meaningful impact in the Capital Region.\n\nThe work you are doing to promote service, compassion, and volunteerism is both inspiring and impactful. Your continued efforts strengthen not only your local community but also contribute to the broader Lions network of service.\n\nAs you embark on this new leadership term, I wish you a successful Installation Ceremony and continued growth and success in all your initiatives.",
+    photo: "nina",
+  },
 ];
