@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Albany Capital Region Lions Club"
+version = "1.0.0"
+id = "artifacts/albany-lions"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19338
+
+[services.development]
+run = "pnpm --filter @workspace/albany-lions run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/albany-lions", "run", "build" ]
+publicDir = "artifacts/albany-lions/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19338"
+BASE_PATH = "/"

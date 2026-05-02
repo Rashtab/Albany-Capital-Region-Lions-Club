@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "-ZlKstf5xwKlyZyX5f1iE"
+uri = "file://artifacts/albany-lions/src/assets/images/gallery-1.png"
+type = "image"
+title = "Lions organizing food donations"
+
+[[generated]]
+id = "Qngypcr3HEnOqEZnsBm-m"
+uri = "file://artifacts/albany-lions/src/assets/images/gallery-2.png"
+type = "image"
+title = "Lions vision screening event"
+
+[[generated]]
+id = "Eb-gFmKh4eiE3-u8QU5fU"
+uri = "file://artifacts/albany-lions/src/assets/images/gallery-3.png"
+type = "image"
+title = "Lions outdoor park cleanup"

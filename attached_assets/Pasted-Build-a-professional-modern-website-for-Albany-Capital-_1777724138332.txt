@@ -1,0 +1,98 @@
+Build a professional, modern website for Albany Capital Region Lions Club using the information from the Lions Club magazine PDF I will upload.
+
+Project goal:
+Create a polished, responsive, community-focused website for Albany Capital Region Lions Club that looks credible, elegant, and ready for public launch.
+
+Important:
+First, read and analyze the uploaded Lions Club magazine PDF. Extract all useful information, including:
+- Club name
+- Mission and values
+- Officers and leadership names
+- Event information
+- Sponsors and advertisers
+- Contact information
+- Donation/payment information
+- Community service themes
+- Any photos, logos, slogans, and branding elements
+
+Website pages to create:
+1. Home
+   - Hero section for Albany Capital Region Lions Club
+   - Mission-focused introduction
+   - Strong call-to-action buttons: Join Us, Donate, Contact Us
+   - Highlight community service, leadership, and local impact
+
+2. About
+   - Explain Lions Club International connection
+   - Describe Albany Capital Region Lions Club
+   - Include club mission, values, and community goals
+
+3. Leadership
+   - Display officers from the magazine PDF
+   - Use professional cards with name, title, and optional photo if available
+
+4. Events
+   - Add upcoming or featured events from the magazine
+   - Include date, time, location, description, and event images if available
+
+5. Sponsors / Magazine
+   - Showcase sponsors and advertisers from the magazine PDF
+   - Create a clean sponsor grid
+   - Include sponsor names, business information, and ad images if extracted
+
+6. Gallery
+   - Use any usable photos from the PDF
+   - Create a responsive image gallery
+
+7. Donate / Support
+   - Add donation and sponsorship information
+   - Include Zelle/check/payment instructions if found in the PDF
+   - Add clear disclaimer: “Please contact the club to confirm current payment instructions before sending funds.”
+
+8. Contact
+   - Contact form layout
+   - Club email
+   - Social media placeholders
+   - Mailing/contact address if found in the PDF
+
+Design requirements:
+- Use Lions Club blue and gold branding
+- Professional nonprofit/community organization style
+- Mobile-first responsive design
+- Clean navigation with hamburger menu on mobile
+- Elegant typography
+- High-quality spacing and layout
+- Accessible color contrast
+- SEO-friendly page titles and metadata
+- Add favicon if logo is available
+- Use reusable components for header, footer, cards, buttons, and sections
+
+Technical requirements:
+- Use React + Vite or Next.js, whichever is best supported in Replit
+- Use clean component structure
+- Store extracted PDF content in a structured JSON/data file
+- Do not hard-code repeated sponsor/event/leadership data directly in components
+- Add comments where future updates should be made
+- Make the website easy for a non-technical person to update later
+
+Assets:
+- Extract images/logos from the uploaded magazine PDF where possible
+- Optimize images for web
+- Do not use blurry or distorted images
+- If some PDF images cannot be extracted cleanly, create professional placeholder sections and clearly mark where images should be replaced
+
+Final output:
+- Fully working website in Replit
+- Include clear instructions in README.md:
+  - how to run the project
+  - how to update club officers
+  - how to update sponsors
+  - how to update events
+  - how to replace images/logos
+  - how to deploy the site
+
+Before coding:
+1. Analyze the uploaded PDF.
+2. Summarize the extracted content.
+3. Propose the website structure.
+4. Then build the website.
