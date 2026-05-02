@@ -33,7 +33,7 @@ export const officers = [
     id: 1,
     name: "Tahmina Sharif Sonia",
     title: "Charter President",
-    bio: "A dedicated homemaker and mother of two, Tahmina holds a Master's in Management and an MBA in Human Resource Management from Empire State University. Inspired by her parents' legacy as Lions, she is committed to community service and humanitarian work. She is preparing to begin her PhD in Organizational and Strategic Leadership.",
+    bio: "Tahmina Sharif Sonia is a dedicated homemaker and mother of two, with a Master's in Management and an MBA in Human Resource Management from Empire State University. She served over four years as General Secretary of OBAC and is preparing to begin her PhD in Organizational and Strategic Leadership. Inspired by her parents' legacy as Lions, she is committed to community service and humanitarian work through the Lions Club.",
     phone: "845.216.5523",
     photo: null,
   },
@@ -41,7 +41,7 @@ export const officers = [
     id: 2,
     name: "Zakia Nizam",
     title: "Vice President",
-    bio: "Zakia Nilufar Nizam is a Special Education Consultant at a state agency, specializing in literacy. She holds master's degrees from Dhaka University and SUNY Albany. Passionate about inclusion and service, she is committed to community impact through volunteerism and is a proud mother of two.",
+    bio: "Zakia Nilufar Nizam is a Special Education Consultant at a state agency, specializing in literacy. She holds master's degrees from Dhaka University and SUNY Albany. Passionate about inclusion and service, she is committed to community impact through volunteerism. She also enjoys practicing and performing Tagore songs and is a proud mother of two.",
     phone: "518.221.4145",
     photo: null,
   },
@@ -49,7 +49,7 @@ export const officers = [
     id: 3,
     name: "Anika Subah Ahmad Upoma",
     title: "General Secretary",
-    bio: "Ed.M. from Harvard (2023), Anika is the Assistant Director at SUNY Albany, a UN Representative, and Youth Advisory member. She is Director of Sustainable Development at the ManUp Campaign and Founder of Evolution360, with deep commitment to youth leadership and global development.",
+    bio: "Anika Subah Ahmad Upoma, Ed.M. (Harvard, 2023) is the Assistant Director at SUNY Albany and serves as a UN Representative and Youth Advisory member. She is the Director of Sustainable Development at the ManUp Campaign and the Founder of Evolution360, with a strong commitment to youth leadership and global development.",
     phone: "617.397.8771",
     photo: null,
   },
@@ -57,7 +57,7 @@ export const officers = [
     id: 4,
     name: "Abdus Salam",
     title: "Treasurer",
-    bio: "A Professional Engineer focused on transportation innovation, Abdus works to reduce carbon emissions and improve public health and safety. He brings a strong background in community service and youth leadership to the Lions Club.",
+    bio: "Abdus Salam is a Professional Engineer focused on transportation innovation, aiming to reduce carbon emissions and improve public health and safety. He has a strong background in community service and youth leadership, actively participating in various organizations and professional development initiatives. He continues his commitment to service as a member of the Lions Club.",
     phone: "646.284.2605",
     photo: null,
   },
@@ -65,7 +65,7 @@ export const officers = [
     id: 5,
     name: "Rashtab Mahmud",
     title: "LCIF Coordinator",
-    bio: "An IT Specialist at NYS ITS, Rashtab builds scalable solutions for state operations. A former Microsoft Student Partner, he serves as National Corresponding Secretary of ASAAL and Technical Editor for Critique and News Albany. He is a founding leader of the club.",
+    bio: "Rashtab Mahmud is an IT Specialist at NYS ITS, focused on building scalable solutions for state operations. A former Microsoft Student Partner and student leader, he is active in civic and cultural initiatives, serving as National Corresponding Secretary of ASAAL and Technical Editor for Critique and News Albany. He is a founding leader and LCIF Coordinator of the Albany Capital Region Lions Club.",
     phone: "929.424.1088",
     photo: null,
   },
@@ -73,7 +73,7 @@ export const officers = [
     id: 6,
     name: "Aditya Shaheen",
     title: "Public Relations Secretary",
-    bio: "A journalist with over three decades of experience in print and electronic media, Aditya served as Chief Researcher and Senior News Editor in the Development Journalism Department of Channel i, one of Bangladesh's leading television networks.",
+    bio: "Aditya Shaheen is a journalist with over three decades of experience in print and electronic media. He served as Chief Researcher and Senior News Editor in the Development Journalism Department of Channel i, one of Bangladesh's leading television networks. His contributions to journalism have earned him national and regional awards, and he has traveled to around 35 countries for professional assignments.",
     phone: "929.586.8404",
     photo: null,
   },
@@ -81,7 +81,7 @@ export const officers = [
     id: 7,
     name: "Nadira Mujumdar",
     title: "Cultural Secretary",
-    bio: "Dedicated to celebrating the cultural richness of our community and bringing members together through arts and cultural programming.",
+    bio: "Nadira Mujumder works with the North Colonie School District and has been dedicated to supporting young children for the past six years. A mother of three, she enjoys spending time with family and friends, singing with her daughter, and going for walks. Passionate about helping others, she is committed to serving her community as a member of Lions Club International, striving to contribute and support those in need.",
     phone: "267.521.6234",
     photo: null,
   },
@@ -89,7 +89,7 @@ export const officers = [
     id: 8,
     name: "Mossa. Nurrunnahar",
     title: "Women Affairs Secretary",
-    bio: "Committed to advocating for and empowering women in the Capital Region community through meaningful Lions Club initiatives and programs.",
+    bio: "Mossa Nurunnahar is a Certified Medical Assistant with over 15 years of experience in healthcare, dedicated to helping others and working closely with people. As a member of Lions Club International, she is committed to giving back through health education and community outreach. A proud mother of three, she enjoys spending time with her family, traveling, and singing.",
     phone: "718.300.1960",
     photo: null,
   },
@@ -97,7 +97,7 @@ export const officers = [
     id: 9,
     name: "Tofazzal Hossain",
     title: "Tail Twister & Director",
-    bio: "Keeping club meetings lively and members engaged while providing strategic direction as a club director.",
+    bio: "Tofazzal Hossain is a Postal operations associate at USPS since 2018, with prior experience as a Lab Information Technician at Albany Medical Center. He previously worked as a Physics Demonstrator in Bangladesh. Passionate about creativity and the outdoors, he enjoys vlogging, cooking, traveling, and fishing. He is also actively involved in community service as a member of the Albany Capital Region Lions Club.",
     phone: "518.253.2439",
     photo: null,
   },
@@ -105,7 +105,7 @@ export const officers = [
     id: 10,
     name: "Marzana Khandoker",
     title: "Health & Wellness Coordinator",
-    bio: "Leading our health and wellness initiatives to promote the well-being of our members and the broader Capital Region community.",
+    bio: "Marzana Khandoker, MSN, RN-BC is a Clinical Informatics Specialist with 13 years of nursing experience. As Lions Club Health and Wellness Coordinator, she promotes digital health literacy to empower community well-being. She enjoys traveling, designing, and peaceful walks.",
     phone: "646.591.6046",
     photo: null,
   },
@@ -113,7 +113,7 @@ export const officers = [
     id: 11,
     name: "Tania Zaman",
     title: "Club Service Executive",
-    bio: "Coordinating and executing our club's service programs to maximize impact across the Albany and Schenectady communities.",
+    bio: "Tania Zaman is a resilient and dedicated professional originally from Bangladesh, where she earned her law degree and represented her country as a national high jump gold medalist. She later built a successful banking career in Chicago and is now a business owner. Tania also works with special education students in the Niskayuna School District, reflecting her passion for community service. She is a proud wife and mother of three daughters.",
     phone: "518.653.8232",
     photo: null,
   },
@@ -123,30 +123,30 @@ export const officers = [
 // DIRECTORS
 // ============================================================
 export const directors = [
-  { id: 1, name: "Quazi Mahtab Uddin", phone: "518.944.6902" },
-  { id: 2, name: "Henry Rashid", phone: "312.774.6859" },
-  { id: 3, name: "Sajedur Akanda", phone: "614.867.2807" },
-  { id: 4, name: "Dewan A Sarowar", phone: "518.610.2426" },
-  { id: 5, name: "Maksudul Hasan Khan", phone: "718.902.1955" },
-  { id: 6, name: "Shanaz Mashud", phone: "518.253.5801" },
+  { id: 1, name: "Quazi Mahtab Uddin", phone: "518.944.6902", bio: "Quazi Mahtab Uddin is a Research Specialist at NY CREATES with over 20 years of experience in the semiconductor industry, including work with IBM and GlobalFoundries. He is also actively involved in volunteer and environmental initiatives, contributing to community support and sustainability efforts through 'Green for Peace' in Bangladesh." },
+  { id: 2, name: "Henry Rashid", phone: "312.774.6859", bio: "Henry Rashid is a seasoned entrepreneur and real estate investor based in Niskayuna, NY, with over 30 years of business experience in Chicago. Originally from Bangladesh, he has lived in the U.S. since 1988. He enjoys fishing, singing, cooking, and spending time with his wife." },
+  { id: 3, name: "Sajedur Akanda", phone: "614.867.2807", bio: "Sajedur Akanda is a Research Scientist at GE Aerospace Research with a PhD in Mechanical Engineering from The Ohio State University. He enjoys traveling with his family, reading, and watching sports, and is passionate about contributing to the community through service with the Lions Club." },
+  { id: 4, name: "Dewan A Sarowar", phone: "518.610.2426", bio: "Dewan Sarowar is a longtime community leader, serving as a Council Member for the City of Hudson for eight years. He is also the Communication Secretary of Hudson Islamic Center Masjid and a Shipping Manager at HAVE INC for over 22 years. He lives in Hudson with his family and enjoys traveling, cooking, and serving his community." },
+  { id: 5, name: "Maksudul Hasan Khan", phone: "718.902.1955", bio: "Maksudul Khan is an experienced IT professional and project leader with nearly two decades of service, including roles at Northwell Health and New York State, where he currently works as a Change Manager at NYS ITS. A PMI-certified Project Manager with a background in Computer Science and Engineering, he is passionate about leadership and community building." },
+  { id: 6, name: "Shanaz Mashud", phone: "518.253.5801", bio: "Shanaz Mashud is a devoted homemaker and mother of three, committed to nurturing her family and supporting her husband's business. She enjoys meaningful conversations, spending time with loved ones, and the simple joys of life. Passionate about helping others, she is eager to contribute to society through the Lions Club." },
 ];
 
 // ============================================================
 // EXECUTIVE MEMBERS
 // ============================================================
 export const executiveMembers = [
-  { id: 1, name: "Moshfaq Ahmed Asif", phone: "518.788.8921" },
-  { id: 2, name: "Nusrat Sharmin", phone: "334.552.0344" },
-  { id: 3, name: "Laila Khaleda", phone: "929.543.9857" },
-  { id: 4, name: "Montasina Haider", phone: "718.902.1944" },
+  { id: 1, name: "Moshfaq Ahmed Asif", phone: "518.788.8921", bio: "Moshfaq Ahmed is a licensed Professional Engineer in the State of New York and serves as a Squad Leader in the Bridge Design Bureau of the New York State Department of Transportation. He is a socially engaged individual who values connection, collaboration, and supporting others. Passionate about making a positive impact, he finds fulfillment in contributing to the well-being of the community and society at large." },
+  { id: 2, name: "Nusrat Sharmin", phone: "334.552.0344", bio: "Nusrat Sharmin is an architect at Jacobs Engineering with a Master's degree in Urban Planning. She enjoys gardening, cooking, and spending time with her two sons. Passionate about community service, she looks forward to contributing through the Lions Club and connecting with others who share a commitment to making a difference." },
+  { id: 3, name: "Laila Khaleda", phone: "929.543.9857", bio: "Laila Khaleda is an independent journalist and editor with over two decades of experience, and a longtime human rights and development activist. She holds Masters degrees in Political Science and Law and has held leadership roles in Bangladesh Mahila Parishad." },
+  { id: 4, name: "Montasina Haider", phone: "718.902.1944", bio: "Montasina Haidar is a Project Manager and Facility Planner with over 10 years of experience in New York State projects. A PMP-certified professional and Mechanical Engineering graduate, she is committed to community service. She enjoys spending time with her family and staying connected through meaningful work and service." },
 ];
 
 // ============================================================
 // NEW MEMBERS
 // ============================================================
 export const newMembers = [
-  { id: 1, name: "Farhana Islam", phone: "" },
-  { id: 2, name: "Nasima Akter Nisha", phone: "" },
+  { id: 1, name: "Farhana Islam", phone: "", bio: "Farhana Islam works as a STEA with the North Colonie School District, where she provides essential classroom support and values the importance of patience and service. Outside of work, she enjoys participating in community activities and staying engaged with those around her. She is passionate about giving back and aims to be a supportive voice in her community. Through the Lions Club, she looks forward to contributing to a brighter future for youth and families through dedicated service." },
+  { id: 2, name: "Nasima Akter Nisha", phone: "", bio: "Nasima Akter Nisha is a prominent leader in e-commerce and women's empowerment in Bangladesh, serving as President of Women and E-Commerce (WE) and Managing Director of Reverie Corporation Ltd. She has played a key role in building one of the largest digital platforms for women entrepreneurs, empowering over a million members through training, networking, and business development initiatives. Through her leadership, she has significantly advanced women's participation in the digital economy and continues to inspire entrepreneurship both nationally and globally." },
 ];
 
 // ============================================================
