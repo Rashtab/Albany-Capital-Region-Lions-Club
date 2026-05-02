@@ -1,6 +1,18 @@
 import { motion } from "framer-motion";
 import { Camera, Calendar, FolderOpen, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import bangladeshPhoto1 from "@assets/654920156_27236604242596283_4619469104950022459_n_1777737014658.jpg";
+import bangladeshPhoto2 from "@assets/655647114_27236602609263113_4884393155647146208_n_1777737014659.jpg";
+import bangladeshPhoto3 from "@assets/655921593_27236601795929861_2995428896969278720_n_1777737014659.jpg";
+import bangladeshPhoto4 from "@assets/656439556_27236603982596309_2283481694874313580_n_1777737014659.jpg";
+import bangladeshPhoto5 from "@assets/656977872_27236604639262910_4883503647491506412_n_1777737014659.jpg";
+import bangladeshPhoto6 from "@assets/657518596_27236602432596464_3393425326490924330_n_1777737014660.jpg";
+import bangladeshPhoto7 from "@assets/657677275_27236602002596507_5436907802804670794_n_1777737014660.jpg";
+import bangladeshPhoto8 from "@assets/DSC_0027_1777737014660.jpg";
+import bangladeshPhoto9 from "@assets/DSC_0035_1777737014661.jpg";
+import bangladeshPhoto10 from "@assets/DSC_0036_1777737014661.jpg";
+import bangladeshPhoto11 from "@assets/DSC_0061_1777737014661.jpg";
+import bangladeshPhoto12 from "@assets/IMG_0176~photo_1777737014661.JPG";
 import springPhoto1 from "@assets/657170638_27329824959940877_7160008379873549711_n_1777736796621.jpg";
 import springPhoto15 from "@assets/660532668_27329815713275135_8307670286658515926_n_1777736906026.jpg";
 import springPhoto16 from "@assets/660970208_27329815199941853_5232342538291491060_n_1777736906026.jpg";
@@ -140,7 +152,20 @@ const albums = [
     date: "March 24, 2026",
     category: "Cultural",
     description: "Celebrating Bangladesh Independence Day at the Albany State Capitol — a proud moment for our community.",
-    photos: [],
+    photos: [
+      { src: bangladeshPhoto12, caption: "56th Bangladesh Independence Day Celebration in Albany — March 24, 2026" },
+      { src: bangladeshPhoto8, caption: "Community delegation at the Albany State Capitol staircase" },
+      { src: bangladeshPhoto3, caption: "56th Bangladesh Independence Day — Albany Capitol" },
+      { src: bangladeshPhoto9, caption: "Bangladesh Day delegation at the Capitol entrance" },
+      { src: bangladeshPhoto10, caption: "Community members at the Albany State Capitol" },
+      { src: bangladeshPhoto4, caption: "Albany Lions members on the NY Senate floor" },
+      { src: bangladeshPhoto1, caption: "President Sonia Mahtab at the Capitol ceremony" },
+      { src: bangladeshPhoto11, caption: "Bangladesh Day delegation in the Capitol gallery" },
+      { src: bangladeshPhoto2, caption: "Albany Lions officers with community leaders — Bangladesh Day" },
+      { src: bangladeshPhoto5, caption: "Albany Lions members at the Bangladesh Day celebration" },
+      { src: bangladeshPhoto6, caption: "With elected officials at the Albany State Capitol" },
+      { src: bangladeshPhoto7, caption: "Albany Lions members at the 56th Bangladesh Independence Day" },
+    ],
   },
   {
     id: 6,
