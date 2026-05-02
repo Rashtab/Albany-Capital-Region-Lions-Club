@@ -14,6 +14,7 @@ import Sponsors from "@/pages/sponsors";
 import Gallery from "@/pages/gallery";
 import Donate from "@/pages/donate";
 import Contact from "@/pages/contact";
+import MagazineAdvertisers from "@/pages/magazine-advertisers";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/gallery" component={Gallery} />
         <Route path="/donate" component={Donate} />
         <Route path="/contact" component={Contact} />
+        <Route path="/sponsors/magazine-advertisers-2026" component={MagazineAdvertisers} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

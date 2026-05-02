@@ -165,7 +165,7 @@ export default function Sponsors() {
               Advertise in our club magazine and reach engaged community members, Lions families, and local civic leaders.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {magazineAds.map((ad, i) => (
               <motion.div key={i} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                 className="bg-card border border-card-border rounded-xl p-8 text-center hover:shadow-md hover:border-primary/30 transition-all" data-testid={`ad-type-${i}`}
@@ -177,6 +177,13 @@ export default function Sponsors() {
               </motion.div>
             ))}
           </div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3} className="text-center">
+            <Link href="/sponsors/magazine-advertisers-2026">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8" data-testid="view-magazine-advertisers">
+                View Magazine Advertisers 2026 <ChevronRight className="ml-1 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
