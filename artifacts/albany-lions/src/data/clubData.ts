@@ -439,4 +439,11 @@ export const dignitaries = [
     fullMessage: "It is my pleasure to extend warm greetings to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.\n\nYour dedication to service, leadership, and community engagement exemplifies the mission and values of Lions Clubs International. I commend the commitment of your members in addressing community needs, fostering unity, and making a meaningful impact in the Capital Region.\n\nThe work you are doing to promote service, compassion, and volunteerism is both inspiring and impactful. Your continued efforts strengthen not only your local community but also contribute to the broader Lions network of service.\n\nAs you embark on this new leadership term, I wish you a successful Installation Ceremony and continued growth and success in all your initiatives.",
     photo: "nina",
   },
+  {
+    name: "Shah Nawaz, PMJF",
+    title: "2nd Vice District Governor & Elect 1st Vice Governor 2026–2027, District 20-R2, Lions Clubs International",
+    message: "Your continued commitment to service, leadership, and community support reflects the true spirit of Lions Clubs International.",
+    fullMessage: "I am pleased to extend my heartfelt greetings to the Albany Capital Region Lions Club on your Installation Ceremony.\n\nYour continued commitment to service, leadership, and community support reflects the true spirit of Lions Clubs International. The dedication shown by your members in serving those in need and strengthening community bonds is truly commendable.\n\nI appreciate the efforts of the Club in advancing meaningful service initiatives and upholding the values of compassion, integrity, and volunteerism. Your work continues to make a positive difference in the Capital Region and beyond.\n\nAs you begin this new chapter of leadership, I wish you a successful Installation Ceremony and continued success in all your endeavors.",
+    photo: null,
+  },
 ];
