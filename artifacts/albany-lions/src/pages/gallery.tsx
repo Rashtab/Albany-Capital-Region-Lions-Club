@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { Camera, Calendar, FolderOpen, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import iftarPhoto1 from "@assets/647084174_27055032814086761_5907395881288517276_n_1777736424850.jpg";
+import iftarPhoto2 from "@assets/648101133_27055032100753499_8094953426604179726_n_1777736424851.jpg";
+import iftarPhoto3 from "@assets/649531670_27055033367420039_3542110652252670645_n_1777736424851.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -41,7 +44,11 @@ const albums = [
     date: "March 7, 2026",
     category: "Community",
     description: "A warm Iftar gathering bringing our Lions family and community together during Ramadan.",
-    photos: [],
+    photos: [
+      { src: iftarPhoto1, caption: "Lions members at Iftar gathering" },
+      { src: iftarPhoto2, caption: "Iftar Get Together — March 7, 2026" },
+      { src: iftarPhoto3, caption: "Club members celebrating Iftar together" },
+    ],
   },
   {
     id: 4,
