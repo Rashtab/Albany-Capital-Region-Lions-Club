@@ -4,7 +4,7 @@ import { Eye, Users, Heart, Globe, Accessibility, TreePine, ChevronRight, Calend
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { clubInfo, events, serviceAreas, dignitaries, sponsorshipTiers } from "@/data/clubData";
-import heroBanner from "@assets/ChatGPT_Image_Apr_26,_2026,_09_14_12_PM_1777727127815.png";
+import heroBanner from "@assets/banner_without_text_1777739378649.png";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -32,8 +32,8 @@ export default function Home() {
           alt="Albany Capital Region Lions Club"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-primary/75" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/20 to-background" />
+        <div className="absolute inset-0 bg-primary/45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-background/80" />
 
         <div className="relative z-10 container mx-auto px-4 text-center text-primary-foreground">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
