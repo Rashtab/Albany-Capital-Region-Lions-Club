@@ -54,13 +54,29 @@ export default function Contact() {
     },
   });
 
-  function onSubmit(data: ContactForm) {
-    console.log("Contact form submitted:", data);
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for reaching out. A Lions Club representative will be in touch soon.",
-    });
-    form.reset();
+  async function onSubmit(data: ContactForm) {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({})) as { error?: string };
+        throw new Error(body.error ?? "Server error");
+      }
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. A Lions Club representative will be in touch soon.",
+      });
+      form.reset();
+    } catch (err) {
+      toast({
+        title: "Failed to Send",
+        description: err instanceof Error ? err.message : "Something went wrong. Please try again or email us directly.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
