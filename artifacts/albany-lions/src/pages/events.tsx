@@ -15,6 +15,7 @@ const fadeUp = {
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 function getDayOfWeek(dateStr: string): string | null {
+  if (dateStr.startsWith("TBD")) return null;
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return null;
   return DAYS[d.getUTCDay()];
