@@ -182,7 +182,17 @@ const albums = [
     date: "March 27, 2026",
     category: "Community",
     description: "Eid celebrations with our Lions family — food, joy, and community spirit.",
-    photos: [],
+    photos: [
+      { src: eidPhoto8, caption: "Albany Capital Region Lions Club members at the Eid Get Together — March 27, 2026" },
+      { src: eidPhoto2, caption: "Club members with the Lions Club charter at the Eid celebration" },
+      { src: eidPhoto4, caption: "Lions members with the club charter — Eid Mubarak gathering" },
+      { src: eidPhoto9, caption: "Ladies of the Albany Lions Club at the Eid Get Together" },
+      { src: eidPhoto7, caption: "President Sonia Mahtab displaying the Lions Club International Charter" },
+      { src: eidPhoto5, caption: "Lions members with club materials at the Eid gathering" },
+      { src: eidPhoto1, caption: "Lady members of Albany Lions Club at the festive Eid table" },
+      { src: eidPhoto3, caption: "Celebrating Eid with a beautifully decorated table — Lions family gathering" },
+      { src: eidPhoto6, caption: "Lady Lions members at the Eid Mubarak celebration" },
+    ],
   },
 ];
 
