@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Download, ExternalLink, ChevronLeft, ChevronRight, Loader2, BookMarked } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BookOpen, ChevronLeft, ChevronRight, Loader2, BookMarked } from "lucide-react";
 import { apiFetch } from "@/lib/auth";
+import { FlipbookViewer } from "@/components/FlipbookViewer";
 
 interface Magazine {
   id: number;
@@ -104,35 +104,8 @@ export default function MagazinePage() {
           <main className="flex-1 flex flex-col bg-muted/10 min-w-0">
             {selected && pdfUrl ? (
               <>
-                {/* Toolbar */}
-                <div className="bg-card border-b border-border px-4 md:px-6 py-3 flex items-center justify-between gap-3 flex-wrap">
-                  <div className="min-w-0">
-                    <h2 className="font-black text-primary text-base md:text-lg leading-tight truncate">{selected.title}</h2>
-                    <p className="text-xs text-muted-foreground">{selected.year} Edition{selected.isCurrent ? " · Current Issue" : ""}</p>
-                  </div>
-                  <div className="flex gap-2 shrink-0">
-                    <a href={pdfUrl} download>
-                      <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                        <Download className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Download</span>
-                      </Button>
-                    </a>
-                    <a href={pdfUrl} target="_blank" rel="noreferrer">
-                      <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                        <ExternalLink className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Open in New Tab</span>
-                      </Button>
-                    </a>
-                  </div>
-                </div>
-                {/* PDF Embed — tall enough for a full letter-size page at 100% zoom */}
-                <div className="flex-1 relative" style={{ minHeight: "calc(100vh - 160px)" }}>
-                  <iframe
-                    key={pdfUrl}
-                    src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH&zoom=100`}
-                    className="w-full border-0 absolute inset-0 h-full"
-                    style={{ minHeight: "calc(100vh - 160px)" }}
-                    title={selected.title}
-                  />
-                </div>
+                {/* Flipbook viewer (has its own toolbar) */}
+                <FlipbookViewer pdfUrl={pdfUrl} title={selected.title} />
                 {/* Description */}
                 {selected.description && (
                   <div className="px-4 md:px-6 py-4 bg-card border-t border-border">
