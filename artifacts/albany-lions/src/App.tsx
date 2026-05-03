@@ -15,10 +15,23 @@ import Gallery from "@/pages/gallery";
 import Donate from "@/pages/donate";
 import Contact from "@/pages/contact";
 import MagazineAdvertisers from "@/pages/magazine-advertisers";
+import Blog from "@/pages/blog";
+import BlogPost from "@/pages/blog-post";
+import CalendarPage from "@/pages/calendar";
+import MagazinePage from "@/pages/magazine";
+
+// Admin Pages (no Layout wrapper)
+import AdminLogin from "@/pages/admin/login";
+import AdminSetup from "@/pages/admin/setup";
+import AdminDashboard from "@/pages/admin/index";
+import AdminBlog from "@/pages/admin/blog";
+import AdminEvents from "@/pages/admin/events";
+import AdminMagazine from "@/pages/admin/magazine";
+import AdminGallery from "@/pages/admin/gallery";
 
 const queryClient = new QueryClient();
 
-function Router() {
+function PublicRouter() {
   return (
     <Layout>
       <Switch>
@@ -26,6 +39,10 @@ function Router() {
         <Route path="/about" component={About} />
         <Route path="/leadership" component={Leadership} />
         <Route path="/events" component={Events} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:slug" component={BlogPost} />
+        <Route path="/calendar" component={CalendarPage} />
+        <Route path="/magazine" component={MagazinePage} />
         <Route path="/sponsors" component={Sponsors} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/donate" component={Donate} />
@@ -42,7 +59,18 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
+          <Switch>
+            {/* Admin routes — no Layout */}
+            <Route path="/admin/login" component={AdminLogin} />
+            <Route path="/admin/setup" component={AdminSetup} />
+            <Route path="/admin/blog" component={AdminBlog} />
+            <Route path="/admin/events" component={AdminEvents} />
+            <Route path="/admin/magazine" component={AdminMagazine} />
+            <Route path="/admin/gallery" component={AdminGallery} />
+            <Route path="/admin" component={AdminDashboard} />
+            {/* Public routes */}
+            <Route component={PublicRouter} />
+          </Switch>
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

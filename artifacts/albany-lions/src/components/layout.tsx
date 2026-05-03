@@ -10,7 +10,9 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Leadership", href: "/leadership" },
-  { name: "Events", href: "/events" },
+  { name: "Blog", href: "/blog" },
+  { name: "Calendar", href: "/calendar" },
+  { name: "Magazine", href: "/magazine" },
   { name: "Sponsors", href: "/sponsors" },
   { name: "Gallery", href: "/gallery" },
   { name: "Donate", href: "/donate" },
@@ -196,7 +198,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-foreground/60">
             <p>&copy; {new Date().getFullYear()} {clubInfo.name}. All rights reserved.</p>
-            <p>Lions Clubs International — District 20-R2, New York</p>
+            <div className="flex items-center gap-4">
+              <p>Lions Clubs International — District 20-R2, New York</p>
+              <Link href="/admin/login" className="hover:text-primary-foreground/80 transition-colors">Admin</Link>
+            </div>
           </div>
         </div>
       </footer>
