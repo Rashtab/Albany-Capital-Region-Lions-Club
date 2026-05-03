@@ -43,6 +43,7 @@ export const calendarEvents = pgTable("calendar_events", {
   location: text("location"),
   category: text("category").default("General"),
   registrationLink: text("registration_link"),
+  posterUrl: text("poster_url"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 export const insertCalendarEventSchema = createInsertSchema(calendarEvents).omit({ id: true, createdAt: true });

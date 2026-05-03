@@ -7,8 +7,6 @@ import calendarRouter from "./calendar.js";
 import magazinesRouter from "./magazines.js";
 import galleryRouter from "./gallery.js";
 import uploadRouter from "./upload.js";
-import seedRouter from "./seed.js";
-
 const router: IRouter = Router();
 
 router.use(healthRouter);
@@ -19,6 +17,5 @@ router.use(calendarRouter);
 router.use(magazinesRouter);
 router.use(galleryRouter);
 router.use(uploadRouter);
-router.use(seedRouter);
 
 export default router;

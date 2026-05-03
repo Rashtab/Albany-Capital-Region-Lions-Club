@@ -20,6 +20,7 @@ interface CalEvent {
   location: string | null;
   category: string | null;
   registrationLink: string | null;
+  posterUrl: string | null;
 }
 
 /* ── helpers ────────────────────────────────────────────────── */
@@ -50,14 +51,6 @@ function formatDate(dateStr: string) {
     year:      format(d, "yyyy"),
     full:      format(d, "MMMM d, yyyy"),
   };
-}
-
-function posterFor(event: CalEvent): string | null {
-  const t = event.title.toLowerCase();
-  if (t.includes("charter night") || t.includes("installation")) {
-    return "/uploads/images/charter-night-poster.png";
-  }
-  return null;
 }
 
 function rsvpIsEmail(link: string) {
@@ -94,7 +87,7 @@ function EventModal({
   }, [current, go, onClose]);
 
   const event  = events[current];
-  const poster = posterFor(event);
+  const poster = event.posterUrl ?? null;
   const dates  = formatDate(event.eventDate);
   const cat    = event.category ?? "General";
 
@@ -325,11 +318,7 @@ export default function Events() {
   const upcoming = events.filter((e) => parseISO(e.eventDate) >= today);
   const past     = events.filter((e) => parseISO(e.eventDate) < today);
 
-  const nextEvent    = upcoming[0] ?? null;
-  const isCharterNext =
-    !!nextEvent &&
-    (nextEvent.title.toLowerCase().includes("charter night") ||
-     nextEvent.title.toLowerCase().includes("installation"));
+  const nextEvent = upcoming[0] ?? null;
 
   /* index of a given event inside the FULL events array (for the modal) */
   const globalIndex = (ev: CalEvent) => events.findIndex((e) => e.id === ev.id);
@@ -388,15 +377,14 @@ export default function Events() {
                   >
                     <div className="flex flex-col lg:flex-row">
                       {/* Poster */}
-                      {isCharterNext && (
+                      {nextEvent.posterUrl && (
                         <div className="lg:w-72 xl:w-80 shrink-0 relative overflow-hidden">
                           <img
-                            src="/uploads/images/charter-night-poster.png"
-                            alt="Charter Night & Installation Ceremony"
+                            src={nextEvent.posterUrl}
+                            alt={nextEvent.title}
                             className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                             style={{ maxHeight: 460 }}
                           />
-                          {/* zoom hint */}
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
                             <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
                               <ZoomIn className="h-6 w-6 text-primary" />
