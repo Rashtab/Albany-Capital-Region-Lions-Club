@@ -68,8 +68,8 @@ export default function MagazinePage() {
         </div>
       ) : (
         <div className="flex flex-col lg:flex-row flex-1">
-          {/* Sidebar — magazine list */}
-          <aside className="lg:w-72 shrink-0 bg-muted/30 border-r border-border py-8 px-4">
+          {/* Sidebar — magazine list (hidden on mobile, shown via prev/next) */}
+          <aside className="hidden lg:block lg:w-72 shrink-0 bg-muted/30 border-r border-border py-8 px-4">
             <h2 className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-4 px-2">All Issues</h2>
             <div className="space-y-2">
               {magazines.map((mag, i) => (
@@ -101,46 +101,47 @@ export default function MagazinePage() {
           </aside>
 
           {/* Main — PDF reader */}
-          <main className="flex-1 flex flex-col bg-muted/10">
+          <main className="flex-1 flex flex-col bg-muted/10 min-w-0">
             {selected && pdfUrl ? (
               <>
                 {/* Toolbar */}
-                <div className="bg-card border-b border-border px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
-                  <div>
-                    <h2 className="font-black text-primary text-lg leading-tight">{selected.title}</h2>
+                <div className="bg-card border-b border-border px-4 md:px-6 py-3 flex items-center justify-between gap-3 flex-wrap">
+                  <div className="min-w-0">
+                    <h2 className="font-black text-primary text-base md:text-lg leading-tight truncate">{selected.title}</h2>
                     <p className="text-xs text-muted-foreground">{selected.year} Edition{selected.isCurrent ? " · Current Issue" : ""}</p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 shrink-0">
                     <a href={pdfUrl} download>
                       <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                        <Download className="h-3.5 w-3.5" /> Download
+                        <Download className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Download</span>
                       </Button>
                     </a>
                     <a href={pdfUrl} target="_blank" rel="noreferrer">
                       <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                        <ExternalLink className="h-3.5 w-3.5" /> Open in New Tab
+                        <ExternalLink className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Open in New Tab</span>
                       </Button>
                     </a>
                   </div>
                 </div>
-                {/* PDF Embed */}
-                <div className="flex-1 relative">
+                {/* PDF Embed — tall enough for a full letter-size page at 100% zoom */}
+                <div className="flex-1 relative" style={{ minHeight: "calc(100vh - 160px)" }}>
                   <iframe
                     key={pdfUrl}
-                    src={`${pdfUrl}#toolbar=1&navpanes=0&view=FitH`}
-                    className="w-full h-full min-h-[75vh] border-0"
+                    src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH&zoom=100`}
+                    className="w-full border-0 absolute inset-0 h-full"
+                    style={{ minHeight: "calc(100vh - 160px)" }}
                     title={selected.title}
                   />
                 </div>
                 {/* Description */}
                 {selected.description && (
-                  <div className="px-6 py-4 bg-card border-t border-border">
+                  <div className="px-4 md:px-6 py-4 bg-card border-t border-border">
                     <p className="text-sm text-muted-foreground">{selected.description}</p>
                   </div>
                 )}
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-muted-foreground">
+              <div className="flex-1 flex items-center justify-center text-muted-foreground py-24">
                 <p>Select a magazine to read</p>
               </div>
             )}
@@ -148,30 +149,50 @@ export default function MagazinePage() {
         </div>
       )}
 
-      {/* Prev / Next navigation on small screens */}
-      {magazines.length > 1 && selected && (
-        <div className="lg:hidden flex border-t border-border bg-card">
-          <button
-            onClick={() => {
-              const idx = magazines.findIndex((m) => m.id === selected.id);
-              if (idx > 0) setSelected(magazines[idx - 1]);
-            }}
-            disabled={magazines.findIndex((m) => m.id === selected.id) === 0}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold text-muted-foreground hover:text-primary disabled:opacity-40 transition-colors"
-          >
-            <ChevronLeft className="h-4 w-4" /> Previous
-          </button>
-          <div className="w-px bg-border" />
-          <button
-            onClick={() => {
-              const idx = magazines.findIndex((m) => m.id === selected.id);
-              if (idx < magazines.length - 1) setSelected(magazines[idx + 1]);
-            }}
-            disabled={magazines.findIndex((m) => m.id === selected.id) === magazines.length - 1}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold text-muted-foreground hover:text-primary disabled:opacity-40 transition-colors"
-          >
-            Next <ChevronRight className="h-4 w-4" />
-          </button>
+      {/* Mobile — issue picker (replaces sidebar) */}
+      {magazines.length > 0 && selected && (
+        <div className="lg:hidden border-t border-border bg-card">
+          {/* Issue selector dropdown row */}
+          <div className="px-4 py-2 flex items-center gap-2 border-b border-border">
+            <BookMarked className="h-4 w-4 text-primary shrink-0" />
+            <select
+              className="flex-1 text-sm font-medium bg-transparent outline-none text-foreground"
+              value={selected.id}
+              onChange={(e) => {
+                const mag = magazines.find((m) => m.id === Number(e.target.value));
+                if (mag) setSelected(mag);
+              }}
+            >
+              {magazines.map((m) => (
+                <option key={m.id} value={m.id}>{m.title} ({m.year})</option>
+              ))}
+            </select>
+          </div>
+          {magazines.length > 1 && (
+            <div className="flex">
+              <button
+                onClick={() => {
+                  const idx = magazines.findIndex((m) => m.id === selected.id);
+                  if (idx > 0) setSelected(magazines[idx - 1]);
+                }}
+                disabled={magazines.findIndex((m) => m.id === selected.id) === 0}
+                className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold text-muted-foreground hover:text-primary disabled:opacity-40 transition-colors"
+              >
+                <ChevronLeft className="h-4 w-4" /> Previous
+              </button>
+              <div className="w-px bg-border" />
+              <button
+                onClick={() => {
+                  const idx = magazines.findIndex((m) => m.id === selected.id);
+                  if (idx < magazines.length - 1) setSelected(magazines[idx + 1]);
+                }}
+                disabled={magazines.findIndex((m) => m.id === selected.id) === magazines.length - 1}
+                className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold text-muted-foreground hover:text-primary disabled:opacity-40 transition-colors"
+              >
+                Next <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

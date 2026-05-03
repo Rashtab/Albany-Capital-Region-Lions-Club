@@ -1,10 +1,11 @@
 import { Link, useLocation } from "wouter";
-import { Menu, Globe, ChevronRight, Phone, Mail, MapPin } from "lucide-react";
+import { Menu, Globe, ChevronRight, Phone, Mail, MapPin, ArrowUp, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { clubInfo } from "@/data/clubData";
 import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
+import { useState, useEffect } from "react";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -21,6 +22,13 @@ const navLinks = [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const [showTop, setShowTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -113,6 +121,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
+      {/* Back to Top */}
+      {showTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 right-6 z-50 bg-secondary text-secondary-foreground shadow-lg rounded-full p-3 hover:bg-secondary/90 hover:scale-110 transition-all"
+          aria-label="Back to top"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
+
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground border-t-4 border-secondary pt-16 pb-8">
         <div className="container mx-auto px-4">
@@ -200,7 +219,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <p>&copy; {new Date().getFullYear()} {clubInfo.name}. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <p>Lions Clubs International — District 20-R2, New York</p>
-              <Link href="/admin/login" className="hover:text-primary-foreground/80 transition-colors">Admin</Link>
+              <a href="/admin/login" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground/80 transition-colors" aria-label="Admin portal" title="Admin Portal">
+                <UserCircle2 className="h-5 w-5" />
+              </a>
             </div>
           </div>
         </div>

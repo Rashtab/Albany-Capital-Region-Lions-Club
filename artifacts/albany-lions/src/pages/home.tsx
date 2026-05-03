@@ -66,7 +66,7 @@ export default function Home() {
             <img
               src={clubLogo}
               alt="Club Logo"
-              className="w-20 h-20 rounded-full object-cover border-4 border-secondary/60 mx-auto mb-4 shadow-2xl"
+              className="w-40 h-40 rounded-full object-cover border-4 border-secondary/60 mx-auto mb-4 shadow-2xl"
             />
           </motion.div>
 
