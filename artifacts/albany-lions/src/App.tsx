@@ -28,6 +28,7 @@ import AdminBlog from "@/pages/admin/blog";
 import AdminEvents from "@/pages/admin/events";
 import AdminMagazine from "@/pages/admin/magazine";
 import AdminGallery from "@/pages/admin/gallery";
+import AdminProfile from "@/pages/admin/profile";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ function App() {
             <Route path="/admin/events" component={AdminEvents} />
             <Route path="/admin/magazine" component={AdminMagazine} />
             <Route path="/admin/gallery" component={AdminGallery} />
+            <Route path="/admin/profile" component={AdminProfile} />
             <Route path="/admin" component={AdminDashboard} />
             {/* Public routes */}
             <Route component={PublicRouter} />

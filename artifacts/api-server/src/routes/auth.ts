@@ -4,6 +4,7 @@ import { db, adminUsers } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { signToken, verifyToken } from "../lib/auth.js";
 import { logger } from "../lib/logger.js";
+import { requireAdmin } from "../middlewares/requireAdmin.js";
 
 const router = Router();
 
@@ -68,6 +69,62 @@ router.get("/auth/me", (req, res) => {
     res.json({ user: payload });
   } catch {
     res.status(401).json({ error: "Invalid token" });
+  }
+});
+
+// PUT /api/auth/profile — update name, email, and/or password (admin only)
+router.put("/auth/profile", requireAdmin, async (req, res) => {
+  try {
+    const { id } = (req as Request & { admin: { id: number } }).admin;
+    const { name, email, currentPassword, newPassword } = req.body as {
+      name?: string; email?: string; currentPassword?: string; newPassword?: string;
+    };
+
+    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.id, id)).limit(1);
+    if (!user) { res.status(404).json({ error: "User not found" }); return; }
+
+    const updates: Partial<{ name: string; email: string; passwordHash: string }> = {};
+
+    if (name && name.trim()) updates.name = name.trim();
+
+    if (email && email.trim() && email.trim() !== user.email) {
+      const [existing] = await db.select().from(adminUsers).where(eq(adminUsers.email, email.trim())).limit(1);
+      if (existing && existing.id !== id) {
+        res.status(409).json({ error: "That email is already in use" });
+        return;
+      }
+      updates.email = email.trim();
+    }
+
+    if (newPassword) {
+      if (!currentPassword) {
+        res.status(400).json({ error: "Current password is required to set a new password" });
+        return;
+      }
+      const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+      if (!valid) {
+        res.status(401).json({ error: "Current password is incorrect" });
+        return;
+      }
+      if (newPassword.length < 8) {
+        res.status(400).json({ error: "New password must be at least 8 characters" });
+        return;
+      }
+      updates.passwordHash = await bcrypt.hash(newPassword, 12);
+    }
+
+    if (Object.keys(updates).length === 0) {
+      res.status(400).json({ error: "Nothing to update" });
+      return;
+    }
+
+    const [updated] = await db.update(adminUsers).set(updates).where(eq(adminUsers.id, id)).returning();
+    const token = signToken({ id: updated.id, email: updated.email, name: updated.name, role: updated.role });
+    logger.info({ id }, "Admin profile updated");
+    res.json({ token, user: { id: updated.id, name: updated.name, email: updated.email, role: updated.role } });
+  } catch (err) {
+    logger.error({ err }, "Update profile error");
+    res.status(500).json({ error: "Failed to update profile" });
   }
 });
 

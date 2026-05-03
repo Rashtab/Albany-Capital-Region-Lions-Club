@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
-import { PenLine, Calendar, BookOpen, Images, LogOut, Shield, ChevronRight, Upload } from "lucide-react";
+import { PenLine, Calendar, BookOpen, Images, LogOut, Shield, ChevronRight, Upload, UserCog } from "lucide-react";
 import { getUser, clearAuth, isAdmin } from "@/lib/auth";
 
 const fadeUp = {
@@ -42,10 +42,15 @@ export default function AdminDashboard() {
             <p className="text-primary-foreground/60 text-xs">Albany Capital Region Lions Club</p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <span className="text-sm text-primary-foreground/80 hidden sm:block">Welcome, {user?.name}</span>
+          <Link href="/admin/profile">
+            <button className="flex items-center gap-1.5 text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors px-2 py-1 rounded-lg hover:bg-white/10">
+              <UserCog className="h-4 w-4" /> Profile
+            </button>
+          </Link>
           <button onClick={handleLogout}
-            className="flex items-center gap-1.5 text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+            className="flex items-center gap-1.5 text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors px-2 py-1 rounded-lg hover:bg-white/10">
             <LogOut className="h-4 w-4" /> Sign Out
           </button>
         </div>
