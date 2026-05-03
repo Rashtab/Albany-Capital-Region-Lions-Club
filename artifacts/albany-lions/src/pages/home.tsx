@@ -1,10 +1,11 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, Users, Heart, Globe, Accessibility, TreePine, ChevronRight, Calendar, Clock, MapPin, ArrowRight, Quote, X, UserCircle2 } from "lucide-react";
+import { Eye, Users, Heart, Globe, Accessibility, TreePine, ChevronRight, Calendar, Clock, MapPin, ArrowRight, Quote, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { clubInfo, events, serviceAreas, dignitaries, sponsorshipTiers } from "@/data/clubData";
+import { DignitaryModal } from "@/components/DignitaryModal";
 import heroBanner from "@assets/banner_without_text_1777739378649.png";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import zohranPhoto from "@assets/Zohran_Mamdani_1777751125798.jpg";
@@ -44,18 +45,9 @@ const fadeUp = {
 
 const tierHighlight = ["Platinum", "Gold", "Silver"];
 
-type DigiModal = typeof dignitaries[number] | null;
-
 export default function Home() {
-  const [selected, setSelected] = useState<DigiModal>(null);
-  const close = useCallback(() => setSelected(null), []);
-
-  useEffect(() => {
-    if (!selected) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [selected, close]);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const close = () => setSelectedIndex(null);
 
   return (
     <div className="flex flex-col">
@@ -230,7 +222,7 @@ export default function Home() {
               return (
                 <motion.div key={i} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                   data-testid={`dignitary-${i}`}
-                  onClick={() => clickable && setSelected(d)}
+                  onClick={() => clickable && setSelectedIndex(i)}
                   className={`bg-card border border-card-border rounded-xl p-7 transition-all ${clickable ? "cursor-pointer hover:shadow-lg hover:border-primary/40 hover:-translate-y-0.5" : "hover:shadow-md hover:border-primary/20"}`}
                 >
                   {photo ? (
@@ -349,66 +341,13 @@ export default function Home() {
 
       {/* Dignitary Modal */}
       <AnimatePresence>
-        {selected && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-            onClick={close}
-          >
-            <motion.div
-              initial={{ scale: 0.93, opacity: 0, y: 16 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.93, opacity: 0, y: 16 }}
-              transition={{ duration: 0.22 }}
-              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col md:flex-row"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Left — portrait */}
-              <div className="md:w-64 shrink-0 bg-primary flex flex-col items-center justify-center py-10 px-6 relative">
-                {selected.photo && dignitaryPhotoMap[selected.photo] ? (
-                  <img
-                    src={dignitaryPhotoMap[selected.photo]}
-                    alt={selected.name}
-                    className="w-44 h-56 object-cover object-top rounded-xl border-4 border-secondary/50 shadow-lg"
-                  />
-                ) : (
-                  <div className="w-44 h-56 rounded-xl bg-white/10 flex items-center justify-center">
-                    <UserCircle2 className="h-24 w-24 text-white/30" />
-                  </div>
-                )}
-                <div className="mt-5 text-center">
-                  <p className="text-white font-black text-base leading-tight">{selected.name}</p>
-                  <p className="text-secondary text-xs font-semibold mt-1 leading-snug">{selected.title}</p>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-secondary/60" />
-              </div>
-
-              {/* Right — message */}
-              <div className="flex-1 flex flex-col min-h-0">
-                <div className="flex items-center justify-between px-7 py-4 border-b border-border">
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Congratulatory Message</span>
-                  <button
-                    onClick={close}
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                    aria-label="Close"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-                <div className="px-7 py-6 overflow-y-auto max-h-[60vh] md:max-h-[70vh]">
-                  <Quote className="h-6 w-6 text-secondary mb-4 opacity-70" />
-                  {(selected.fullMessage ?? selected.message).split("\n\n").map((para, pi) => (
-                    <p key={pi} className="text-foreground/80 leading-relaxed italic mb-4 last:mb-0">
-                      {para}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+        {selectedIndex !== null && (
+          <DignitaryModal
+            dignitaries={dignitaries}
+            photoMap={dignitaryPhotoMap}
+            startIndex={selectedIndex}
+            onClose={close}
+          />
         )}
       </AnimatePresence>
     </div>
