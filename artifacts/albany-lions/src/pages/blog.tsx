@@ -106,8 +106,8 @@ export default function BlogPage() {
                   <Link href={`/blog/${post.slug}`} className="block group h-full">
                     <div className="bg-card border border-card-border rounded-xl overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all h-full flex flex-col">
                       {post.coverImageUrl ? (
-                        <div className="h-48 overflow-hidden">
-                          <img src={post.coverImageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div className="overflow-hidden bg-muted flex items-center justify-center min-h-[160px] max-h-56">
+                          <img src={post.coverImageUrl} alt={post.title} className="w-full object-contain group-hover:scale-105 transition-transform duration-500" />
                         </div>
                       ) : (
                         <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/10 flex items-center justify-center">

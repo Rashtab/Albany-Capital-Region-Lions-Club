@@ -56,8 +56,8 @@ export default function BlogPostPage() {
   return (
     <div className="flex flex-col">
       {post.coverImageUrl && (
-        <div className="h-64 md:h-80 overflow-hidden">
-          <img src={post.coverImageUrl} alt={post.title} className="w-full h-full object-cover" />
+        <div className="w-full bg-muted flex items-center justify-center">
+          <img src={post.coverImageUrl} alt={post.title} className="w-full max-h-[600px] object-contain" />
         </div>
       )}
 
