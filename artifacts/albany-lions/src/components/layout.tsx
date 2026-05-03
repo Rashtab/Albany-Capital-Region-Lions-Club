@@ -157,6 +157,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <a
+                    href="https://rashtab.github.io/ACRLC-Slideshow-CharterInaguration2026/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-secondary transition-colors flex items-center gap-2"
+                  >
+                    <ChevronRight className="h-4 w-4 text-secondary" /> Slideshow
+                  </a>
+                </li>
               </ul>
             </div>
 
