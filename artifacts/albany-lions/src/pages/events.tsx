@@ -109,7 +109,7 @@ function EventModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 overflow-y-auto py-6 px-4"
       onClick={onClose}
     >
       <motion.div
@@ -117,7 +117,7 @@ function EventModal({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.92, opacity: 0 }}
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
-        className="relative w-full max-w-2xl bg-card rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-2xl bg-card rounded-2xl shadow-2xl overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
@@ -145,17 +145,14 @@ function EventModal({
             exit="exit"
             className="flex flex-col"
           >
-            {/* Poster / header image */}
+            {/* Full poster image — no height cap */}
             {poster ? (
-              <div className="relative w-full overflow-hidden bg-primary/10" style={{ maxHeight: 340 }}>
+              <div className="w-full bg-primary/5">
                 <img
                   src={poster}
                   alt={event.title}
-                  className="w-full object-cover object-top"
-                  style={{ maxHeight: 340 }}
+                  className="w-full h-auto block"
                 />
-                {/* gradient overlay so text reads cleanly */}
-                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-card to-transparent" />
               </div>
             ) : (
               /* Colour-band header when no poster */
@@ -167,7 +164,7 @@ function EventModal({
             )}
 
             {/* Body */}
-            <div className="px-8 pt-5 pb-6">
+            <div className="px-6 sm:px-8 pt-5 pb-6">
               {/* Category */}
               <Badge className={`font-bold border mb-3 ${categoryColors[cat] ?? categoryColors.General}`}>
                 ★ {cat}

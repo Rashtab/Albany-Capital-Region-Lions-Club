@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, isToday, addMonths, subMonths, parseISO } from "date-fns";
-import { ChevronLeft, ChevronRight, MapPin, Clock, Calendar, Loader2, CalendarDays, ExternalLink } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Clock, Calendar, Loader2, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 import { apiFetch } from "@/lib/auth";
 
 interface CalEvent {
@@ -221,8 +222,12 @@ export default function CalendarPage() {
 }
 
 function EventCard({ event, large }: { event: CalEvent; large?: boolean }) {
+  const [, navigate] = useLocation();
   return (
-    <div className={`bg-card border border-card-border rounded-xl overflow-hidden hover:shadow-md hover:border-primary/30 transition-all ${large ? "p-5" : "p-4"}`}>
+    <div
+      onClick={() => navigate("/events")}
+      className={`bg-card border border-card-border rounded-xl overflow-hidden hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group ${large ? "p-5" : "p-4"}`}
+    >
       <div className="flex items-start gap-3">
         <div className="shrink-0 bg-primary/10 rounded-lg p-2 text-center min-w-12">
           <p className="text-xs font-bold text-primary">{format(parseISO(event.eventDate), "MMM")}</p>
@@ -230,22 +235,19 @@ function EventCard({ event, large }: { event: CalEvent; large?: boolean }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-2 flex-wrap mb-1">
-            <h3 className={`font-black text-foreground leading-tight ${large ? "text-base" : "text-sm"}`}>{event.title}</h3>
+            <h3 className={`font-black text-foreground leading-tight group-hover:text-primary transition-colors ${large ? "text-base" : "text-sm"}`}>{event.title}</h3>
             {event.category && (
               <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${catColor(event.category)}`}>{event.category}</span>
             )}
           </div>
-          {large && event.description && <p className="text-sm text-muted-foreground mb-2">{event.description}</p>}
+          {large && event.description && <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{event.description}</p>}
           <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
             {event.eventTime && <span className="flex items-center gap-0.5"><Clock className="h-3 w-3" />{event.eventTime}</span>}
             {event.location && <span className="flex items-center gap-0.5"><MapPin className="h-3 w-3" />{event.location}</span>}
           </div>
-          {large && event.registrationLink && (
-            <a href={event.registrationLink} target="_blank" rel="noreferrer"
-              className="inline-flex items-center gap-1 mt-2 text-xs text-primary font-semibold hover:underline">
-              Register <ExternalLink className="h-3 w-3" />
-            </a>
-          )}
+          <p className="text-[10px] text-primary font-semibold mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            View on Events page →
+          </p>
         </div>
       </div>
     </div>
