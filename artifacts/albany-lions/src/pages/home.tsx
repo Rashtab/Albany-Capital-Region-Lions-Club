@@ -52,21 +52,21 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative min-h-[95vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-8">
         <img
           src={heroBanner}
           alt="Albany Capital Region Lions Club"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-primary/45" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-background/80" />
+        <div className="absolute inset-0 bg-primary/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60" />
 
         <div className="relative z-10 container mx-auto px-4 text-center text-primary-foreground">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <img
               src={clubLogo}
               alt="Club Logo"
-              className="w-28 h-28 rounded-full object-cover border-4 border-secondary/60 mx-auto mb-6 shadow-2xl"
+              className="w-20 h-20 rounded-full object-cover border-4 border-secondary/60 mx-auto mb-4 shadow-2xl"
             />
           </motion.div>
 
@@ -91,32 +91,28 @@ export default function Home() {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="h-1.5 w-32 bg-secondary mx-auto mb-6 rounded-full"
+            className="h-1.5 w-32 bg-secondary mx-auto mb-4 rounded-full"
           />
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-xl md:text-2xl text-white/90 font-semibold mb-3 tracking-wide"
+            className="bg-black/40 backdrop-blur-sm rounded-2xl px-8 py-6 max-w-2xl mx-auto mb-4"
           >
-            We Serve &bull; We Lead &bull; We Impact
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="text-lg text-primary-foreground/75 max-w-2xl mx-auto mb-12"
-          >
-            A proud chapter of Lions Clubs International, serving the Albany and Schenectady communities with vision, purpose, and heart.
-          </motion.p>
+            <p className="text-xl md:text-2xl text-white font-bold mb-4 tracking-wide">
+              We Serve &bull; We Lead &bull; We Impact
+            </p>
+            <p className="text-lg text-white/95 leading-relaxed">
+              A proud chapter of Lions Clubs International, serving the Albany and Schenectady communities with vision, purpose, and heart.
+            </p>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="flex flex-wrap gap-4 justify-center"
+            className="flex flex-wrap gap-4 justify-center mt-8"
           >
             <Link href="/contact">
               <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold text-base px-8 py-6 shadow-lg shadow-secondary/30" data-testid="hero-join-button">
@@ -124,12 +120,12 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/10 font-bold text-base px-8 py-6" data-testid="hero-donate-button">
+              <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-bold text-base px-8 py-6 shadow-lg" data-testid="hero-donate-button">
                 Donate
               </Button>
             </Link>
             <Link href="/contact">
-              <Button size="lg" variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 font-bold text-base px-8 py-6" data-testid="hero-contact-button">
+              <Button size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white/15 font-bold text-base px-8 py-6" data-testid="hero-contact-button">
                 Contact Us
               </Button>
             </Link>
