@@ -16,7 +16,7 @@ const router = Router();
  * Protected by a secret token passed as ?token=...
  * Remove this file (and its registration in index.ts) after seeding.
  */
-router.get("/api/seed", async (req, res) => {
+router.get("/seed", async (req, res) => {
   const SEED_TOKEN = process.env.SEED_SECRET ?? "lions-seed-2026";
   if (req.query.token !== SEED_TOKEN) {
     return res.status(403).json({ error: "Forbidden" });
