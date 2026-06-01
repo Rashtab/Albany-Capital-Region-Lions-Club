@@ -19,6 +19,8 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import CalendarPage from "@/pages/calendar";
 import MagazinePage from "@/pages/magazine";
+import ProjectsPage from "@/pages/projects";
+import ProjectDetailPage from "@/pages/project-detail";
 
 // Admin Pages (no Layout wrapper)
 import AdminLogin from "@/pages/admin/login";
@@ -44,6 +46,8 @@ function PublicRouter() {
         <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/calendar" component={CalendarPage} />
         <Route path="/magazine" component={MagazinePage} />
+        <Route path="/projects/:slug" component={ProjectDetailPage} />
+        <Route path="/projects" component={ProjectsPage} />
         <Route path="/sponsors" component={Sponsors} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/donate" component={Donate} />
