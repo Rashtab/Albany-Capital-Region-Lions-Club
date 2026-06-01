@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Heart, Users, Award, ChevronRight, Quote, UserCircle2 } from "lucide-react";
 import { Link } from "wouter";
@@ -7,6 +7,7 @@ import { clubInfo, serviceAreas, dignitaries } from "@/data/clubData";
 import { Eye, Accessibility, TreePine } from "lucide-react";
 import React from "react";
 import { DignitaryModal } from "@/components/DignitaryModal";
+import { apiFetch } from "@/lib/auth";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import zohranPhoto from "@assets/Zohran_Mamdani_1777751125798.jpg";
 import dorceyPhoto from "@assets/Dr._Dorcey_L._Applyrs_1777751283434.jpg";
@@ -46,6 +47,20 @@ export default function About() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const close = () => setSelectedIndex(null);
 
+  const [description, setDescription] = useState(clubInfo.description);
+  const [missionStatement, setMissionStatement] = useState(clubInfo.missionStatement);
+  const [vision, setVision] = useState(clubInfo.vision);
+
+  useEffect(() => {
+    apiFetch<Record<string, string>>("/api/site-settings")
+      .then((data) => {
+        if (data.club_description) setDescription(data.club_description);
+        if (data.mission_statement) setMissionStatement(data.mission_statement);
+        if (data.club_vision) setVision(data.club_vision);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="flex flex-col">
       {/* Page Header */}
@@ -67,7 +82,7 @@ export default function About() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
               <span className="text-secondary font-bold tracking-widest uppercase text-sm">Our Club</span>
               <h2 className="text-4xl font-black text-primary mt-3 mb-6">Albany Capital Region Lions Club</h2>
-              <p className="text-muted-foreground leading-relaxed mb-5 text-lg">{clubInfo.description}</p>
+              <p className="text-muted-foreground leading-relaxed mb-5 text-lg">{description}</p>
               <p className="text-muted-foreground leading-relaxed">
                 Chartered in 2026 under Lions Clubs International District 20-R2, our club brings together passionate community members — professionals, educators, engineers, journalists, and community leaders — all united by the Lions motto: <em className="text-primary font-semibold">We Serve.</em>
               </p>
@@ -110,7 +125,7 @@ export default function About() {
                 <Heart className="h-6 w-6 text-secondary" />
               </div>
               <h3 className="text-2xl font-black mb-4">Our Mission</h3>
-              <p className="leading-relaxed text-primary-foreground/85">{clubInfo.missionStatement}</p>
+              <p className="leading-relaxed text-primary-foreground/85">{missionStatement}</p>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
               className="bg-secondary text-secondary-foreground rounded-2xl p-10"
@@ -119,7 +134,7 @@ export default function About() {
                 <Globe className="h-6 w-6 text-secondary-foreground" />
               </div>
               <h3 className="text-2xl font-black mb-4">Our Vision</h3>
-              <p className="leading-relaxed">{clubInfo.vision}</p>
+              <p className="leading-relaxed">{vision}</p>
             </motion.div>
           </div>
         </div>

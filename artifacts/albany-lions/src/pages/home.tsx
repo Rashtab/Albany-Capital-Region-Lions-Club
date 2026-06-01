@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, Users, Heart, Globe, Accessibility, TreePine, ChevronRight, Calendar, Clock, MapPin, ArrowRight, Quote, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { clubInfo, events, serviceAreas, dignitaries, sponsorshipTiers } from "@/data/clubData";
+import { serviceAreas, dignitaries, sponsorshipTiers, clubInfo } from "@/data/clubData";
 import { DignitaryModal } from "@/components/DignitaryModal";
+import { apiFetch } from "@/lib/auth";
 import heroBanner from "@assets/banner_without_text_1777739378649.png";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import zohranPhoto from "@assets/Zohran_Mamdani_1777751125798.jpg";
@@ -45,9 +46,43 @@ const fadeUp = {
 
 const tierHighlight = ["Platinum", "Gold", "Silver"];
 
+interface CalEvent {
+  id: number;
+  title: string;
+  description: string | null;
+  eventDate: string;
+  eventTime: string | null;
+  location: string | null;
+  category: string | null;
+}
+
+function formatEventDate(d: string) {
+  return new Date(d + "T00:00:00").toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default function Home() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const close = () => setSelectedIndex(null);
+
+  const [missionStatement, setMissionStatement] = useState(clubInfo.missionStatement);
+  const [upcomingEvents, setUpcomingEvents] = useState<CalEvent[]>([]);
+
+  useEffect(() => {
+    apiFetch<Record<string, string>>("/api/site-settings")
+      .then((data) => {
+        if (data.mission_statement) setMissionStatement(data.mission_statement);
+      })
+      .catch(() => {});
+
+    apiFetch<CalEvent[]>("/api/calendar")
+      .then((rows) => setUpcomingEvents(rows.slice(0, 2)))
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -162,7 +197,7 @@ export default function Home() {
                 A New Force for Good<br />in the Capital Region
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                {clubInfo.missionStatement}
+                {missionStatement}
               </p>
               <Link href="/about">
                 <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold" data-testid="mission-learn-more">
@@ -263,21 +298,27 @@ export default function Home() {
             </Link>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {events.slice(0, 2).map((event, i) => (
+            {upcomingEvents.map((event, i) => (
               <motion.div key={event.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                 data-testid={`event-preview-${event.id}`}
                 className="bg-card border border-card-border rounded-xl overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all"
               >
                 <div className="h-2 bg-secondary" />
                 <div className="p-6">
-                  <Badge className="mb-3 bg-primary/10 text-primary border-primary/20 font-semibold">{event.category}</Badge>
+                  <Badge className="mb-3 bg-primary/10 text-primary border-primary/20 font-semibold">{event.category ?? "General"}</Badge>
                   <h3 className="text-xl font-bold text-foreground mb-4">{event.title}</h3>
                   <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-secondary shrink-0" />{event.date}</div>
-                    <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-secondary shrink-0" />{event.time}</div>
-                    <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-secondary shrink-0" />{event.location}</div>
+                    <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-secondary shrink-0" />{formatEventDate(event.eventDate)}</div>
+                    {event.eventTime && (
+                      <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-secondary shrink-0" />{event.eventTime}</div>
+                    )}
+                    {event.location && (
+                      <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-secondary shrink-0" />{event.location}</div>
+                    )}
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">{event.description}</p>
+                  {event.description && (
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">{event.description}</p>
+                  )}
                 </div>
               </motion.div>
             ))}

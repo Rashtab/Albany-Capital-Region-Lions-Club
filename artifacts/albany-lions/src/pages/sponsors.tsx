@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { sponsorshipTiers, magazineAds, sponsors, clubInfo } from "@/data/clubData";
+import { sponsorshipTiers, magazineAds, clubInfo } from "@/data/clubData";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Check, ChevronRight, FileText } from "lucide-react";
+import { apiFetch } from "@/lib/auth";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -51,7 +53,41 @@ const tierStyles: Record<string, { card: string; badge: string; amount: string; 
   },
 };
 
+function capitalizeTier(t: string) {
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+interface DbSponsor {
+  id: number;
+  name: string;
+  tier: string;
+  logoUrl: string | null;
+  website: string | null;
+  contactName: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  sortOrder: number | null;
+  status: string | null;
+}
+
 export default function Sponsors() {
+  const [dbSponsors, setDbSponsors] = useState<DbSponsor[]>([]);
+  const [contactEmail, setContactEmail] = useState(clubInfo.email);
+  const [contactPhone, setContactPhone] = useState(clubInfo.phone);
+
+  useEffect(() => {
+    apiFetch<DbSponsor[]>("/api/sponsors")
+      .then(setDbSponsors)
+      .catch(() => {});
+
+    apiFetch<Record<string, string>>("/api/site-settings")
+      .then((data) => {
+        if (data.contact_email) setContactEmail(data.contact_email);
+        if (data.contact_phone) setContactPhone(data.contact_phone);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="flex flex-col">
       {/* Page Header */}
@@ -117,7 +153,7 @@ export default function Sponsors() {
                       </li>
                     ))}
                   </ul>
-                  <a href={`mailto:${clubInfo.email}?subject=Sponsorship Inquiry — ${tier.tier} Package`}>
+                  <a href={`mailto:${contactEmail}?subject=Sponsorship Inquiry — ${tier.tier} Package`}>
                     <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" data-testid={`tier-cta-${tier.tier.toLowerCase()}`}>
                       Inquire About {tier.tier}
                     </Button>
@@ -130,7 +166,7 @@ export default function Sponsors() {
       </section>
 
       {/* Current Sponsors */}
-      {sponsors.length > 0 && (
+      {dbSponsors.length > 0 && (
         <section className="py-16 bg-muted/40">
           <div className="container mx-auto px-4 max-w-5xl">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-12">
@@ -138,15 +174,25 @@ export default function Sponsors() {
               <h2 className="text-3xl font-black text-primary mt-3">Current Sponsors</h2>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {sponsors.map((sponsor, i) => {
-                const style = tierStyles[sponsor.tier] || tierStyles["Community"];
+              {dbSponsors.map((sponsor, i) => {
+                const displayTier = capitalizeTier(sponsor.tier);
+                const style = tierStyles[displayTier] || tierStyles["Community"];
                 return (
                   <motion.div key={sponsor.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
                     className={`rounded-xl border-2 p-7 ${style.card}`} data-testid={`sponsor-card-${sponsor.id}`}
                   >
-                    <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full ${style.badge} mb-3 inline-block`}>{sponsor.tier}</span>
+                    <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full ${style.badge} mb-3 inline-block`}>{displayTier}</span>
                     <h4 className="text-xl font-bold text-foreground mt-2">{sponsor.name}</h4>
-                    {sponsor.description && <p className="text-muted-foreground text-sm mt-2">{sponsor.description}</p>}
+                    {sponsor.website && (
+                      <a
+                        href={sponsor.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary text-sm font-medium hover:underline mt-1 inline-block"
+                      >
+                        {sponsor.website}
+                      </a>
+                    )}
                   </motion.div>
                 );
               })}
@@ -197,7 +243,7 @@ export default function Sponsors() {
               Contact us to receive the full 2026 Sponsorship &amp; Advertising Package and discuss how we can best showcase your business.
             </p>
             <div className="flex flex-wrap gap-4 justify-center mb-4">
-              <a href={`mailto:${clubInfo.email}?subject=Sponsorship Inquiry 2026`}>
+              <a href={`mailto:${contactEmail}?subject=Sponsorship Inquiry 2026`}>
                 <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold px-10" data-testid="sponsor-email-cta">
                   Email Us Now <ChevronRight className="ml-1 h-5 w-5" />
                 </Button>
@@ -208,7 +254,7 @@ export default function Sponsors() {
                 </Button>
               </Link>
             </div>
-            <p className="text-primary-foreground/60 text-sm">{clubInfo.email} &bull; {clubInfo.phone}</p>
+            <p className="text-primary-foreground/60 text-sm">{contactEmail} &bull; {contactPhone}</p>
           </motion.div>
         </div>
       </section>
