@@ -75,7 +75,7 @@ router.get("/auth/me", (req, res) => {
 // PUT /api/auth/profile — update name, email, and/or password (admin only)
 router.put("/auth/profile", requireAdmin, async (req, res) => {
   try {
-    const { id } = (req as Request & { admin: { id: number } }).admin;
+    const { id } = (req as unknown as { admin: { id: number } }).admin;
     const { name, email, currentPassword, newPassword } = req.body as {
       name?: string; email?: string; currentPassword?: string; newPassword?: string;
     };
