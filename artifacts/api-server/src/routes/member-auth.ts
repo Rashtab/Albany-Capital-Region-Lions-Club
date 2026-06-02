@@ -145,6 +145,9 @@ import {
   getAllMemberPermissionOverrides,
   setMemberPermissionOverride,
   removeMemberPermissionOverride,
+  getMemberById,
+  getAllMembers,
+  softDeleteMember,
 } from "@workspace/db";
 import { requirePermission } from "../middlewares/requireMemberAdmin.js";
 
@@ -246,6 +249,104 @@ router.delete(
     } catch (err) {
       logger.error({ err }, "Remove member permission override error");
       res.status(500).json({ error: "Failed to remove member permission" });
+    }
+  },
+);
+
+// ── Member admin (soft-delete + role change) ───────────────────
+
+// GET /api/admin/members — list all non-deleted members (admin)
+router.get("/admin/members", requireMemberAdmin, requirePermission("members"), async (_req, res) => {
+  try {
+    const rows = await getAllMembers();
+    res.json(rows);
+  } catch (err) {
+    logger.error({ err }, "Get members error");
+    res.status(500).json({ error: "Failed to fetch members" });
+  }
+});
+
+// PATCH /api/admin/members/:id — update member fields, with lockout guard on role changes
+// Guarded: if the member currently holds access_control and the new role would strip it,
+// block when they are the last controller.
+router.patch(
+  "/admin/members/:id",
+  requireMemberAdmin,
+  requirePermission("members"),
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const updates = req.body as { role?: string; name?: string; email?: string; [key: string]: unknown };
+
+    try {
+      const member = await getMemberById(id);
+      if (!member) { res.status(404).json({ error: "Member not found" }); return; }
+
+      // Lockout guard: if changing role away from one that grants access_control or *
+      if (updates.role !== undefined && updates.role !== member.role) {
+        const currentPerms = await getEffectivePermissions(id, member.role ?? "");
+        const holdsAC = currentPerms.includes("*") || currentPerms.includes("access_control");
+
+        if (holdsAC) {
+          // Check whether the NEW role would still grant access_control (ignoring member overrides
+          // that grant it, since those stay — only the role grant changes)
+          const { getRolePermissions } = await import("@workspace/db");
+          const newRolePerms = await getRolePermissions(updates.role);
+          const newRoleGrantsAC = newRolePerms.includes("*") || newRolePerms.includes("access_control");
+
+          if (!newRoleGrantsAC) {
+            // Member would lose their role-derived access_control — check lockout
+            const wouldLose = await wouldLoseLastAccessController(id);
+            if (wouldLose) {
+              res.status(409).json({ error: "Cannot remove the last access-control administrator" });
+              return;
+            }
+          }
+        }
+      }
+
+      const allowed: Record<string, unknown> = {};
+      for (const key of ["name", "email", "phone", "role", "bio", "photoUrl", "isVisible", "duesStatus", "status"] as const) {
+        if (key in updates) allowed[key] = updates[key];
+      }
+
+      const updated = await (await import("@workspace/db")).updateMember(id, allowed);
+      res.json(updated);
+    } catch (err) {
+      logger.error({ err }, "Update member error");
+      res.status(500).json({ error: "Failed to update member" });
+    }
+  },
+);
+
+// DELETE /api/admin/members/:id — soft-delete, with lockout guard
+// Blocked when the target member is the last active access_control holder.
+router.delete(
+  "/admin/members/:id",
+  requireMemberAdmin,
+  requirePermission("members"),
+  async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+      const member = await getMemberById(id);
+      if (!member) { res.status(404).json({ error: "Member not found" }); return; }
+
+      // Lockout guard: check if deleting this member would leave no access controllers
+      const currentPerms = await getEffectivePermissions(id, member.role ?? "");
+      const holdsAC = currentPerms.includes("*") || currentPerms.includes("access_control");
+
+      if (holdsAC) {
+        const wouldLose = await wouldLoseLastAccessController(id);
+        if (wouldLose) {
+          res.status(409).json({ error: "Cannot remove the last access-control administrator" });
+          return;
+        }
+      }
+
+      await softDeleteMember(id);
+      res.json({ success: true });
+    } catch (err) {
+      logger.error({ err }, "Delete member error");
+      res.status(500).json({ error: "Failed to delete member" });
     }
   },
 );
