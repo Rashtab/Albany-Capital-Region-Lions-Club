@@ -3,18 +3,13 @@ import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
 import { Plus, Trash2, Loader2, ArrowLeft, Check, X, Upload, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { isAdmin, apiFetch, apiFetchForm, authHeaders } from "@/lib/auth";
+import { fetchAdminMe, adminFetch, adminFetchForm } from "@/lib/adminAuth";
 
 interface Magazine {
-  id: number;
-  title: string;
-  year: number;
-  fileUrl: string;
-  description: string | null;
-  isCurrent: boolean | null;
+  id: number; title: string; year: number; fileUrl: string;
+  description: string | null; isCurrent: boolean | null;
 }
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const emptyForm = { title: "", year: String(new Date().getFullYear()), fileUrl: "", description: "", isCurrent: false };
 
 export default function AdminMagazine() {
@@ -27,52 +22,43 @@ export default function AdminMagazine() {
   const [form, setForm] = useState(emptyForm);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { if (!isAdmin()) navigate("/admin/login"); }, [navigate]);
+  useEffect(() => {
+    fetchAdminMe().then((m) => { if (!m) navigate("/admin/login"); });
+  }, [navigate]);
 
   const fetchMagazines = useCallback(() => {
-    apiFetch<Magazine[]>("/api/magazines").then(setMagazines).catch(() => setMagazines([])).finally(() => setLoading(false));
+    adminFetch<Magazine[]>("/api/magazines").then(setMagazines).catch(() => setMagazines([])).finally(() => setLoading(false));
   }, []);
   useEffect(() => { fetchMagazines(); }, [fetchMagazines]);
 
   const handleUpload = async (file: File) => {
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await apiFetchForm<{ url: string }>("/api/upload", fd);
+      const fd = new FormData(); fd.append("file", file);
+      const res = await adminFetchForm<{ url: string }>("/api/upload", fd);
       setForm((f) => ({ ...f, fileUrl: res.url }));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Upload failed");
-    } finally { setUploading(false); }
+    } catch (err) { alert(err instanceof Error ? err.message : "Upload failed"); }
+    finally { setUploading(false); }
   };
 
   const handleSave = async () => {
     if (!form.title || !form.year || !form.fileUrl) return;
     setSaving(true);
     try {
-      await fetch(`${BASE}/api/magazines`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...authHeaders() },
-        body: JSON.stringify(form),
-      });
-      setCreating(false);
-      setForm(emptyForm);
-      fetchMagazines();
-    } finally { setSaving(false); }
+      await adminFetch("/api/magazines", { method: "POST", body: JSON.stringify(form) });
+      setCreating(false); setForm(emptyForm); fetchMagazines();
+    } catch (err) { alert(err instanceof Error ? err.message : "Save failed"); }
+    finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Remove this magazine?")) return;
-    await fetch(`${BASE}/api/magazines/${id}`, { method: "DELETE", headers: authHeaders() });
+    await adminFetch(`/api/magazines/${id}`, { method: "DELETE" });
     fetchMagazines();
   };
 
   const handleSetCurrent = async (mag: Magazine) => {
-    await fetch(`${BASE}/api/magazines/${mag.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", ...authHeaders() },
-      body: JSON.stringify({ ...mag, isCurrent: true }),
-    });
+    await adminFetch(`/api/magazines/${mag.id}`, { method: "PUT", body: JSON.stringify({ ...mag, isCurrent: true }) });
     fetchMagazines();
   };
 
@@ -135,8 +121,6 @@ export default function AdminMagazine() {
                   className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
-
-            {/* PDF Upload */}
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Upload PDF *</label>
               <input ref={fileRef} type="file" accept="application/pdf" className="hidden"
@@ -147,25 +131,20 @@ export default function AdminMagazine() {
                   {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   {uploading ? "Uploading…" : "Choose PDF"}
                 </button>
-                <input value={form.fileUrl} onChange={(e) => setForm({ ...form, fileUrl: e.target.value })} placeholder="Or paste URL: /magazines/file.pdf"
+                <input value={form.fileUrl} onChange={(e) => setForm({ ...form, fileUrl: e.target.value })} placeholder="Or paste URL"
                   className="flex-1 border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 font-mono" />
               </div>
               {form.fileUrl && <p className="text-xs text-green-600 mt-1 font-mono">✓ {form.fileUrl}</p>}
             </div>
-
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Description</label>
               <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2}
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 resize-y" placeholder="Brief description of this issue..." />
             </div>
-
-            <div>
-              <label className="flex items-center gap-2 text-sm font-semibold text-foreground cursor-pointer">
-                <input type="checkbox" checked={form.isCurrent} onChange={(e) => setForm({ ...form, isCurrent: e.target.checked })} className="rounded" />
-                Mark as current issue
-              </label>
-            </div>
-
+            <label className="flex items-center gap-2 text-sm font-semibold text-foreground cursor-pointer">
+              <input type="checkbox" checked={form.isCurrent} onChange={(e) => setForm({ ...form, isCurrent: e.target.checked })} className="rounded" />
+              Mark as current issue
+            </label>
             <div className="flex gap-3 pt-2">
               <Button onClick={handleSave} disabled={saving || uploading || !form.title || !form.year || !form.fileUrl} className="gap-2">
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}

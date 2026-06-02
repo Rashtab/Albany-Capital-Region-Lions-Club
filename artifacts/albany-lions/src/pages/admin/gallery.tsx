@@ -3,17 +3,12 @@ import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
 import { Plus, Trash2, Loader2, ArrowLeft, Check, X, Upload, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { isAdmin, apiFetch, apiFetchForm, authHeaders } from "@/lib/auth";
+import { fetchAdminMe, adminFetch, adminFetchForm } from "@/lib/adminAuth";
 
 interface GalleryItem {
-  id: number;
-  title: string;
-  imageUrl: string;
-  category: string | null;
-  eventDate: string | null;
+  id: number; title: string; imageUrl: string; category: string | null; eventDate: string | null;
 }
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const CATEGORIES = ["General", "Charter Night", "Service Project", "Meeting", "Community", "Youth", "Health"];
 const emptyForm = { title: "", imageUrl: "", category: "General", eventDate: "" };
 
@@ -27,41 +22,38 @@ export default function AdminGallery() {
   const [form, setForm] = useState(emptyForm);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { if (!isAdmin()) navigate("/admin/login"); }, [navigate]);
+  useEffect(() => {
+    fetchAdminMe().then((m) => { if (!m) navigate("/admin/login"); });
+  }, [navigate]);
 
   const fetchItems = useCallback(() => {
-    apiFetch<GalleryItem[]>("/api/gallery").then(setItems).catch(() => setItems([])).finally(() => setLoading(false));
+    adminFetch<GalleryItem[]>("/api/gallery").then(setItems).catch(() => setItems([])).finally(() => setLoading(false));
   }, []);
   useEffect(() => { fetchItems(); }, [fetchItems]);
 
   const handleUpload = async (file: File) => {
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await apiFetchForm<{ url: string }>("/api/upload", fd);
+      const fd = new FormData(); fd.append("file", file);
+      const res = await adminFetchForm<{ url: string }>("/api/upload", fd);
       setForm((f) => ({ ...f, imageUrl: res.url }));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Upload failed");
-    } finally { setUploading(false); }
+    } catch (err) { alert(err instanceof Error ? err.message : "Upload failed"); }
+    finally { setUploading(false); }
   };
 
   const handleSave = async () => {
     if (!form.title || !form.imageUrl) return;
     setSaving(true);
     try {
-      await fetch(`${BASE}/api/gallery`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...authHeaders() },
-        body: JSON.stringify(form),
-      });
+      await adminFetch("/api/gallery", { method: "POST", body: JSON.stringify(form) });
       setCreating(false); setForm(emptyForm); fetchItems();
-    } finally { setSaving(false); }
+    } catch (err) { alert(err instanceof Error ? err.message : "Save failed"); }
+    finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Remove this photo?")) return;
-    await fetch(`${BASE}/api/gallery/${id}`, { method: "DELETE", headers: authHeaders() });
+    await adminFetch(`/api/gallery/${id}`, { method: "DELETE" });
     fetchItems();
   };
 

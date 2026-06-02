@@ -3,21 +3,14 @@ import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
 import { Plus, Edit2, Trash2, Loader2, ArrowLeft, Check, X, Upload, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { isAdmin, apiFetch, apiFetchForm, authHeaders } from "@/lib/auth";
+import { fetchAdminMe, adminFetch, adminFetchForm } from "@/lib/adminAuth";
 
 interface CalEvent {
-  id: number;
-  title: string;
-  description: string | null;
-  eventDate: string;
-  eventTime: string | null;
-  location: string | null;
-  category: string | null;
-  registrationLink: string | null;
-  posterUrl: string | null;
+  id: number; title: string; description: string | null; eventDate: string;
+  eventTime: string | null; location: string | null; category: string | null;
+  registrationLink: string | null; posterUrl: string | null;
 }
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 const CATEGORIES = ["General", "Milestone", "Health", "Community", "Youth", "Fundraiser", "Meeting"];
 const emptyForm = { title: "", description: "", eventDate: "", eventTime: "", location: "", category: "General", registrationLink: "", posterUrl: "" };
 
@@ -32,54 +25,48 @@ export default function AdminEvents() {
   const [form, setForm] = useState(emptyForm);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { if (!isAdmin()) navigate("/admin/login"); }, [navigate]);
+  useEffect(() => {
+    fetchAdminMe().then((m) => { if (!m) navigate("/admin/login"); });
+  }, [navigate]);
 
   const fetchEvents = useCallback(() => {
-    apiFetch<CalEvent[]>("/api/calendar").then(setEvents).catch(() => setEvents([])).finally(() => setLoading(false));
+    adminFetch<CalEvent[]>("/api/calendar").then(setEvents).catch(() => setEvents([])).finally(() => setLoading(false));
   }, []);
   useEffect(() => { fetchEvents(); }, [fetchEvents]);
 
   const openCreate = () => { setForm(emptyForm); setEditing(null); setCreating(true); };
   const openEdit = (e: CalEvent) => {
-    setForm({
-      title: e.title, description: e.description ?? "", eventDate: e.eventDate,
-      eventTime: e.eventTime ?? "", location: e.location ?? "",
-      category: e.category ?? "General", registrationLink: e.registrationLink ?? "",
-      posterUrl: e.posterUrl ?? "",
-    });
+    setForm({ title: e.title, description: e.description ?? "", eventDate: e.eventDate, eventTime: e.eventTime ?? "", location: e.location ?? "", category: e.category ?? "General", registrationLink: e.registrationLink ?? "", posterUrl: e.posterUrl ?? "" });
     setEditing(e); setCreating(true);
   };
 
   const handlePosterUpload = async (file: File) => {
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await apiFetchForm<{ url: string }>("/api/upload", fd);
+      const fd = new FormData(); fd.append("file", file);
+      const res = await adminFetchForm<{ url: string }>("/api/upload", fd);
       setForm((f) => ({ ...f, posterUrl: res.url }));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Upload failed");
-    } finally { setUploading(false); }
+    } catch (err) { alert(err instanceof Error ? err.message : "Upload failed"); }
+    finally { setUploading(false); }
   };
 
   const handleSave = async () => {
     if (!form.title || !form.eventDate) return;
     setSaving(true);
     try {
-      const body = JSON.stringify(form);
-      const headers = { "Content-Type": "application/json", ...authHeaders() };
       if (editing) {
-        await fetch(`${BASE}/api/calendar/${editing.id}`, { method: "PUT", headers, body });
+        await adminFetch(`/api/calendar/${editing.id}`, { method: "PUT", body: JSON.stringify(form) });
       } else {
-        await fetch(`${BASE}/api/calendar`, { method: "POST", headers, body });
+        await adminFetch("/api/calendar", { method: "POST", body: JSON.stringify(form) });
       }
       setCreating(false); setEditing(null); fetchEvents();
-    } finally { setSaving(false); }
+    } catch (err) { alert(err instanceof Error ? err.message : "Save failed"); }
+    finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this event?")) return;
-    await fetch(`${BASE}/api/calendar/${id}`, { method: "DELETE", headers: authHeaders() });
+    await adminFetch(`/api/calendar/${id}`, { method: "DELETE" });
     fetchEvents();
   };
 
@@ -131,13 +118,11 @@ export default function AdminEvents() {
               <h2 className="font-black text-primary">{editing ? "Edit Event" : "New Event"}</h2>
               <button onClick={() => setCreating(false)}><X className="h-5 w-5 text-muted-foreground" /></button>
             </div>
-
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Title *</label>
               <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })}
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Event title" />
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Date *</label>
@@ -150,7 +135,6 @@ export default function AdminEvents() {
                   className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="e.g. 6:00 PM" />
               </div>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Location</label>
@@ -165,20 +149,16 @@ export default function AdminEvents() {
                 </select>
               </div>
             </div>
-
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Description</label>
               <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3}
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 resize-y" placeholder="Event details..." />
             </div>
-
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Registration / RSVP Link</label>
               <input value={form.registrationLink} onChange={(e) => setForm({ ...form, registrationLink: e.target.value })}
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="https:// or mailto:..." />
             </div>
-
-            {/* Poster Upload */}
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Event Poster / Photo</label>
               <input ref={fileRef} type="file" accept="image/*" className="hidden"
@@ -193,22 +173,18 @@ export default function AdminEvents() {
                   placeholder="Or paste image URL"
                   className="flex-1 min-w-0 border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
-              {form.posterUrl && (
+              {form.posterUrl ? (
                 <div className="mt-2 relative inline-block">
                   <img src={form.posterUrl} alt="Poster preview" className="h-32 w-auto rounded-lg border border-border object-cover" />
                   <button type="button" onClick={() => setForm({ ...form, posterUrl: "" })}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600">
-                    <X className="h-3 w-3" />
-                  </button>
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"><X className="h-3 w-3" /></button>
                 </div>
-              )}
-              {!form.posterUrl && (
+              ) : (
                 <div className="mt-2 flex items-center gap-2 h-16 w-24 bg-muted rounded-lg border border-dashed border-border justify-center">
                   <Image className="h-6 w-6 text-muted-foreground/40" />
                 </div>
               )}
             </div>
-
             <div className="flex gap-3 pt-2">
               <Button onClick={handleSave} disabled={saving || uploading || !form.title || !form.eventDate} className="gap-2">
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}

@@ -82,3 +82,18 @@ export async function adminLogin(email: string, password: string): Promise<Admin
 export async function adminLogout(): Promise<void> {
   await adminFetch("/api/admin/logout", { method: "POST" });
 }
+
+// ── Form upload helper (multipart, session cookie) ─────────────
+
+export async function adminFetchForm<T>(path: string, formData: FormData): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Upload failed" }));
+    throw new Error((err as { error?: string }).error ?? "Upload failed");
+  }
+  return res.json() as Promise<T>;
+}

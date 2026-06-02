@@ -1,2 +1,2 @@
----
-- [Dual admin auth systems](dual-auth-systems.md) — JWT+admin_users (old CRUD pages) and session+members (new portal) coexist; never mix them.
+- [Session+RBAC auth system](session-rbac-auth.md) — JWT+admin_users retired; session-cookie + members table + DB-backed role/member permissions with lockout guard on access_control.
+- [Case-insensitive email lookup](case-insensitive-email.md) — getMemberByEmail uses LOWER() SQL because emails stored with mixed case; always normalize to lowercase before querying.

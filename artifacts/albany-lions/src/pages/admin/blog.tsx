@@ -3,19 +3,12 @@ import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
 import { Plus, Edit2, Trash2, Loader2, ArrowLeft, Check, X, Eye, EyeOff, Upload, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { isAdmin, apiFetch, apiFetchForm, authHeaders } from "@/lib/auth";
+import { fetchAdminMe, adminFetch, adminFetchForm } from "@/lib/adminAuth";
 
 interface BlogPost {
-  id: number;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt: string | null;
-  coverImageUrl: string | null;
-  category: string | null;
-  published: boolean;
-  publishedAt: string | null;
-  createdAt: string;
+  id: number; title: string; slug: string; content: string;
+  excerpt: string | null; coverImageUrl: string | null;
+  category: string | null; published: boolean; publishedAt: string | null; createdAt: string;
 }
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -38,62 +31,48 @@ export default function AdminBlog() {
   const [form, setForm] = useState(emptyForm);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { if (!isAdmin()) navigate("/admin/login"); }, [navigate]);
+  useEffect(() => {
+    fetchAdminMe().then((m) => { if (!m) navigate("/admin/login"); });
+  }, [navigate]);
 
   const fetchPosts = useCallback(() => {
-    apiFetch<BlogPost[]>("/api/blog/all").then(setPosts).catch(() => setPosts([])).finally(() => setLoading(false));
+    adminFetch<BlogPost[]>("/api/blog/all").then(setPosts).catch(() => setPosts([])).finally(() => setLoading(false));
   }, []);
-
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
-  const openCreate = () => {
-    setForm(emptyForm);
-    setEditing(null);
-    setCreating(true);
-  };
-
+  const openCreate = () => { setForm(emptyForm); setEditing(null); setCreating(true); };
   const openEdit = (p: BlogPost) => {
     setForm({ title: p.title, slug: p.slug, content: p.content, excerpt: p.excerpt ?? "", coverImageUrl: p.coverImageUrl ?? "", category: p.category ?? "News", published: p.published });
-    setEditing(p);
-    setCreating(true);
+    setEditing(p); setCreating(true);
   };
 
   const handleCoverUpload = async (file: File) => {
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await apiFetchForm<{ url: string }>("/api/upload", fd);
+      const fd = new FormData(); fd.append("file", file);
+      const res = await adminFetchForm<{ url: string }>("/api/upload", fd);
       setForm((f) => ({ ...f, coverImageUrl: res.url }));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Upload failed");
-    } finally {
-      setUploading(false);
-    }
+    } catch (err) { alert(err instanceof Error ? err.message : "Upload failed"); }
+    finally { setUploading(false); }
   };
 
   const handleSave = async () => {
     if (!form.title || !form.slug || !form.content) return;
     setSaving(true);
     try {
-      const body = JSON.stringify(form);
-      const headers = { "Content-Type": "application/json", ...authHeaders() };
       if (editing) {
-        await fetch(`${BASE}/api/blog/${editing.id}`, { method: "PUT", headers, body });
+        await adminFetch(`/api/blog/${editing.id}`, { method: "PUT", body: JSON.stringify(form) });
       } else {
-        await fetch(`${BASE}/api/blog`, { method: "POST", headers, body });
+        await adminFetch("/api/blog", { method: "POST", body: JSON.stringify(form) });
       }
-      setCreating(false);
-      setEditing(null);
-      fetchPosts();
-    } finally {
-      setSaving(false);
-    }
+      setCreating(false); setEditing(null); fetchPosts();
+    } catch (err) { alert(err instanceof Error ? err.message : "Save failed"); }
+    finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this post?")) return;
-    await fetch(`${BASE}/api/blog/${id}`, { method: "DELETE", headers: authHeaders() });
+    await adminFetch(`/api/blog/${id}`, { method: "DELETE" });
     fetchPosts();
   };
 
@@ -103,7 +82,6 @@ export default function AdminBlog() {
         <Link href="/admin"><button className="hover:opacity-70 transition-opacity"><ArrowLeft className="h-5 w-5" /></button></Link>
         <h1 className="font-black text-lg">Blog Posts</h1>
       </div>
-
       <div className="container mx-auto px-4 max-w-4xl py-8">
         {!creating ? (
           <>
@@ -111,7 +89,6 @@ export default function AdminBlog() {
               <p className="text-muted-foreground text-sm">{posts.length} posts</p>
               <Button onClick={openCreate} className="gap-2"><Plus className="h-4 w-4" /> New Post</Button>
             </div>
-
             {loading ? <div className="flex justify-center py-12"><Loader2 className="h-7 w-7 animate-spin text-primary" /></div> : (
               <div className="space-y-3">
                 {posts.map((p, i) => (
@@ -152,8 +129,6 @@ export default function AdminBlog() {
               <h2 className="font-black text-primary">{editing ? "Edit Post" : "New Post"}</h2>
               <button onClick={() => { setCreating(false); setEditing(null); }}><X className="h-5 w-5 text-muted-foreground" /></button>
             </div>
-
-            {/* Title + Slug */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Title *</label>
@@ -167,15 +142,11 @@ export default function AdminBlog() {
                   className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 font-mono" placeholder="post-url-slug" />
               </div>
             </div>
-
-            {/* Excerpt */}
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Excerpt</label>
               <input value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Short summary shown in listings" />
             </div>
-
-            {/* Cover Image Upload */}
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Cover Image / Photo</label>
               <input ref={fileRef} type="file" accept="image/*" className="hidden"
@@ -194,9 +165,7 @@ export default function AdminBlog() {
                 <div className="mt-2 relative inline-block">
                   <img src={form.coverImageUrl} alt="Cover preview" className="h-32 w-auto max-w-xs rounded-lg border border-border object-cover" />
                   <button type="button" onClick={() => setForm({ ...form, coverImageUrl: "" })}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600">
-                    <X className="h-3 w-3" />
-                  </button>
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"><X className="h-3 w-3" /></button>
                 </div>
               ) : (
                 <div className="mt-2 flex items-center gap-2 h-16 w-24 bg-muted rounded-lg border border-dashed border-border justify-center">
@@ -204,15 +173,11 @@ export default function AdminBlog() {
                 </div>
               )}
             </div>
-
-            {/* Content */}
             <div>
               <label className="text-xs font-semibold text-muted-foreground block mb-1">Content *</label>
               <textarea value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={10}
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 resize-y font-mono" placeholder="Full post content (use double line breaks for paragraphs)" />
             </div>
-
-            {/* Category + Publish toggle */}
             <div className="flex flex-wrap items-end gap-4">
               <div className="flex-1 min-w-32">
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Category</label>
@@ -227,7 +192,6 @@ export default function AdminBlog() {
                 {form.published ? "Published" : "Draft"}
               </button>
             </div>
-
             <div className="flex gap-3 pt-2">
               <Button onClick={handleSave} disabled={saving || uploading || !form.title || !form.slug || !form.content} className="gap-2">
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}

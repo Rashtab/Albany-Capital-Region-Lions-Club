@@ -1,4 +1,4 @@
-import { eq, isNull, and, asc } from "drizzle-orm";
+import { eq, isNull, and, asc, sql } from "drizzle-orm";
 import { db } from "..";
 import { members } from "../schema";
 import type { InsertMember } from "../schema/members";
@@ -27,7 +27,10 @@ export async function getMemberById(id: number) {
 
 export async function getMemberByEmail(email: string) {
   const [row] = await db.select().from(members)
-    .where(and(eq(members.email, email), isNull(members.deletedAt)));
+    .where(and(
+      eq(sql`LOWER(${members.email})`, email.toLowerCase()),
+      isNull(members.deletedAt),
+    ));
   return row ?? null;
 }
 

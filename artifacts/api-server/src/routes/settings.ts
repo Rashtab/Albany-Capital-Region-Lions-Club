@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getSettings } from "@workspace/db";
+import { requireMemberAdmin, requirePermission } from "../middlewares/requireMemberAdmin.js";
 
 const router = Router();
 
@@ -26,6 +27,7 @@ const DEFAULTS: Record<string, string> = {
 
 const PUBLIC_KEYS = Object.keys(DEFAULTS);
 
+// GET /api/site-settings — public
 router.get("/site-settings", async (req, res) => {
   try {
     const raw = await getSettings(PUBLIC_KEYS);
@@ -39,5 +41,8 @@ router.get("/site-settings", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch settings" });
   }
 });
+
+// Future write routes for settings will use requirePermission("settings")
+export { requireMemberAdmin, requirePermission };
 
 export default router;

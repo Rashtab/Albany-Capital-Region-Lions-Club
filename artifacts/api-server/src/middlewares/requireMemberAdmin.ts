@@ -1,4 +1,3 @@
-// Session type augmentation reference (must be imported as a module)
 import type {} from "express-session";
 
 declare module "express-session" {
@@ -11,28 +10,14 @@ declare module "express-session" {
 }
 
 import type { Request, Response, NextFunction } from "express";
-
-const ALLOWED_ROLES = ["president", "secretary", "treasurer", "webmaster", "lcif_coordinator"];
-
-const ROLE_PERMISSIONS: Record<string, string[]> = {
-  president: ["all"],
-  webmaster: ["all"],
-  secretary: ["members", "events", "content"],
-  treasurer: ["donations", "sponsors"],
-  lcif_coordinator: ["donations", "events"],
-};
-
-function getPermissions(role: string): string[] {
-  return ROLE_PERMISSIONS[role] ?? [];
-}
+import { getEffectivePermissions } from "@workspace/db";
 
 /**
- * Requires a valid session for a member with an allowed admin role.
- * Attach to any admin-only route.
+ * Gate: requires a valid admin session (any role with portal access).
+ * Attach before requirePermission on every admin-only route.
  */
 export function requireMemberAdmin(req: Request, res: Response, next: NextFunction): void {
-  const { memberId, memberRole } = req.session;
-  if (!memberId || !ALLOWED_ROLES.includes(memberRole ?? "")) {
+  if (!req.session.memberId || !req.session.memberRole) {
     res.status(401).json({ error: "Unauthorized" });
     return;
   }
@@ -40,18 +25,32 @@ export function requireMemberAdmin(req: Request, res: Response, next: NextFuncti
 }
 
 /**
- * Requires the session member to have a specific permission (or 'all').
- * Use after requireMemberAdmin.
+ * Gate: requires the session member to hold a specific permission.
+ * Reads live from role_permissions + member_permissions tables.
+ * A holder of the wildcard permission '*' passes every check.
  *
- * Example: router.delete("/...", requireMemberAdmin, requirePermission("content"), handler)
+ * Usage:
+ *   router.post("/blog", requireMemberAdmin, requirePermission("content"), handler)
  */
 export function requirePermission(permission: string) {
-  return function (req: Request, res: Response, next: NextFunction): void {
-    const perms = getPermissions(req.session.memberRole ?? "");
-    if (!perms.includes("all") && !perms.includes(permission)) {
-      res.status(403).json({ error: "Forbidden: insufficient permissions for this action" });
+  return async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { memberId, memberRole } = req.session;
+    if (!memberId || !memberRole) {
+      res.status(401).json({ error: "Unauthorized" });
       return;
     }
-    next();
+    try {
+      const perms = await getEffectivePermissions(memberId, memberRole);
+      if (perms.includes("*") || perms.includes(permission)) {
+        next();
+        return;
+      }
+      res.status(403).json({
+        error: `Forbidden: '${permission}' permission required`,
+      });
+    } catch (err) {
+      req.log.error({ err }, "Permission check failed");
+      res.status(500).json({ error: "Permission check failed" });
+    }
   };
 }

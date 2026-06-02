@@ -2,7 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { requireAdmin } from "../middlewares/requireAdmin.js";
+import { requireMemberAdmin, requirePermission } from "../middlewares/requireMemberAdmin.js";
 import { logger } from "../lib/logger.js";
 
 const router = Router();
@@ -35,15 +35,34 @@ const upload = multer({
   },
 });
 
-router.post("/upload", requireAdmin, upload.single("file"), (req, res) => {
-  if (!req.file) {
-    res.status(400).json({ error: "No file uploaded" });
-    return;
-  }
-  const isPdf = req.file.mimetype === "application/pdf";
-  const url = `/api/uploads/${isPdf ? "pdfs" : "images"}/${req.file.filename}`;
-  logger.info({ filename: req.file.filename }, "File uploaded");
-  res.json({ url, filename: req.file.filename, mimetype: req.file.mimetype });
-});
+// POST /api/upload — content OR documents permission (covers images for blog/gallery and PDFs for docs)
+router.post(
+  "/upload",
+  requireMemberAdmin,
+  async (req, res, next) => {
+    // Allow if member has content OR documents (checked in sequence to share the handler)
+    const { getEffectivePermissions } = await import("@workspace/db");
+    const { memberId, memberRole } = req.session;
+    if (!memberId || !memberRole) { res.status(401).json({ error: "Unauthorized" }); return; }
+    try {
+      const perms = await getEffectivePermissions(memberId, memberRole);
+      if (perms.includes("*") || perms.includes("content") || perms.includes("documents") || perms.includes("events")) {
+        next();
+      } else {
+        res.status(403).json({ error: "Forbidden: content, documents, or events permission required" });
+      }
+    } catch {
+      res.status(500).json({ error: "Permission check failed" });
+    }
+  },
+  upload.single("file"),
+  (req, res) => {
+    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+    const isPdf = req.file.mimetype === "application/pdf";
+    const url = `/api/uploads/${isPdf ? "pdfs" : "images"}/${req.file.filename}`;
+    logger.info({ filename: req.file.filename }, "File uploaded");
+    res.json({ url, filename: req.file.filename, mimetype: req.file.mimetype });
+  },
+);
 
 export default router;

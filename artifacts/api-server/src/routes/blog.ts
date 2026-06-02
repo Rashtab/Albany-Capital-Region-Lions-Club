@@ -1,25 +1,18 @@
 import { Router } from "express";
 import { db, blogPosts } from "@workspace/db";
 import { eq, desc, and, isNull } from "drizzle-orm";
-import { requireAdmin } from "../middlewares/requireAdmin.js";
+import { requireMemberAdmin, requirePermission } from "../middlewares/requireMemberAdmin.js";
 import { logger } from "../lib/logger.js";
 
 const router = Router();
 
 // GET /api/blog — published, non-deleted posts (public)
-// Guard: published = true AND status = 'published' AND deleted_at IS NULL
 router.get("/blog", async (_req, res) => {
   try {
     const posts = await db
       .select()
       .from(blogPosts)
-      .where(
-        and(
-          eq(blogPosts.published, true),
-          eq(blogPosts.status, "published"),
-          isNull(blogPosts.deletedAt),
-        ),
-      )
+      .where(and(eq(blogPosts.published, true), eq(blogPosts.status, "published"), isNull(blogPosts.deletedAt)))
       .orderBy(desc(blogPosts.publishedAt));
     res.json(posts);
   } catch (err) {
@@ -28,8 +21,8 @@ router.get("/blog", async (_req, res) => {
   }
 });
 
-// GET /api/blog/all — all posts including drafts (admin only)
-router.get("/blog/all", requireAdmin, async (_req, res) => {
+// GET /api/blog/all — all posts including drafts (admin)
+router.get("/blog/all", requireMemberAdmin, requirePermission("content"), async (_req, res) => {
   try {
     const posts = await db
       .select()
@@ -43,26 +36,15 @@ router.get("/blog/all", requireAdmin, async (_req, res) => {
   }
 });
 
-// GET /api/blog/:slug — single published, non-deleted post (public)
-// Guard: slug matches AND published = true AND status = 'published' AND deleted_at IS NULL
+// GET /api/blog/:slug — single published post (public)
 router.get("/blog/:slug", async (req, res) => {
   try {
     const [post] = await db
       .select()
       .from(blogPosts)
-      .where(
-        and(
-          eq(blogPosts.slug, req.params.slug),
-          eq(blogPosts.published, true),
-          eq(blogPosts.status, "published"),
-          isNull(blogPosts.deletedAt),
-        ),
-      )
+      .where(and(eq(blogPosts.slug, req.params.slug), eq(blogPosts.published, true), eq(blogPosts.status, "published"), isNull(blogPosts.deletedAt)))
       .limit(1);
-    if (!post) {
-      res.status(404).json({ error: "Post not found" });
-      return;
-    }
+    if (!post) { res.status(404).json({ error: "Post not found" }); return; }
     res.json(post);
   } catch (err) {
     logger.error({ err }, "Get blog post error");
@@ -70,14 +52,11 @@ router.get("/blog/:slug", async (req, res) => {
   }
 });
 
-// POST /api/blog — create post (admin)
-router.post("/blog", requireAdmin, async (req, res) => {
+// POST /api/blog (admin, content permission)
+router.post("/blog", requireMemberAdmin, requirePermission("content"), async (req, res) => {
   try {
     const { title, slug, content, excerpt, coverImageUrl, category, published, authorName, tags } = req.body;
-    if (!title || !slug || !content) {
-      res.status(400).json({ error: "title, slug, and content are required" });
-      return;
-    }
+    if (!title || !slug || !content) { res.status(400).json({ error: "title, slug, and content are required" }); return; }
     const now = new Date();
     const isPublished = Boolean(published);
     const [post] = await db.insert(blogPosts).values({
@@ -95,16 +74,12 @@ router.post("/blog", requireAdmin, async (req, res) => {
   }
 });
 
-// PUT /api/blog/:id — update post (admin)
-router.put("/blog/:id", requireAdmin, async (req, res) => {
+// PUT /api/blog/:id (admin, content permission)
+router.put("/blog/:id", requireMemberAdmin, requirePermission("content"), async (req, res) => {
   try {
     const id = Number(req.params.id);
     const { title, slug, content, excerpt, coverImageUrl, category, published, authorName, tags } = req.body;
-    const [existing] = await db
-      .select()
-      .from(blogPosts)
-      .where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt)))
-      .limit(1);
+    const [existing] = await db.select().from(blogPosts).where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt))).limit(1);
     if (!existing) { res.status(404).json({ error: "Post not found" }); return; }
     const now = new Date();
     const isPublished = Boolean(published);
@@ -124,14 +99,11 @@ router.put("/blog/:id", requireAdmin, async (req, res) => {
   }
 });
 
-// DELETE /api/blog/:id — soft delete (admin)
-router.delete("/blog/:id", requireAdmin, async (req, res) => {
+// DELETE /api/blog/:id — soft delete (admin, content permission)
+router.delete("/blog/:id", requireMemberAdmin, requirePermission("content"), async (req, res) => {
   try {
     const id = Number(req.params.id);
-    await db
-      .update(blogPosts)
-      .set({ deletedAt: new Date(), updatedAt: new Date() })
-      .where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt)));
+    await db.update(blogPosts).set({ deletedAt: new Date(), updatedAt: new Date() }).where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt)));
     res.json({ success: true });
   } catch (err) {
     logger.error({ err }, "Delete blog post error");
