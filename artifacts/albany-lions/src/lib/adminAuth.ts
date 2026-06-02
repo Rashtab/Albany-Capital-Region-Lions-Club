@@ -39,9 +39,14 @@ export function getRoleLabel(role: string): string {
   return ROLE_LABELS[role] ?? role;
 }
 
+export function isFullAccessMember(member: AdminMember | null): boolean {
+  if (!member) return false;
+  return member.permissions.includes("all") || member.permissions.includes("*");
+}
+
 export function hasPermission(member: AdminMember | null, permission: string): boolean {
   if (!member) return false;
-  return member.permissions.includes("all") || member.permissions.includes(permission);
+  return isFullAccessMember(member) || member.permissions.includes(permission);
 }
 
 // ── Fetch helper (always sends session cookie) ─────────────────

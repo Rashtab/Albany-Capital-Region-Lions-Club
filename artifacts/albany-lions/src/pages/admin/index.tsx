@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
 import {
-  Shield, LogOut, ExternalLink, Loader2,
+  Shield, ShieldCheck, LogOut, ExternalLink, Loader2,
   Users, Calendar, PenLine, Images, BookOpen,
   DollarSign, Handshake, CheckCircle2, Lock,
 } from "lucide-react";
@@ -15,6 +15,7 @@ import {
   ROLE_COLORS,
   PERMISSION_LABELS,
   hasPermission,
+  isFullAccessMember,
 } from "@/lib/adminAuth";
 
 // ── Permission → section tile mapping ──────────────────────────
@@ -125,7 +126,7 @@ export default function AdminDashboard() {
 
   const roleLabel = ROLE_LABELS[member.role] ?? member.role;
   const roleColor = ROLE_COLORS[member.role] ?? "bg-primary text-primary-foreground";
-  const isFullAccess = member.permissions.includes("all");
+  const isFullAccess = isFullAccessMember(member);
   const visibleTiles = isFullAccess
     ? SECTION_TILES
     : SECTION_TILES.filter((t) => hasPermission(member, t.permission));
@@ -244,6 +245,30 @@ export default function AdminDashboard() {
                 </div>
               </motion.div>
             ))}
+
+            {/* Access Control tile — visible only to access_control holders */}
+            {hasPermission(member, "access_control") && (
+              <motion.div
+                custom={visibleTiles.length}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+              >
+                <Link href="/admin/access-control" className="block">
+                  <div className="bg-card border border-border rounded-xl p-5 flex items-start gap-4 hover:border-primary/40 hover:bg-primary/5 transition-colors cursor-pointer">
+                    <div className="bg-rose-700 text-white rounded-xl p-2.5 shrink-0">
+                      <ShieldCheck className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-sm text-foreground">Access Control</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Manage role permissions and per-member overrides.
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
           </div>
         </div>
 
