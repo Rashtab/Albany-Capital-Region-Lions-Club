@@ -15,7 +15,7 @@ import { logger } from "../lib/logger.js";
 
 const router = Router();
 
-const ALLOWED_ROLES = ["president", "secretary", "treasurer", "webmaster"] as const;
+const ALLOWED_ROLES = ["president", "secretary", "treasurer", "webmaster", "lcif_coordinator"] as const;
 type AllowedRole = (typeof ALLOWED_ROLES)[number];
 
 const ROLE_PERMISSIONS: Record<AllowedRole, string[]> = {
@@ -23,6 +23,7 @@ const ROLE_PERMISSIONS: Record<AllowedRole, string[]> = {
   webmaster: ["all"],
   secretary: ["members", "events", "content"],
   treasurer: ["donations", "sponsors"],
+  lcif_coordinator: ["donations", "events"],
 };
 
 function getPermissions(role: string): string[] {

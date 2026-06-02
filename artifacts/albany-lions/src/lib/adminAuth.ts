@@ -15,6 +15,7 @@ export const ROLE_LABELS: Record<string, string> = {
   webmaster: "Webmaster",
   secretary: "Secretary",
   treasurer: "Treasurer",
+  lcif_coordinator: "LCIF Coordinator",
 };
 
 export const ROLE_COLORS: Record<string, string> = {
@@ -22,6 +23,7 @@ export const ROLE_COLORS: Record<string, string> = {
   webmaster: "bg-purple-600 text-white",
   secretary: "bg-blue-600 text-white",
   treasurer: "bg-emerald-600 text-white",
+  lcif_coordinator: "bg-teal-600 text-white",
 };
 
 export const PERMISSION_LABELS: Record<string, string> = {

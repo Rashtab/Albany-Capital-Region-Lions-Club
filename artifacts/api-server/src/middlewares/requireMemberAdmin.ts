@@ -12,13 +12,14 @@ declare module "express-session" {
 
 import type { Request, Response, NextFunction } from "express";
 
-const ALLOWED_ROLES = ["president", "secretary", "treasurer", "webmaster"];
+const ALLOWED_ROLES = ["president", "secretary", "treasurer", "webmaster", "lcif_coordinator"];
 
 const ROLE_PERMISSIONS: Record<string, string[]> = {
   president: ["all"],
   webmaster: ["all"],
   secretary: ["members", "events", "content"],
   treasurer: ["donations", "sponsors"],
+  lcif_coordinator: ["donations", "events"],
 };
 
 function getPermissions(role: string): string[] {
