@@ -1,15 +1,20 @@
 import { Router } from "express";
 import { db, galleryItems } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, isNull } from "drizzle-orm";
 import { requireAdmin } from "../middlewares/requireAdmin.js";
 import { logger } from "../lib/logger.js";
 
 const router = Router();
 
-// GET /api/gallery (public)
+// GET /api/gallery — non-deleted items (public)
+// Guard: deleted_at IS NULL
 router.get("/gallery", async (_req, res) => {
   try {
-    const items = await db.select().from(galleryItems).orderBy(desc(galleryItems.createdAt));
+    const items = await db
+      .select()
+      .from(galleryItems)
+      .where(isNull(galleryItems.deletedAt))
+      .orderBy(desc(galleryItems.createdAt));
     res.json(items);
   } catch (err) {
     logger.error({ err }, "Get gallery error");
@@ -25,7 +30,9 @@ router.post("/gallery", requireAdmin, async (req, res) => {
       res.status(400).json({ error: "title and imageUrl are required" });
       return;
     }
-    const [item] = await db.insert(galleryItems).values({ title, imageUrl, category, eventDate: eventDate || null }).returning();
+    const [item] = await db.insert(galleryItems).values({
+      title, imageUrl, category, eventDate: eventDate || null,
+    }).returning();
     res.status(201).json(item);
   } catch (err) {
     logger.error({ err }, "Create gallery item error");
@@ -33,10 +40,14 @@ router.post("/gallery", requireAdmin, async (req, res) => {
   }
 });
 
-// DELETE /api/gallery/:id (admin)
+// DELETE /api/gallery/:id — soft delete (admin)
 router.delete("/gallery/:id", requireAdmin, async (req, res) => {
   try {
-    await db.delete(galleryItems).where(eq(galleryItems.id, Number(req.params.id)));
+    const id = Number(req.params.id);
+    await db
+      .update(galleryItems)
+      .set({ deletedAt: new Date() })
+      .where(and(eq(galleryItems.id, id), isNull(galleryItems.deletedAt)));
     res.json({ success: true });
   } catch (err) {
     logger.error({ err }, "Delete gallery item error");

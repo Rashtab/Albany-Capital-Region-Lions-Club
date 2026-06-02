@@ -1,19 +1,25 @@
 import { Router } from "express";
 import { db, blogPosts } from "@workspace/db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, isNull } from "drizzle-orm";
 import { requireAdmin } from "../middlewares/requireAdmin.js";
 import { logger } from "../lib/logger.js";
 
 const router = Router();
 
-// GET /api/blog — published posts only (public)
-// Guard: published = true AND status != 'draft'
+// GET /api/blog — published, non-deleted posts (public)
+// Guard: published = true AND status = 'published' AND deleted_at IS NULL
 router.get("/blog", async (_req, res) => {
   try {
     const posts = await db
       .select()
       .from(blogPosts)
-      .where(and(eq(blogPosts.published, true), eq(blogPosts.status, "published")))
+      .where(
+        and(
+          eq(blogPosts.published, true),
+          eq(blogPosts.status, "published"),
+          isNull(blogPosts.deletedAt),
+        ),
+      )
       .orderBy(desc(blogPosts.publishedAt));
     res.json(posts);
   } catch (err) {
@@ -25,7 +31,11 @@ router.get("/blog", async (_req, res) => {
 // GET /api/blog/all — all posts including drafts (admin only)
 router.get("/blog/all", requireAdmin, async (_req, res) => {
   try {
-    const posts = await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+    const posts = await db
+      .select()
+      .from(blogPosts)
+      .where(isNull(blogPosts.deletedAt))
+      .orderBy(desc(blogPosts.createdAt));
     res.json(posts);
   } catch (err) {
     logger.error({ err }, "Get all blog posts error");
@@ -33,8 +43,8 @@ router.get("/blog/all", requireAdmin, async (_req, res) => {
   }
 });
 
-// GET /api/blog/:slug — single published post (public)
-// Guard: published = true AND status = 'published' — never exposes drafts
+// GET /api/blog/:slug — single published, non-deleted post (public)
+// Guard: slug matches AND published = true AND status = 'published' AND deleted_at IS NULL
 router.get("/blog/:slug", async (req, res) => {
   try {
     const [post] = await db
@@ -45,6 +55,7 @@ router.get("/blog/:slug", async (req, res) => {
           eq(blogPosts.slug, req.params.slug),
           eq(blogPosts.published, true),
           eq(blogPosts.status, "published"),
+          isNull(blogPosts.deletedAt),
         ),
       )
       .limit(1);
@@ -89,7 +100,11 @@ router.put("/blog/:id", requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
     const { title, slug, content, excerpt, coverImageUrl, category, published, authorName, tags } = req.body;
-    const [existing] = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(blogPosts)
+      .where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt)))
+      .limit(1);
     if (!existing) { res.status(404).json({ error: "Post not found" }); return; }
     const now = new Date();
     const isPublished = Boolean(published);
@@ -101,7 +116,7 @@ router.put("/blog/:id", requireAdmin, async (req, res) => {
       status: isPublished ? "published" : "draft",
       publishedAt: isPublished && !existing.publishedAt ? now : existing.publishedAt,
       updatedAt: now,
-    }).where(eq(blogPosts.id, id)).returning();
+    }).where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt))).returning();
     res.json(post);
   } catch (err) {
     logger.error({ err }, "Update blog post error");
@@ -109,10 +124,14 @@ router.put("/blog/:id", requireAdmin, async (req, res) => {
   }
 });
 
-// DELETE /api/blog/:id (admin)
+// DELETE /api/blog/:id — soft delete (admin)
 router.delete("/blog/:id", requireAdmin, async (req, res) => {
   try {
-    await db.delete(blogPosts).where(eq(blogPosts.id, Number(req.params.id)));
+    const id = Number(req.params.id);
+    await db
+      .update(blogPosts)
+      .set({ deletedAt: new Date(), updatedAt: new Date() })
+      .where(and(eq(blogPosts.id, id), isNull(blogPosts.deletedAt)));
     res.json({ success: true });
   } catch (err) {
     logger.error({ err }, "Delete blog post error");

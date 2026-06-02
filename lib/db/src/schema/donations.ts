@@ -35,7 +35,12 @@ export const donations = pgTable("donations", {
   transactionId: text("transaction_id"),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  deletedAt: timestamp("deleted_at"),
 });
-export const insertDonationSchema = createInsertSchema(donations).omit({ id: true, createdAt: true });
+export const insertDonationSchema = createInsertSchema(donations).omit({
+  id: true,
+  createdAt: true,
+  deletedAt: true,
+});
 export type InsertDonation = z.infer<typeof insertDonationSchema>;
 export type Donation = typeof donations.$inferSelect;

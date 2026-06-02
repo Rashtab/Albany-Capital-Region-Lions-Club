@@ -18,7 +18,6 @@ export type InsertAdminUser = z.infer<typeof insertAdminUserSchema>;
 export type AdminUser = typeof adminUsers.$inferSelect;
 
 // ── Blog Posts ─────────────────────────────────────────────────
-// Extended: added authorId, authorName, tags, status (keeps published bool for backward compat)
 export const blogPosts = pgTable("blog_posts", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -35,13 +34,18 @@ export const blogPosts = pgTable("blog_posts", {
   status: text("status").default("draft"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  deletedAt: timestamp("deleted_at"),
 });
-export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true,
+});
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type BlogPost = typeof blogPosts.$inferSelect;
 
 // ── Calendar Events ────────────────────────────────────────────
-// Extended: added endDate, endTime, capacity, registrationRequired, status
 export const calendarEvents = pgTable("calendar_events", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -58,8 +62,13 @@ export const calendarEvents = pgTable("calendar_events", {
   registrationRequired: boolean("registration_required").default(false),
   status: text("status").default("active"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  deletedAt: timestamp("deleted_at"),
 });
-export const insertCalendarEventSchema = createInsertSchema(calendarEvents).omit({ id: true, createdAt: true });
+export const insertCalendarEventSchema = createInsertSchema(calendarEvents).omit({
+  id: true,
+  createdAt: true,
+  deletedAt: true,
+});
 export type InsertCalendarEvent = z.infer<typeof insertCalendarEventSchema>;
 export type CalendarEvent = typeof calendarEvents.$inferSelect;
 
@@ -72,8 +81,13 @@ export const magazines = pgTable("magazines", {
   description: text("description"),
   isCurrent: boolean("is_current").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  deletedAt: timestamp("deleted_at"),
 });
-export const insertMagazineSchema = createInsertSchema(magazines).omit({ id: true, createdAt: true });
+export const insertMagazineSchema = createInsertSchema(magazines).omit({
+  id: true,
+  createdAt: true,
+  deletedAt: true,
+});
 export type InsertMagazine = z.infer<typeof insertMagazineSchema>;
 export type Magazine = typeof magazines.$inferSelect;
 
@@ -85,7 +99,12 @@ export const galleryItems = pgTable("gallery_items", {
   category: text("category").default("General"),
   eventDate: date("event_date"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  deletedAt: timestamp("deleted_at"),
 });
-export const insertGalleryItemSchema = createInsertSchema(galleryItems).omit({ id: true, createdAt: true });
+export const insertGalleryItemSchema = createInsertSchema(galleryItems).omit({
+  id: true,
+  createdAt: true,
+  deletedAt: true,
+});
 export type InsertGalleryItem = z.infer<typeof insertGalleryItemSchema>;
 export type GalleryItem = typeof galleryItems.$inferSelect;
