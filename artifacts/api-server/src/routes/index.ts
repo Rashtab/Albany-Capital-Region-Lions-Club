@@ -10,6 +10,7 @@ import uploadRouter from "./upload.js";
 import sponsorsRouter from "./sponsors.js";
 import settingsRouter from "./settings.js";
 import projectsRouter from "./projects.js";
+import membersRouter from "./members.js";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(uploadRouter);
 router.use(sponsorsRouter);
 router.use(settingsRouter);
 router.use(projectsRouter);
+router.use(membersRouter);
 
 export default router;

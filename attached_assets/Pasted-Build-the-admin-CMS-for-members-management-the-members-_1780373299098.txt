@@ -1,0 +1,20 @@
+Build the admin CMS for members management — the members table currently has edit/delete API but no create endpoint and no admin UI at all. Important context: the members table is also the authentication table, so creating or editing a member means provisioning their login account, not just storing contact data. Handle this carefully.
+API endpoints, all gated by requirePermission("members"):
+	•	GET /api/members/all — admin list including inactive/soft-deleted-excluded as appropriate (return active by default, with a way to view inactive)
+	•	POST /api/members — create a member. Required: name, email, role. On create, either set an initial password (hashed with the same bcrypt setup the auth system already uses — inspect it, don’t introduce a second hashing method) or generate a one-time setup flow. Never store plaintext. Email must be unique.
+	•	PUT /api/members/:id — partial update of profile fields and role.
+	•	DELETE /api/members/:id — soft delete (set deletedAt), consistent with the rest of the schema.
+	•	A separate endpoint to reset/set a member’s password — admins set or trigger reset; never display existing password hashes anywhere.
+Critical guards — these must hold server-side:
+	•	The role field must only accept the existing valid roles (webmaster, president, secretary, treasurer, lcif_coordinator, director, member). Reject anything else.
+	•	The lockout guard from the access-control system must apply here too: creating, editing, role-changing, or soft-deleting a member must not remove the last holder of access_control/*. Reuse the existing wouldLoseLastAccessController check — do not write a parallel version.
+	•	A member must not be able to assign someone a role/permission set higher than what the acting admin can grant. Specifically, only a holder of access_control should be able to create or promote a member into the webmaster role. A members-permission holder who lacks access_control can manage ordinary members but cannot mint a super-admin. Enforce this server-side.
+	•	Never return password hashes in any API response.
+Admin screen at /admin/members:
+	•	List members with name, email, role, status; filter/search by name or role.
+	•	Create form: name, email, phone, role (dropdown of valid roles), visibility flag, and initial password handling.
+	•	Edit form: profile fields + role. Show the member’s effective permissions (read-only, derived from their role + any overrides) so the admin sees what the role grants.
+	•	Password reset action.
+	•	Soft-delete with confirmation; surface the lockout-guard error inline if blocked.
+	•	Surface the permission error inline if the acting user lacks members.
+Build the API + guards FIRST, demonstrate the guards firing (invalid role rejected, non-access_control admin blocked from creating a webmaster, lockout guard on the last controller, no hash in responses), then pause for me to confirm before building the UI.
