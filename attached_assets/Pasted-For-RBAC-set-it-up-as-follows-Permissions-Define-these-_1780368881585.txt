@@ -1,0 +1,15 @@
+For RBAC, set it up as follows.
+Permissions. Define these permissions: content, projects, events, members, sponsors, donations, documents, settings, access_control, and a wildcard *. The permission-check middleware must treat * as satisfying ANY permission check (don’t just match the literal string — a holder of * passes every gate).
+Role mapping (editable, not hardcoded). Store the role-to-permission mapping in a role_permissions table (columns: role, permission, plus timestamps) so it’s editable at runtime — do NOT hardcode it in code. Seed these defaults:
+	•	webmaster → *
+	•	president → content, projects, events, members, sponsors, donations, documents, settings
+	•	secretary → content, projects, events, members, documents
+	•	treasurer → donations, sponsors
+	•	lcif_coordinator → donations, projects, events
+	•	member → none
+Per-member overrides. Add a member_permissions table (columns: member_id FK to members, permission, granted boolean, plus timestamps) for individual overrides on top of role defaults. granted = true adds a permission a member’s role doesn’t have; granted = false revokes one their role does have. The effective permission check for a member should be: start from their role’s permissions in role_permissions, then apply their member_permissions overrides (true adds, false removes). A * from either source passes everything.
+Webmaster account. Create a webmaster super-admin account for me — ask me for the email and password to set, take them as secrets, do not hardcode credentials.
+Wire the routes. Gate each CRUD route with requirePermission(...) reading from these tables (not hardcoded role checks): content gates blog/gallery, projects gates projects, events gates calendar, sponsors gates sponsors, donations gates donations, documents gates documents, settings gates site settings.
+Lockout guard (critical). The system must never end up with zero accounts able to manage access. Enforce this: any operation that would remove the last remaining holder of access_control (or *) — whether by editing role_permissions, setting a member_permissions override to granted = false, deleting/soft-deleting that member, or changing their role — must be blocked with a clear error (“Cannot remove the last access-control administrator”). Check this at the point of the write, server-side.
+Build order. Build the role_permissions table, member_permissions table, the effective-permission-check middleware (with * handling and override logic), and the lockout guard FIRST. Then pause and let me confirm all of that works before building the Access Control UI screen. Do not build the UI in this step.
+The Access Control UI (next step, after I confirm) will be visible only to holders of access_control: a checkbox grid of every permission per role, plus a section for per-member overrides, with changes taking effect immediately.
