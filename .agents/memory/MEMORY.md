@@ -1,0 +1,2 @@
+---
+- [Dual admin auth systems](dual-auth-systems.md) — JWT+admin_users (old CRUD pages) and session+members (new portal) coexist; never mix them.
