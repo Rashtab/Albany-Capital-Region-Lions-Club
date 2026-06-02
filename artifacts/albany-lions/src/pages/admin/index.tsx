@@ -71,13 +71,6 @@ const SECTION_TILES: SectionTile[] = [
     description: "Review donation records and fundraising activity.",
     color: "bg-emerald-600",
   },
-  {
-    permission: "sponsors",
-    icon: Handshake,
-    title: "Sponsors",
-    description: "Manage sponsor listings, tiers, and contact details.",
-    color: "bg-orange-600",
-  },
 ];
 
 const fadeUp = {
@@ -245,6 +238,30 @@ export default function AdminDashboard() {
                 </div>
               </motion.div>
             ))}
+
+            {/* Sponsors tile — live */}
+            {hasPermission(member, "sponsors") && (
+              <motion.div
+                custom={visibleTiles.length}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+              >
+                <Link href="/admin/sponsors" className="block">
+                  <div className="bg-card border border-border rounded-xl p-5 flex items-start gap-4 hover:border-primary/40 hover:bg-primary/5 transition-colors cursor-pointer">
+                    <div className="bg-orange-600 text-white rounded-xl p-2.5 shrink-0">
+                      <Handshake className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-sm text-foreground">Sponsors</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Manage sponsor listings, tiers, and contact details.
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
 
             {/* Access Control tile — visible only to access_control holders */}
             {hasPermission(member, "access_control") && (

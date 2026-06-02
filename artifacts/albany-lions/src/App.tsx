@@ -32,6 +32,7 @@ import AdminMagazine from "@/pages/admin/magazine";
 import AdminGallery from "@/pages/admin/gallery";
 import AdminProfile from "@/pages/admin/profile";
 import AdminAccessControl from "@/pages/admin/access-control";
+import AdminSponsors from "@/pages/admin/sponsors";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ function App() {
             <Route path="/admin/gallery" component={AdminGallery} />
             <Route path="/admin/profile" component={AdminProfile} />
             <Route path="/admin/access-control" component={AdminAccessControl} />
+            <Route path="/admin/sponsors" component={AdminSponsors} />
             <Route path="/admin" component={AdminDashboard} />
             {/* Public routes */}
             <Route component={PublicRouter} />
