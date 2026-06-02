@@ -212,10 +212,35 @@ export default function AdminDashboard() {
             Management Sections
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {visibleTiles.map((tile, i) => (
+
+            {/* Members tile — live */}
+            {hasPermission(member, "members") && (
+              <motion.div
+                custom={0}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+              >
+                <Link href="/admin/members" className="block">
+                  <div className="bg-card border border-border rounded-xl p-5 flex items-start gap-4 hover:border-primary/40 hover:bg-primary/5 transition-colors cursor-pointer">
+                    <div className="bg-blue-600 text-white rounded-xl p-2.5 shrink-0">
+                      <Users className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-sm text-foreground">Members</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Manage the member roster, roles, and contact information.
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+
+            {visibleTiles.filter((t) => t.permission !== "members").map((tile, i) => (
               <motion.div
                 key={tile.title}
-                custom={i}
+                custom={i + 1}
                 initial="hidden"
                 animate="visible"
                 variants={fadeUp}

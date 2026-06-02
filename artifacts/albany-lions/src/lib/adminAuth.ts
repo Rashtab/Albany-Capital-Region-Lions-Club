@@ -16,6 +16,8 @@ export const ROLE_LABELS: Record<string, string> = {
   secretary: "Secretary",
   treasurer: "Treasurer",
   lcif_coordinator: "LCIF Coordinator",
+  director: "Director",
+  member: "Member",
 };
 
 export const ROLE_COLORS: Record<string, string> = {

@@ -8,6 +8,7 @@ import {
   updateMember,
   softDeleteMember,
   getEffectivePermissions,
+  getRolePermissions,
   wouldLoseLastAccessController,
 } from "@workspace/db";
 import { requireMemberAdmin, requirePermission } from "../middlewares/requireMemberAdmin.js";
@@ -208,7 +209,6 @@ router.put(
         const holdsAC = await memberHoldsAccessControl(id, member.role ?? "");
         if (holdsAC) {
           // Check if new role still grants AC (accounting only for role perms — overrides stay)
-          const { getRolePermissions } = await import("@workspace/db");
           const newRolePerms = await getRolePermissions(targetRole);
           const newRoleGrantsAC = newRolePerms.includes("*") || newRolePerms.includes("access_control");
           if (!newRoleGrantsAC) {
@@ -311,6 +311,26 @@ router.post(
     } catch (err) {
       logger.error({ err }, "Set member password error");
       res.status(500).json({ error: "Failed to set password" });
+    }
+  },
+);
+
+// ── GET /api/members/:id/permissions ────────────────────────────
+// Returns the member's computed effective permissions (role + overrides).
+router.get(
+  "/members/:id/permissions",
+  requireMemberAdmin,
+  requirePermission("members"),
+  async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+      const member = await getMemberById(id);
+      if (!member) { res.status(404).json({ error: "Member not found" }); return; }
+      const permissions = await getEffectivePermissions(id, member.role ?? "");
+      res.json({ permissions });
+    } catch (err) {
+      logger.error({ err }, "Get member permissions error");
+      res.status(500).json({ error: "Failed to fetch permissions" });
     }
   },
 );
