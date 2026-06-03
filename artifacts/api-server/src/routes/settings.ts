@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getSettings } from "@workspace/db";
+import { getSettings, setSetting } from "@workspace/db";
 import { requireMemberAdmin, requirePermission } from "../middlewares/requireMemberAdmin.js";
 
 const router = Router();
@@ -27,7 +27,7 @@ const DEFAULTS: Record<string, string> = {
 
 const PUBLIC_KEYS = Object.keys(DEFAULTS);
 
-// GET /api/site-settings — public
+// ── GET /api/site-settings — public (unchanged) ─────────────────
 router.get("/site-settings", async (req, res) => {
   try {
     const raw = await getSettings(PUBLIC_KEYS);
@@ -42,7 +42,88 @@ router.get("/site-settings", async (req, res) => {
   }
 });
 
-// Future write routes for settings will use requirePermission("settings")
-export { requireMemberAdmin, requirePermission };
+// ── GET /api/admin/site-settings — admin read ───────────────────
+// Returns effective values (DB value if set, DEFAULTS fallback if null)
+// for all known PUBLIC_KEYS. Also returns the DEFAULTS map so the
+// client can detect which fields are using fallbacks vs explicit values.
+router.get(
+  "/admin/site-settings",
+  requireMemberAdmin,
+  requirePermission("settings"),
+  async (req, res) => {
+    try {
+      const raw = await getSettings(PUBLIC_KEYS);
+      const values: Record<string, string> = {};
+      const usingDefault: Record<string, boolean> = {};
 
+      for (const key of PUBLIC_KEYS) {
+        if (raw[key] !== null) {
+          values[key] = raw[key] as string;
+          usingDefault[key] = false;
+        } else {
+          values[key] = DEFAULTS[key] ?? "";
+          usingDefault[key] = true;
+        }
+      }
+
+      res.json({ values, defaults: DEFAULTS, usingDefault });
+    } catch (err) {
+      req.log.error({ err }, "Failed to fetch admin site settings");
+      res.status(500).json({ error: "Failed to fetch settings" });
+    }
+  },
+);
+
+// ── PUT /api/admin/site-settings — upsert settings ─────────────
+// Body: { key: value, ... } — all keys must be in PUBLIC_KEYS.
+// Blank string is a valid deliberate value (saves "" to DB, overrides DEFAULTS).
+// Unknown keys are rejected to prevent orphan settings.
+router.put(
+  "/admin/site-settings",
+  requireMemberAdmin,
+  requirePermission("settings"),
+  async (req, res) => {
+    const body = req.body as Record<string, unknown>;
+
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      res.status(400).json({ error: "Body must be a JSON object of key/value pairs" });
+      return;
+    }
+
+    const submitted = Object.keys(body);
+    if (submitted.length === 0) {
+      res.status(400).json({ error: "No settings provided" });
+      return;
+    }
+
+    // Reject unknown keys
+    const unknown = submitted.filter((k) => !PUBLIC_KEYS.includes(k));
+    if (unknown.length > 0) {
+      res.status(400).json({
+        error: `Unknown setting key${unknown.length > 1 ? "s" : ""}: ${unknown.join(", ")}`,
+      });
+      return;
+    }
+
+    // Validate all values are strings
+    for (const [key, val] of Object.entries(body)) {
+      if (typeof val !== "string") {
+        res.status(400).json({ error: `Value for "${key}" must be a string` });
+        return;
+      }
+    }
+
+    try {
+      for (const [key, val] of Object.entries(body)) {
+        await setSetting(key, val as string);
+      }
+      res.json({ success: true, updated: submitted });
+    } catch (err) {
+      req.log.error({ err }, "Failed to update site settings");
+      res.status(500).json({ error: "Failed to save settings" });
+    }
+  },
+);
+
+export { requireMemberAdmin, requirePermission };
 export default router;

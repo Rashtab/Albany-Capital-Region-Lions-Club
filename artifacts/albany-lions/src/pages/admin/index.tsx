@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Shield, ShieldCheck, LogOut, ExternalLink, Loader2,
   Users, Calendar, PenLine, Images, BookOpen,
-  DollarSign, Handshake, CheckCircle2, Lock,
+  DollarSign, Handshake, CheckCircle2, Lock, Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -305,6 +305,30 @@ export default function AdminDashboard() {
                       <p className="font-bold text-sm text-foreground">Access Control</p>
                       <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                         Manage role permissions and per-member overrides.
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+
+            {/* Site Settings tile — visible only to settings permission holders */}
+            {hasPermission(member, "settings") && (
+              <motion.div
+                custom={visibleTiles.length + 1}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+              >
+                <Link href="/admin/settings" className="block">
+                  <div className="bg-card border border-border rounded-xl p-5 flex items-start gap-4 hover:border-primary/40 hover:bg-primary/5 transition-colors cursor-pointer">
+                    <div className="bg-primary text-primary-foreground rounded-xl p-2.5 shrink-0">
+                      <Settings className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-sm text-foreground">Site Settings</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Edit headlines, contact info, meeting details, and social links.
                       </p>
                     </div>
                   </div>
