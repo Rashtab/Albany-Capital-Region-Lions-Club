@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { serviceAreas, dignitaries, sponsorshipTiers, clubInfo } from "@/data/clubData";
 import { DignitaryModal } from "@/components/DignitaryModal";
 import { apiFetch } from "@/lib/auth";
-import heroBanner from "@assets/banner_without_text_1777739378649.png";
+import heroBanner from "@assets/banner_hero_optimized.webp";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import zohranPhoto from "@assets/Zohran_Mamdani_1777751125798.jpg";
 import dorceyPhoto from "@assets/Dr._Dorcey_L._Applyrs_1777751283434.jpg";
@@ -96,6 +96,8 @@ export default function Home() {
         <img
           src={heroBanner}
           alt="Albany Capital Region Lions Club"
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-primary/75" />

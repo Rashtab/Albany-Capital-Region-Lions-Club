@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageMeta } from "@/components/PageMeta";
 import { Camera, Calendar, FolderOpen, ImageOff, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+
+// ── Full-resolution originals (used only in the lightbox) ────────────────────
 import eidPhoto1 from "@assets/660302350_27351706501086056_6964347259712242193_n_1777737102946.jpg";
 import eidPhoto2 from "@assets/660312857_27351712484418791_1133339746705830951_n_1777737102946.jpg";
 import eidPhoto3 from "@assets/661679011_27351706741086032_2203451379640769336_n_1777737102947.jpg";
@@ -25,16 +27,6 @@ import bangladeshPhoto10 from "@assets/DSC_0036_1777737014661.jpg";
 import bangladeshPhoto11 from "@assets/DSC_0061_1777737014661.jpg";
 import bangladeshPhoto12 from "@assets/IMG_0176~photo_1777737014661.JPG";
 import springPhoto1 from "@assets/657170638_27329824959940877_7160008379873549711_n_1777736796621.jpg";
-import springPhoto15 from "@assets/660532668_27329815713275135_8307670286658515926_n_1777736906026.jpg";
-import springPhoto16 from "@assets/660970208_27329815199941853_5232342538291491060_n_1777736906026.jpg";
-import springPhoto17 from "@assets/661047750_27342935765296463_6855499252572700307_n_1777736906026.jpg";
-import springPhoto18 from "@assets/661213735_27329821953274511_2613966495426069028_n_1777736906027.jpg";
-import springPhoto19 from "@assets/662403874_27329811583275548_6050078312485094749_n_1777736906027.jpg";
-import springPhoto20 from "@assets/662509903_27329817939941579_7055871740958051907_n_1777736906027.jpg";
-import springPhoto21 from "@assets/663042370_27329814116608628_8525675026473977089_n_1777736906028.jpg";
-import springPhoto22 from "@assets/DSC_0784_1777736906028.jpg";
-import springPhoto23 from "@assets/DSC_0805_1777736906028.jpg";
-import springPhoto24 from "@assets/WhatsApp_Image_2026-04-18_at_4.51.41_AM_1777736906029.jpeg";
 import springPhoto2 from "@assets/658138737_27329818183274888_5144718517033310575_n_1777736796622.jpg";
 import springPhoto3 from "@assets/658368733_27329813153275391_7675333575341318947_n_1777736796622.jpg";
 import springPhoto4 from "@assets/658953008_27329812339942139_6719885944769756001_n_1777736796622.jpg";
@@ -48,6 +40,16 @@ import springPhoto11 from "@assets/659827450_27338064329116940_79360537858957685
 import springPhoto12 from "@assets/659829676_27338067249116648_1986983784978650012_n_1777736805937.jpg";
 import springPhoto13 from "@assets/659838771_27329812919942081_5536429888456845101_n_1777736805937.jpg";
 import springPhoto14 from "@assets/660159449_27329829713273735_2326270760096400055_n_1777736805938.jpg";
+import springPhoto15 from "@assets/660532668_27329815713275135_8307670286658515926_n_1777736906026.jpg";
+import springPhoto16 from "@assets/660970208_27329815199941853_5232342538291491060_n_1777736906026.jpg";
+import springPhoto17 from "@assets/661047750_27342935765296463_6855499252572700307_n_1777736906026.jpg";
+import springPhoto18 from "@assets/661213735_27329821953274511_2613966495426069028_n_1777736906027.jpg";
+import springPhoto19 from "@assets/662403874_27329811583275548_6050078312485094749_n_1777736906027.jpg";
+import springPhoto20 from "@assets/662509903_27329817939941579_7055871740958051907_n_1777736906027.jpg";
+import springPhoto21 from "@assets/663042370_27329814116608628_8525675026473977089_n_1777736906028.jpg";
+import springPhoto22 from "@assets/DSC_0784_1777736906028.jpg";
+import springPhoto23 from "@assets/DSC_0805_1777736906028.jpg";
+import springPhoto24 from "@assets/WhatsApp_Image_2026-04-18_at_4.51.41_AM_1777736906029.jpeg";
 import districtPhoto1 from "@assets/_DSC4848_1777736679657.JPG";
 import districtPhoto2 from "@assets/651138768_27123701403886568_1823916708111424254_n_1777736679657.jpg";
 import districtPhoto3 from "@assets/WhatsApp_Image_2026-04-24_at_1.31.09_AM_1777736679657.jpeg";
@@ -65,6 +67,70 @@ import iftarPhoto1 from "@assets/647084174_27055032814086761_5907395881288517276
 import iftarPhoto2 from "@assets/648101133_27055032100753499_8094953426604179726_n_1777736424851.jpg";
 import iftarPhoto3 from "@assets/649531670_27055033367420039_3542110652252670645_n_1777736424851.jpg";
 
+// ── WebP thumbnails — 480 px wide, used in the grid (explicit static imports
+//    so Vite fingerprints them correctly in production builds) ─────────────────
+import eidPhoto1Thumb from "@assets/thumbnails/660302350_27351706501086056_6964347259712242193_n_1777737102946.webp";
+import eidPhoto2Thumb from "@assets/thumbnails/660312857_27351712484418791_1133339746705830951_n_1777737102946.webp";
+import eidPhoto3Thumb from "@assets/thumbnails/661679011_27351706741086032_2203451379640769336_n_1777737102947.webp";
+import eidPhoto4Thumb from "@assets/thumbnails/661940042_27351705901086116_3208867297445150570_n_1777737102947.webp";
+import eidPhoto5Thumb from "@assets/thumbnails/661999974_27351710474418992_7778557972642127946_n_1777737102947.webp";
+import eidPhoto6Thumb from "@assets/thumbnails/662299240_27351713694418670_3924625390615541126_n_1777737102947.webp";
+import eidPhoto7Thumb from "@assets/thumbnails/662557547_27351706257752747_654196626627361434_n_1777737102948.webp";
+import eidPhoto8Thumb from "@assets/thumbnails/662651788_27351705661086140_1970818503690945375_n_1777737102948.webp";
+import eidPhoto9Thumb from "@assets/thumbnails/663392265_27351718824418157_1639878535471500215_n_1777737102948.webp";
+import bangladeshPhoto1Thumb from "@assets/thumbnails/654920156_27236604242596283_4619469104950022459_n_1777737014658.webp";
+import bangladeshPhoto2Thumb from "@assets/thumbnails/655647114_27236602609263113_4884393155647146208_n_1777737014659.webp";
+import bangladeshPhoto3Thumb from "@assets/thumbnails/655921593_27236601795929861_2995428896969278720_n_1777737014659.webp";
+import bangladeshPhoto4Thumb from "@assets/thumbnails/656439556_27236603982596309_2283481694874313580_n_1777737014659.webp";
+import bangladeshPhoto5Thumb from "@assets/thumbnails/656977872_27236604639262910_4883503647491506412_n_1777737014659.webp";
+import bangladeshPhoto6Thumb from "@assets/thumbnails/657518596_27236602432596464_3393425326490924330_n_1777737014660.webp";
+import bangladeshPhoto7Thumb from "@assets/thumbnails/657677275_27236602002596507_5436907802804670794_n_1777737014660.webp";
+import bangladeshPhoto8Thumb from "@assets/thumbnails/DSC_0027_1777737014660.webp";
+import bangladeshPhoto9Thumb from "@assets/thumbnails/DSC_0035_1777737014661.webp";
+import bangladeshPhoto10Thumb from "@assets/thumbnails/DSC_0036_1777737014661.webp";
+import bangladeshPhoto11Thumb from "@assets/thumbnails/DSC_0061_1777737014661.webp";
+import bangladeshPhoto12Thumb from "@assets/thumbnails/IMG_0176~photo_1777737014661.webp";
+import springPhoto1Thumb from "@assets/thumbnails/657170638_27329824959940877_7160008379873549711_n_1777736796621.webp";
+import springPhoto2Thumb from "@assets/thumbnails/658138737_27329818183274888_5144718517033310575_n_1777736796622.webp";
+import springPhoto3Thumb from "@assets/thumbnails/658368733_27329813153275391_7675333575341318947_n_1777736796622.webp";
+import springPhoto4Thumb from "@assets/thumbnails/658953008_27329812339942139_6719885944769756001_n_1777736796622.webp";
+import springPhoto5Thumb from "@assets/thumbnails/659080083_27329814346608605_345116296583840873_n_1777736796622.webp";
+import springPhoto6Thumb from "@assets/thumbnails/659080083_27329819236608116_8403862632037547446_n_1777736796622.webp";
+import springPhoto7Thumb from "@assets/thumbnails/659142810_27329814616608578_7127971519937103089_n_1777736796623.webp";
+import springPhoto8Thumb from "@assets/thumbnails/659142988_27329831493273557_8666769162277819709_n_1777736805936.webp";
+import springPhoto9Thumb from "@assets/thumbnails/659190846_27338065105783529_5936683302501544713_n_1777736805936.webp";
+import springPhoto10Thumb from "@assets/thumbnails/659634467_27329829429940430_2589865739915104268_n_1777736805937.webp";
+import springPhoto11Thumb from "@assets/thumbnails/659827450_27338064329116940_7936053785895768580_n_1777736805937.webp";
+import springPhoto12Thumb from "@assets/thumbnails/659829676_27338067249116648_1986983784978650012_n_1777736805937.webp";
+import springPhoto13Thumb from "@assets/thumbnails/659838771_27329812919942081_5536429888456845101_n_1777736805937.webp";
+import springPhoto14Thumb from "@assets/thumbnails/660159449_27329829713273735_2326270760096400055_n_1777736805938.webp";
+import springPhoto15Thumb from "@assets/thumbnails/660532668_27329815713275135_8307670286658515926_n_1777736906026.webp";
+import springPhoto16Thumb from "@assets/thumbnails/660970208_27329815199941853_5232342538291491060_n_1777736906026.webp";
+import springPhoto17Thumb from "@assets/thumbnails/661047750_27342935765296463_6855499252572700307_n_1777736906026.webp";
+import springPhoto18Thumb from "@assets/thumbnails/661213735_27329821953274511_2613966495426069028_n_1777736906027.webp";
+import springPhoto19Thumb from "@assets/thumbnails/662403874_27329811583275548_6050078312485094749_n_1777736906027.webp";
+import springPhoto20Thumb from "@assets/thumbnails/662509903_27329817939941579_7055871740958051907_n_1777736906027.webp";
+import springPhoto21Thumb from "@assets/thumbnails/663042370_27329814116608628_8525675026473977089_n_1777736906028.webp";
+import springPhoto22Thumb from "@assets/thumbnails/DSC_0784_1777736906028.webp";
+import springPhoto23Thumb from "@assets/thumbnails/DSC_0805_1777736906028.webp";
+import springPhoto24Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-18_at_4.51.41_AM_1777736906029.webp";
+import districtPhoto1Thumb from "@assets/thumbnails/_DSC4848_1777736679657.webp";
+import districtPhoto2Thumb from "@assets/thumbnails/651138768_27123701403886568_1823916708111424254_n_1777736679657.webp";
+import districtPhoto3Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_1.31.09_AM_1777736679657.webp";
+import districtPhoto4Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_1.31.21_AM_(3)_1777736679657.webp";
+import districtPhoto5Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.55_AM_1777736679658.webp";
+import districtPhoto6Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(1)_1777736679658.webp";
+import districtPhoto7Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(2)_1777736679658.webp";
+import districtPhoto8Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(3)_1777736679658.webp";
+import districtPhoto9Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(4)_1777736679659.webp";
+import districtPhoto10Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.56_AM_(5)_1777736679659.webp";
+import districtPhoto11Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_10.01.56_AM_1777736679659.webp";
+import districtPhoto12Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_11.32.02_AM_(1)_1777736679659.webp";
+import districtPhoto13Thumb from "@assets/thumbnails/WhatsApp_Image_2026-04-24_at_11.32.02_AM_1777736679660.webp";
+import iftarPhoto1Thumb from "@assets/thumbnails/647084174_27055032814086761_5907395881288517276_n_1777736424850.webp";
+import iftarPhoto2Thumb from "@assets/thumbnails/648101133_27055032100753499_8094953426604179726_n_1777736424851.webp";
+import iftarPhoto3Thumb from "@assets/thumbnails/649531670_27055033367420039_3542110652252670645_n_1777736424851.webp";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
@@ -73,10 +139,11 @@ const fadeUp = {
   }),
 };
 
-// ── Albums — add photo imports to `photos` array when ready ──────────────────
-// To add photos: import the image file and push it into the album's photos array
-// Example: import charterPhoto1 from "@assets/charter-1.jpg";
-//          then add `{ src: charterPhoto1, caption: "..." }` to photos array
+// ── Albums ────────────────────────────────────────────────────────────────────
+// Each photo has:
+//   src         — full-resolution original (loaded on-demand by the lightbox)
+//   thumbnailSrc — 480 px WebP thumbnail (used in the grid, lazy-loaded)
+//   caption     — optional alt/caption text
 
 const albums = [
   {
@@ -85,10 +152,7 @@ const albums = [
     date: "April 26, 2026",
     category: "Milestone",
     description: "The historic founding and installation ceremony of the Albany Capital Region Lions Club.",
-    photos: [
-      // Add photos here when available
-      // { src: charterPhoto1, caption: "Installation ceremony" },
-    ],
+    photos: [] as Array<{ src: string; thumbnailSrc: string; caption?: string }>,
   },
   {
     id: 2,
@@ -97,19 +161,19 @@ const albums = [
     category: "District Event",
     description: "Lions Club International District 20-R2 second annual meeting attended by our club members.",
     photos: [
-      { src: districtPhoto6, caption: "Second District 20-R2 General Meeting" },
-      { src: districtPhoto7, caption: "District leadership at the head table" },
-      { src: districtPhoto8, caption: "Address at the District General Meeting" },
-      { src: districtPhoto5, caption: "Pin presentation ceremony" },
-      { src: districtPhoto1, caption: "Pin presentation at District 20-R2 Annual Meeting" },
-      { src: districtPhoto4, caption: "District Governor pins a member" },
-      { src: districtPhoto3, caption: "Pin ceremony — District 20-R2 Meeting" },
-      { src: districtPhoto9, caption: "Presentation at the podium" },
-      { src: districtPhoto10, caption: "Pin presentation and recognition" },
-      { src: districtPhoto11, caption: "Members with the District flag display" },
-      { src: districtPhoto12, caption: "Pin ceremony — District 20-R2 Meeting" },
-      { src: districtPhoto2, caption: "Club members at the District meeting" },
-      { src: districtPhoto13, caption: "Albany Lions members at the District Annual Meeting" },
+      { src: districtPhoto6, thumbnailSrc: districtPhoto6Thumb, caption: "Second District 20-R2 General Meeting" },
+      { src: districtPhoto7, thumbnailSrc: districtPhoto7Thumb, caption: "District leadership at the head table" },
+      { src: districtPhoto8, thumbnailSrc: districtPhoto8Thumb, caption: "Address at the District General Meeting" },
+      { src: districtPhoto5, thumbnailSrc: districtPhoto5Thumb, caption: "Pin presentation ceremony" },
+      { src: districtPhoto1, thumbnailSrc: districtPhoto1Thumb, caption: "Pin presentation at District 20-R2 Annual Meeting" },
+      { src: districtPhoto4, thumbnailSrc: districtPhoto4Thumb, caption: "District Governor pins a member" },
+      { src: districtPhoto3, thumbnailSrc: districtPhoto3Thumb, caption: "Pin ceremony — District 20-R2 Meeting" },
+      { src: districtPhoto9, thumbnailSrc: districtPhoto9Thumb, caption: "Presentation at the podium" },
+      { src: districtPhoto10, thumbnailSrc: districtPhoto10Thumb, caption: "Pin presentation and recognition" },
+      { src: districtPhoto11, thumbnailSrc: districtPhoto11Thumb, caption: "Members with the District flag display" },
+      { src: districtPhoto12, thumbnailSrc: districtPhoto12Thumb, caption: "Pin ceremony — District 20-R2 Meeting" },
+      { src: districtPhoto2, thumbnailSrc: districtPhoto2Thumb, caption: "Club members at the District meeting" },
+      { src: districtPhoto13, thumbnailSrc: districtPhoto13Thumb, caption: "Albany Lions members at the District Annual Meeting" },
     ],
   },
   {
@@ -119,9 +183,9 @@ const albums = [
     category: "Community",
     description: "A warm Iftar gathering bringing our Lions family and community together during Ramadan.",
     photos: [
-      { src: iftarPhoto1, caption: "Lions members at Iftar gathering" },
-      { src: iftarPhoto2, caption: "Iftar Get Together — March 7, 2026" },
-      { src: iftarPhoto3, caption: "Club members celebrating Iftar together" },
+      { src: iftarPhoto1, thumbnailSrc: iftarPhoto1Thumb, caption: "Lions members at Iftar gathering" },
+      { src: iftarPhoto2, thumbnailSrc: iftarPhoto2Thumb, caption: "Iftar Get Together — March 7, 2026" },
+      { src: iftarPhoto3, thumbnailSrc: iftarPhoto3Thumb, caption: "Club members celebrating Iftar together" },
     ],
   },
   {
@@ -131,30 +195,30 @@ const albums = [
     category: "Convention",
     description: "District 20-R2 Spring Convention — Lions leaders from across the district united for service.",
     photos: [
-      { src: springPhoto9, caption: "Lion Sonia Mahtab at the Spring Convention step-and-repeat" },
-      { src: springPhoto12, caption: "President Sonia Mahtab at District 20-R2 Spring Convention" },
-      { src: springPhoto4, caption: "Lion Sonia Mahtab receives Award of Excellence" },
-      { src: springPhoto3, caption: "Charter presentation — Albany Capital Region Lions Club" },
-      { src: springPhoto5, caption: "Charter reading ceremony — Spring Convention" },
-      { src: springPhoto7, caption: "Albany Lions members at the Spring Convention" },
-      { src: springPhoto1, caption: "Albany Lions delegation at the District 20-R2 Spring Convention" },
-      { src: springPhoto6, caption: "Gift presentation — Spring Convention" },
-      { src: springPhoto10, caption: "Award presentation — Spring Convention" },
-      { src: springPhoto2, caption: "International Director Nazmul Haque recognition ceremony" },
-      { src: springPhoto8, caption: "Presentation with International Director" },
-      { src: springPhoto13, caption: "Recognition ceremony — Spring Convention" },
-      { src: springPhoto14, caption: "Club charter and award presentation" },
-      { src: springPhoto11, caption: "President Sonia Mahtab with the Lions flag display" },
-      { src: springPhoto15, caption: "Albany Lions officers at the Spring Convention step-and-repeat" },
-      { src: springPhoto16, caption: "With International Director Nazmul Haque — Spring Convention" },
-      { src: springPhoto17, caption: "President Sonia Mahtab and 1st VP Ahsan Habib — Spring Convention" },
-      { src: springPhoto18, caption: "Albany Lions members at District 20-R2 Spring Convention" },
-      { src: springPhoto19, caption: "President Sonia Mahtab at the Spring Convention step-and-repeat" },
-      { src: springPhoto20, caption: "Albany Lions officers — Spring Convention" },
-      { src: springPhoto21, caption: "Recognition ceremony with International Director" },
-      { src: springPhoto22, caption: "President Sonia Mahtab with fellow Lions at Leonard's Palazzo" },
-      { src: springPhoto23, caption: "Albany Lions officers at Leonard's Palazzo" },
-      { src: springPhoto24, caption: "Albany Lions members at the Spring Convention" },
+      { src: springPhoto9,  thumbnailSrc: springPhoto9Thumb,  caption: "Lion Sonia Mahtab at the Spring Convention step-and-repeat" },
+      { src: springPhoto12, thumbnailSrc: springPhoto12Thumb, caption: "President Sonia Mahtab at District 20-R2 Spring Convention" },
+      { src: springPhoto4,  thumbnailSrc: springPhoto4Thumb,  caption: "Lion Sonia Mahtab receives Award of Excellence" },
+      { src: springPhoto3,  thumbnailSrc: springPhoto3Thumb,  caption: "Charter presentation — Albany Capital Region Lions Club" },
+      { src: springPhoto5,  thumbnailSrc: springPhoto5Thumb,  caption: "Charter reading ceremony — Spring Convention" },
+      { src: springPhoto7,  thumbnailSrc: springPhoto7Thumb,  caption: "Albany Lions members at the Spring Convention" },
+      { src: springPhoto1,  thumbnailSrc: springPhoto1Thumb,  caption: "Albany Lions delegation at the District 20-R2 Spring Convention" },
+      { src: springPhoto6,  thumbnailSrc: springPhoto6Thumb,  caption: "Gift presentation — Spring Convention" },
+      { src: springPhoto10, thumbnailSrc: springPhoto10Thumb, caption: "Award presentation — Spring Convention" },
+      { src: springPhoto2,  thumbnailSrc: springPhoto2Thumb,  caption: "International Director Nazmul Haque recognition ceremony" },
+      { src: springPhoto8,  thumbnailSrc: springPhoto8Thumb,  caption: "Presentation with International Director" },
+      { src: springPhoto13, thumbnailSrc: springPhoto13Thumb, caption: "Recognition ceremony — Spring Convention" },
+      { src: springPhoto14, thumbnailSrc: springPhoto14Thumb, caption: "Club charter and award presentation" },
+      { src: springPhoto11, thumbnailSrc: springPhoto11Thumb, caption: "President Sonia Mahtab with the Lions flag display" },
+      { src: springPhoto15, thumbnailSrc: springPhoto15Thumb, caption: "Albany Lions officers at the Spring Convention step-and-repeat" },
+      { src: springPhoto16, thumbnailSrc: springPhoto16Thumb, caption: "With International Director Nazmul Haque — Spring Convention" },
+      { src: springPhoto17, thumbnailSrc: springPhoto17Thumb, caption: "President Sonia Mahtab and 1st VP Ahsan Habib — Spring Convention" },
+      { src: springPhoto18, thumbnailSrc: springPhoto18Thumb, caption: "Albany Lions members at District 20-R2 Spring Convention" },
+      { src: springPhoto19, thumbnailSrc: springPhoto19Thumb, caption: "President Sonia Mahtab at the Spring Convention step-and-repeat" },
+      { src: springPhoto20, thumbnailSrc: springPhoto20Thumb, caption: "Albany Lions officers — Spring Convention" },
+      { src: springPhoto21, thumbnailSrc: springPhoto21Thumb, caption: "Recognition ceremony with International Director" },
+      { src: springPhoto22, thumbnailSrc: springPhoto22Thumb, caption: "President Sonia Mahtab with fellow Lions at Leonard's Palazzo" },
+      { src: springPhoto23, thumbnailSrc: springPhoto23Thumb, caption: "Albany Lions officers at Leonard's Palazzo" },
+      { src: springPhoto24, thumbnailSrc: springPhoto24Thumb, caption: "Albany Lions members at the Spring Convention" },
     ],
   },
   {
@@ -164,18 +228,18 @@ const albums = [
     category: "Cultural",
     description: "Celebrating Bangladesh Independence Day at the Albany State Capitol — a proud moment for our community.",
     photos: [
-      { src: bangladeshPhoto12, caption: "56th Bangladesh Independence Day Celebration in Albany — March 24, 2026" },
-      { src: bangladeshPhoto8, caption: "Community delegation at the Albany State Capitol staircase" },
-      { src: bangladeshPhoto3, caption: "56th Bangladesh Independence Day — Albany Capitol" },
-      { src: bangladeshPhoto9, caption: "Bangladesh Day delegation at the Capitol entrance" },
-      { src: bangladeshPhoto10, caption: "Community members at the Albany State Capitol" },
-      { src: bangladeshPhoto4, caption: "Albany Lions members on the NY Senate floor" },
-      { src: bangladeshPhoto1, caption: "President Sonia Mahtab at the Capitol ceremony" },
-      { src: bangladeshPhoto11, caption: "Bangladesh Day delegation in the Capitol gallery" },
-      { src: bangladeshPhoto2, caption: "Albany Lions officers with community leaders — Bangladesh Day" },
-      { src: bangladeshPhoto5, caption: "Albany Lions members at the Bangladesh Day celebration" },
-      { src: bangladeshPhoto6, caption: "With elected officials at the Albany State Capitol" },
-      { src: bangladeshPhoto7, caption: "Albany Lions members at the 56th Bangladesh Independence Day" },
+      { src: bangladeshPhoto12, thumbnailSrc: bangladeshPhoto12Thumb, caption: "56th Bangladesh Independence Day Celebration in Albany — March 24, 2026" },
+      { src: bangladeshPhoto8,  thumbnailSrc: bangladeshPhoto8Thumb,  caption: "Community delegation at the Albany State Capitol staircase" },
+      { src: bangladeshPhoto3,  thumbnailSrc: bangladeshPhoto3Thumb,  caption: "56th Bangladesh Independence Day — Albany Capitol" },
+      { src: bangladeshPhoto9,  thumbnailSrc: bangladeshPhoto9Thumb,  caption: "Bangladesh Day delegation at the Capitol entrance" },
+      { src: bangladeshPhoto10, thumbnailSrc: bangladeshPhoto10Thumb, caption: "Community members at the Albany State Capitol" },
+      { src: bangladeshPhoto4,  thumbnailSrc: bangladeshPhoto4Thumb,  caption: "Albany Lions members on the NY Senate floor" },
+      { src: bangladeshPhoto1,  thumbnailSrc: bangladeshPhoto1Thumb,  caption: "President Sonia Mahtab at the Capitol ceremony" },
+      { src: bangladeshPhoto11, thumbnailSrc: bangladeshPhoto11Thumb, caption: "Bangladesh Day delegation in the Capitol gallery" },
+      { src: bangladeshPhoto2,  thumbnailSrc: bangladeshPhoto2Thumb,  caption: "Albany Lions officers with community leaders — Bangladesh Day" },
+      { src: bangladeshPhoto5,  thumbnailSrc: bangladeshPhoto5Thumb,  caption: "Albany Lions members at the Bangladesh Day celebration" },
+      { src: bangladeshPhoto6,  thumbnailSrc: bangladeshPhoto6Thumb,  caption: "With elected officials at the Albany State Capitol" },
+      { src: bangladeshPhoto7,  thumbnailSrc: bangladeshPhoto7Thumb,  caption: "Albany Lions members at the 56th Bangladesh Independence Day" },
     ],
   },
   {
@@ -185,15 +249,15 @@ const albums = [
     category: "Community",
     description: "Eid celebrations with our Lions family — food, joy, and community spirit.",
     photos: [
-      { src: eidPhoto8, caption: "Albany Capital Region Lions Club members at the Eid Get Together — March 27, 2026" },
-      { src: eidPhoto2, caption: "Club members with the Lions Club charter at the Eid celebration" },
-      { src: eidPhoto4, caption: "Lions members with the club charter — Eid Mubarak gathering" },
-      { src: eidPhoto9, caption: "Ladies of the Albany Lions Club at the Eid Get Together" },
-      { src: eidPhoto7, caption: "President Sonia Mahtab displaying the Lions Club International Charter" },
-      { src: eidPhoto5, caption: "Lions members with club materials at the Eid gathering" },
-      { src: eidPhoto1, caption: "Lady members of Albany Lions Club at the festive Eid table" },
-      { src: eidPhoto3, caption: "Celebrating Eid with a beautifully decorated table — Lions family gathering" },
-      { src: eidPhoto6, caption: "Lady Lions members at the Eid Mubarak celebration" },
+      { src: eidPhoto8, thumbnailSrc: eidPhoto8Thumb, caption: "Albany Capital Region Lions Club members at the Eid Get Together — March 27, 2026" },
+      { src: eidPhoto2, thumbnailSrc: eidPhoto2Thumb, caption: "Club members with the Lions Club charter at the Eid celebration" },
+      { src: eidPhoto4, thumbnailSrc: eidPhoto4Thumb, caption: "Lions members with the club charter — Eid Mubarak gathering" },
+      { src: eidPhoto9, thumbnailSrc: eidPhoto9Thumb, caption: "Ladies of the Albany Lions Club at the Eid Get Together" },
+      { src: eidPhoto7, thumbnailSrc: eidPhoto7Thumb, caption: "President Sonia Mahtab displaying the Lions Club International Charter" },
+      { src: eidPhoto5, thumbnailSrc: eidPhoto5Thumb, caption: "Lions members with club materials at the Eid gathering" },
+      { src: eidPhoto1, thumbnailSrc: eidPhoto1Thumb, caption: "Lady members of Albany Lions Club at the festive Eid table" },
+      { src: eidPhoto3, thumbnailSrc: eidPhoto3Thumb, caption: "Celebrating Eid with a beautifully decorated table — Lions family gathering" },
+      { src: eidPhoto6, thumbnailSrc: eidPhoto6Thumb, caption: "Lady Lions members at the Eid Mubarak celebration" },
     ],
   },
 ];
@@ -317,15 +381,17 @@ export default function Gallery() {
                 {/* Photos or Placeholder */}
                 {album.photos.length > 0 ? (
                   <div className="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                    {album.photos.map((photo: { src: string; caption?: string }, pi: number) => (
+                    {album.photos.map((photo, pi) => (
                       <button
                         key={pi}
                         onClick={() => openLightbox(album.id, pi)}
                         className="relative aspect-square rounded-lg overflow-hidden group cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
                       >
                         <img
-                          src={photo.src}
+                          src={photo.thumbnailSrc}
                           alt={photo.caption ?? `${album.title} photo ${pi + 1}`}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
@@ -376,7 +442,7 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Lightbox */}
+      {/* Lightbox — full-resolution image loaded on demand when opened */}
       <AnimatePresence>
         {lightbox && activeAlbum && activePhoto && (
           <motion.div
@@ -410,7 +476,7 @@ export default function Gallery() {
                 </button>
               </div>
 
-              {/* Image Area */}
+              {/* Full-resolution image area */}
               <div className="relative flex items-center justify-center bg-black" style={{ minHeight: "420px", maxHeight: "70vh" }}>
                 <AnimatePresence mode="wait">
                   <motion.img
@@ -454,7 +520,7 @@ export default function Gallery() {
                 </div>
               )}
 
-              {/* Thumbnail strip */}
+              {/* Thumbnail strip — WebP thumbnails, lazy-loaded */}
               {activeAlbum.photos.length > 1 && (
                 <div className="flex gap-1.5 overflow-x-auto px-4 py-3 border-t border-white/10 scrollbar-thin">
                   {activeAlbum.photos.map((p, pi) => (
@@ -465,7 +531,13 @@ export default function Gallery() {
                         pi === lightbox.photoIndex ? "border-secondary scale-105" : "border-transparent opacity-50 hover:opacity-80"
                       }`}
                     >
-                      <img src={p.src} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={p.thumbnailSrc}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover"
+                      />
                     </button>
                   ))}
                 </div>
