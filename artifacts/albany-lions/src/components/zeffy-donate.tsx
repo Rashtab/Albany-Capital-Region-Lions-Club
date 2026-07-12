@@ -77,7 +77,13 @@ export function ZeffyDonateButton({
             </p>
           </DialogHeader>
 
+          {/* Everything scrollable — notice + iframe + QR all in one area so the
+              fixed footer doesn't steal height from the Zeffy form on mobile */}
           <div className="overflow-y-auto flex-1">
+            <div className="px-4 pt-3 pb-2">
+              <ZeffyNotice />
+            </div>
+
             {open && (
               <iframe
                 src={ZEFFY_EMBED_URL}
@@ -87,11 +93,9 @@ export function ZeffyDonateButton({
                 allow="payment"
               />
             )}
-          </div>
 
-          <div className="px-6 py-4 border-t border-border bg-muted/30 shrink-0 space-y-3">
-            <ZeffyNotice />
-            <div className="flex items-start gap-4">
+            {/* QR section — hidden on mobile (you're already on your phone!) */}
+            <div className="hidden sm:flex items-start gap-4 px-6 py-4 border-t border-border bg-muted/30">
               <QrCode className="h-5 w-5 text-primary shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold text-foreground mb-0.5">

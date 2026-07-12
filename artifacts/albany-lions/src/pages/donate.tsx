@@ -147,15 +147,15 @@ export default function Donate() {
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <Mail className="h-6 w-6 text-primary" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h3 className="text-xl font-bold text-foreground mb-2">Contact Us Directly</h3>
                   <p className="text-muted-foreground mb-3">For other payment arrangements or to discuss major gifts:</p>
-                  <div className="flex flex-wrap gap-4">
-                    <a href={`mailto:${clubInfo.email}`} className="flex items-center gap-2 text-primary font-semibold hover:underline">
-                      <Mail className="h-4 w-4" /> {clubInfo.email}
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+                    <a href={`mailto:${clubInfo.email}`} className="flex items-center gap-2 text-primary font-semibold hover:underline min-w-0">
+                      <Mail className="h-4 w-4 shrink-0" /> <span className="break-all">{clubInfo.email}</span>
                     </a>
                     <a href={`tel:${clubInfo.phone}`} className="flex items-center gap-2 text-primary font-semibold hover:underline">
-                      <Phone className="h-4 w-4" /> {clubInfo.phone}
+                      <Phone className="h-4 w-4 shrink-0" /> {clubInfo.phone}
                     </a>
                   </div>
                 </div>
