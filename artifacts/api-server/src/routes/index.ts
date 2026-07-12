@@ -11,6 +11,7 @@ import sponsorsRouter from "./sponsors.js";
 import settingsRouter from "./settings.js";
 import projectsRouter from "./projects.js";
 import membersRouter from "./members.js";
+import sitemapRouter from "./sitemap.js";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(sponsorsRouter);
 router.use(settingsRouter);
 router.use(projectsRouter);
 router.use(membersRouter);
+router.use(sitemapRouter);
 
 export default router;

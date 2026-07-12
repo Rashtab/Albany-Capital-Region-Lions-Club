@@ -1,0 +1,30 @@
+# Albany Capital Region Lions Club
+
+> A newly chartered chapter of Lions Clubs International serving the greater Albany and Schenectady area of New York's Capital Region. Members volunteer under the motto "We Serve" to support vision care, youth programs, hunger relief, and community development.
+
+## Important pages
+
+- Home: https://albanylionsclub.org/
+- About the club: https://albanylionsclub.org/about
+- Club leadership: https://albanylionsclub.org/leadership
+- Community projects: https://albanylionsclub.org/projects
+- Upcoming events: https://albanylionsclub.org/events
+- Event calendar: https://albanylionsclub.org/calendar
+- Blog and news: https://albanylionsclub.org/blog
+- Club magazine: https://albanylionsclub.org/magazine
+- Sponsors: https://albanylionsclub.org/sponsors
+- Photo gallery: https://albanylionsclub.org/gallery
+- Donate: https://albanylionsclub.org/donate
+- Contact us: https://albanylionsclub.org/contact
+
+## Dynamic content
+
+Blog posts and project detail pages are published through the club's CMS. The full list of published slugs is available in the sitemap at https://albanylionsclub.org/api/sitemap.xml.
+
+## Organization details
+
+- District: District 20-R2, New York
+- Founded: 2026
+- Contact: lionsclubalbanycapitalregion@gmail.com
+- Facebook: https://www.facebook.com/albanycapitalregionlionsclub
+- Instagram: https://www.instagram.com/albanycapitalregionlionsclub/
