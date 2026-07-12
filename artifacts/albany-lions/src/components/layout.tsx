@@ -6,6 +6,7 @@ import { clubInfo } from "@/data/clubData";
 import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import { useState, useEffect } from "react";
+import { ZeffyDonateButton } from "@/components/zeffy-donate";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -67,8 +68,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.name}
               </Link>
             ))}
+            <ZeffyDonateButton className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold text-sm px-4 py-2 rounded-md font-bold transition-colors" data-testid="nav-donate-button">
+              Donate Now
+            </ZeffyDonateButton>
             <Link href="/contact">
-              <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold" data-testid="nav-join-button">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold" data-testid="nav-join-button">
                 Join Us
               </Button>
             </Link>
@@ -103,9 +107,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                       {link.name}
                     </Link>
                   ))}
-                  <div className="px-4 mt-4">
+                  <div className="px-4 mt-4 flex flex-col gap-3">
+                    <ZeffyDonateButton className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold py-2.5 rounded-md text-sm transition-colors">
+                      Donate Now
+                    </ZeffyDonateButton>
                     <Link href="/contact">
-                      <Button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 font-bold">
+                      <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold">
                         Join Us
                       </Button>
                     </Link>

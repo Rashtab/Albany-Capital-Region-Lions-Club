@@ -3,6 +3,7 @@ import { Heart, AlertTriangle, CheckCircle2, ChevronRight, Mail, Phone } from "l
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { donationInfo, clubInfo, sponsorshipTiers } from "@/data/clubData";
+import { ZeffyDonateEmbed } from "@/components/zeffy-donate";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -39,8 +40,27 @@ export default function Donate() {
         </div>
       </section>
 
+      {/* Online Donation — Zeffy Embed */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-10">
+            <span className="text-secondary font-bold tracking-widest uppercase text-sm">Donate Online</span>
+            <h2 className="text-4xl font-black text-primary mt-3">Give Securely &amp; Instantly</h2>
+            <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
+              Use the form below to make a one-time or recurring donation by card, Apple Pay, or Google Pay — powered by Zeffy with zero platform fees.
+            </p>
+          </motion.div>
+
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+            className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm"
+          >
+            <ZeffyDonateEmbed />
+          </motion.div>
+        </div>
+      </section>
+
       {/* Impact */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-muted/40">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-14">
             <span className="text-secondary font-bold tracking-widest uppercase text-sm">Your Impact</span>
@@ -60,12 +80,12 @@ export default function Donate() {
         </div>
       </section>
 
-      {/* Payment Methods */}
-      <section className="py-20 bg-muted/40">
+      {/* Other Payment Methods */}
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-12">
-            <span className="text-secondary font-bold tracking-widest uppercase text-sm">How to Give</span>
-            <h2 className="text-3xl font-black text-primary mt-3">Ways to Donate</h2>
+            <span className="text-secondary font-bold tracking-widest uppercase text-sm">Other Ways to Give</span>
+            <h2 className="text-3xl font-black text-primary mt-3">Additional Payment Methods</h2>
           </motion.div>
 
           <div className="space-y-6">
@@ -140,7 +160,7 @@ export default function Donate() {
       </section>
 
       {/* Sponsorship Tiers Preview */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-muted/40">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-12">
             <span className="text-secondary font-bold tracking-widest uppercase text-sm">Business Support</span>
