@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { Camera, Calendar, FolderOpen, ImageOff, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import eidPhoto1 from "@assets/660302350_27351706501086056_6964347259712242193_n_1777737102946.jpg";
@@ -243,6 +244,11 @@ export default function Gallery() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Photo Gallery"
+        path="/gallery"
+        description="Photo gallery from Albany Capital Region Lions Club events — charter night, community service projects, Eid celebrations, fundraisers, and more moments from our club community."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

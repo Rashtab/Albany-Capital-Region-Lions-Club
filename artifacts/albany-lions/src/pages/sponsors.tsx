@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { sponsorshipTiers, magazineAds, clubInfo } from "@/data/clubData";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -90,6 +91,11 @@ export default function Sponsors() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Sponsors & Partnerships"
+        path="/sponsors"
+        description="Support the Albany Capital Region Lions Club as a sponsor. View our 2026 sponsorship packages — Platinum, Gold, Silver, Bronze, and Friend — and partner with us to serve our community."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

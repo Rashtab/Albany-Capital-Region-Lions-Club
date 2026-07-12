@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import {
   Calendar, Clock, MapPin, ExternalLink, Mail,
   Loader2, ChevronRight, ChevronLeft, X, ZoomIn,
@@ -325,6 +326,11 @@ export default function Events() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Events & Programs"
+        path="/events"
+        description="Upcoming events and programs from the Albany Capital Region Lions Club. Join us for community service projects, fundraisers, and social gatherings in Albany and Schenectady."
+      />
       {/* Modal */}
       <AnimatePresence>
         {modalIndex !== null && (

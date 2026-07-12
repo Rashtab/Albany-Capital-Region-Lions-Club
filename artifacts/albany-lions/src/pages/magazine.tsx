@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { BookOpen, ChevronLeft, ChevronRight, Loader2, BookMarked } from "lucide-react";
 import { apiFetch } from "@/lib/auth";
 import { FlipbookViewer } from "@/components/FlipbookViewer";
@@ -39,6 +40,11 @@ export default function MagazinePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <PageMeta
+        title="Club Magazine"
+        path="/magazine"
+        description="Read the Albany Capital Region Lions Club magazine. Featuring club news, member stories, community impact reports, and highlights from our service programs."
+      />
       {/* Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 70% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

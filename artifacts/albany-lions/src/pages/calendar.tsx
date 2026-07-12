@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, isToday, addMonths, subMonths, parseISO } from "date-fns";
 import { ChevronLeft, ChevronRight, MapPin, Clock, Calendar, Loader2, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,11 @@ export default function CalendarPage() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Event Calendar"
+        path="/calendar"
+        description="Browse the Albany Capital Region Lions Club event calendar. Find upcoming meetings, service projects, and community events in the Albany and Schenectady area."
+      />
       {/* Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 70% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { officers, directors, executiveMembers, newMembers } from "@/data/clubData";
 import { Badge } from "@/components/ui/badge";
 import { Info, Phone, X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
@@ -254,6 +255,11 @@ export default function Leadership() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Leadership"
+        path="/leadership"
+        description="Meet the officers, directors, and members leading the Albany Capital Region Lions Club. Our dedicated leadership team drives our service programs across Albany and Schenectady."
+      />
       {/* Charter Photo Lightbox */}
       <AnimatePresence>
         {charterOpen && (

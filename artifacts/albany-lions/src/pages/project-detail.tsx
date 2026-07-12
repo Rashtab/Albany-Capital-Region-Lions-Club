@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import {
   ArrowLeft, Calendar, Users, Clock, DollarSign, Package, Building2,
   ImageIcon, Loader2, AlertCircle, ArrowRight,
@@ -138,6 +139,12 @@ export default function ProjectDetailPage() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title={project.title}
+        path={`/projects/${project.slug}`}
+        description={project.description ?? `Learn about the "${project.title}" project by the Albany Capital Region Lions Club — serving our community through ${CAUSE_LABELS[project.causeArea] ?? "community service"}.`}
+        image={project.gallery?.[0]?.url ?? null}
+      />
       {/* Hero */}
       <section className="relative min-h-[42vh] flex items-end bg-primary overflow-hidden">
         {heroImg ? (

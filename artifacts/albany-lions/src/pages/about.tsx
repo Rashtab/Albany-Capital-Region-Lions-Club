@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { Globe, Heart, Users, Award, ChevronRight, Quote, UserCircle2 } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,11 @@ export default function About() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="About Us"
+        path="/about"
+        description="Learn about the Albany Capital Region Lions Club — our mission, vision, history, and commitment to serving the Albany and Schenectady communities as part of Lions Clubs International."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

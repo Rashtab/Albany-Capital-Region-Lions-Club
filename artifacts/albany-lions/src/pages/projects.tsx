@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { Calendar, ArrowRight, Users, Clock, DollarSign, Package, Loader2, FolderOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -115,6 +116,11 @@ export default function ProjectsPage() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Community Projects"
+        path="/projects"
+        description="Explore community service projects led by the Albany Capital Region Lions Club — vision care, hunger relief, youth programs, environmental initiatives, and more."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

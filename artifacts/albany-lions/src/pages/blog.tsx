@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { PageMeta } from "@/components/PageMeta";
 import { Calendar, Tag, ArrowRight, Loader2, PenLine, User, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/auth";
@@ -61,6 +62,11 @@ export default function BlogPage() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Club Blog"
+        path="/blog"
+        description="News, stories, and updates from the Albany Capital Region Lions Club. Read about our community service events, member spotlights, and club announcements."
+      />
       {/* Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 70% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

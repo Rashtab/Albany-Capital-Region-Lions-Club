@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { Link } from "wouter";
 import { X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -56,6 +57,11 @@ export default function MagazineAdvertisers() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Magazine Advertisers 2026"
+        path="/sponsors/magazine-advertisers-2026"
+        description="Advertisers featured in the 2026 Albany Capital Region Lions Club magazine. Thank you to our business partners for their support of our community service mission."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

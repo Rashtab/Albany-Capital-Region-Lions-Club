@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { Heart, AlertTriangle, CheckCircle2, ChevronRight, Mail, Phone } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,11 @@ const impactItems = [
 export default function Donate() {
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Donate & Support"
+        path="/donate"
+        description="Support the Albany Capital Region Lions Club with a tax-deductible donation. Your gift funds vision care, hunger relief, youth programs, and community service in Albany and Schenectady."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

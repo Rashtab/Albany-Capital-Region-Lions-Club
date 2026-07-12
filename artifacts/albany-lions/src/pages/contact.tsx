@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { PageMeta } from "@/components/PageMeta";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -81,6 +82,11 @@ export default function Contact() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title="Contact Us"
+        path="/contact"
+        description="Get in touch with the Albany Capital Region Lions Club. Whether you want to join, volunteer, donate, or partner with us — we'd love to hear from you."
+      />
       {/* Page Header */}
       <section className="bg-primary py-20 px-4 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 80% 50%, hsl(48 95% 52%) 0%, transparent 60%)" }} />

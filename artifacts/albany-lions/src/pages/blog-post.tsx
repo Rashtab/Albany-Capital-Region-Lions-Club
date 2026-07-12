@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "wouter";
+import { PageMeta } from "@/components/PageMeta";
 import { Calendar, Tag, ArrowLeft, Loader2, User, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/auth";
@@ -63,6 +64,13 @@ export default function BlogPostPage() {
 
   return (
     <div className="flex flex-col">
+      <PageMeta
+        title={post.title}
+        path={`/blog/${post.slug}`}
+        description={post.excerpt ?? `Read "${post.title}" on the Albany Capital Region Lions Club blog — news, stories, and updates from our community.`}
+        image={post.coverImageUrl}
+        type="article"
+      />
       {/* Cover image hero */}
       {post.coverImageUrl && (
         <div className="w-full max-h-[480px] overflow-hidden bg-muted flex items-center justify-center">
