@@ -1,16 +1,43 @@
-import { useEffect, useRef } from "react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { QrCode, Smartphone } from "lucide-react";
 
-const ZEFFY_POPUP_URL =
-  "https://www.zeffy.com/embed/donation-form/donate-to-change-lives-18069?modal=true";
-const ZEFFY_EMBED_PATH =
-  "/embed/donation-form/donate-to-change-lives-18069";
-const ZEFFY_EMBED_SCRIPT =
-  "https://www.zeffy.com/embed/v2/zeffy-embed.js";
+const ZEFFY_EMBED_URL =
+  "https://www.zeffy.com/embed/donation-form/donate-to-change-lives-18069";
 
 /**
- * A button that opens the Zeffy donation form as a modal popup.
- * The `zeffy-form-link` attribute is set via a DOM ref so TypeScript
- * doesn't complain about the non-standard HTML attribute.
+ * QR code for donating from a phone or other device.
+ * Image is served from /donate-qr.jpg in the public directory.
+ */
+export function ZeffyQRCode({ className }: { className?: string }) {
+  return (
+    <div className={className}>
+      <div className="flex items-center gap-2 mb-3">
+        <Smartphone className="h-4 w-4 text-primary shrink-0" />
+        <p className="text-sm font-bold text-foreground">
+          Prefer to donate from your phone or another device?
+        </p>
+      </div>
+      <p className="text-xs text-muted-foreground mb-4">
+        Scan this QR code to open the donation form directly.
+      </p>
+      <img
+        src="/donate-qr.jpg"
+        alt="Scan to donate — Albany Capital Region Lions Club"
+        className="w-36 h-36 object-contain rounded-lg border border-border"
+      />
+    </div>
+  );
+}
+
+/**
+ * A button that opens a Dialog containing the Zeffy donation iframe.
+ * Does not depend on the Zeffy popup script — fully self-contained.
  */
 export function ZeffyDonateButton({
   className,
@@ -19,92 +46,89 @@ export function ZeffyDonateButton({
   className?: string;
   children: React.ReactNode;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    ref.current?.setAttribute("zeffy-form-link", ZEFFY_POPUP_URL);
-  }, []);
+  const [open, setOpen] = useState(false);
 
   return (
-    <button ref={ref} className={className} type="button">
-      {children}
-    </button>
+    <>
+      <button className={className} type="button" onClick={() => setOpen(true)}>
+        {children}
+      </button>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-2xl w-full p-0 gap-0 overflow-hidden">
+          <DialogHeader className="px-6 pt-5 pb-4 border-b border-border">
+            <DialogTitle className="text-base font-black text-primary">
+              Donate to Albany Capital Region Lions Club
+            </DialogTitle>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Secure donation powered by Zeffy — zero platform fees.
+            </p>
+          </DialogHeader>
+
+          {/* Zeffy iframe */}
+          <div className="relative w-full" style={{ height: "560px" }}>
+            {open && (
+              <iframe
+                src={ZEFFY_EMBED_URL}
+                title="Donation form powered by Zeffy"
+                className="absolute inset-0 w-full h-full border-0"
+                allow="payment"
+              />
+            )}
+          </div>
+
+          {/* QR code footer */}
+          <div className="px-6 py-5 border-t border-border bg-muted/30 flex items-start gap-4">
+            <QrCode className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-foreground mb-0.5">
+                Prefer to donate on your phone?
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Scan the QR code on the{" "}
+                <a href="/donate" className="text-primary underline underline-offset-2 font-medium">
+                  Donate page
+                </a>{" "}
+                or visit{" "}
+                <a
+                  href={ZEFFY_EMBED_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline underline-offset-2 font-medium"
+                >
+                  zeffy.com
+                </a>{" "}
+                directly.
+              </p>
+            </div>
+            <img
+              src="/donate-qr.jpg"
+              alt="QR code — scan to donate"
+              className="w-16 h-16 object-contain rounded border border-border shrink-0"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
 /**
- * Renders the Zeffy embedded donation form inline on a page.
- * Loads zeffy-embed.js on mount (idempotent — won't double-load).
- * Shows a direct iframe fallback if the script fails to load.
+ * Renders the Zeffy embedded donation form inline on a page via iframe.
+ * No external script dependency — uses a direct iframe embed.
  */
 export function ZeffyDonateEmbed() {
-  const embedRef = useRef<HTMLDivElement>(null);
-  const fallbackRef = useRef<HTMLDivElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-
-  useEffect(() => {
-    // Set custom data attributes imperatively to avoid TypeScript issues
-    if (embedRef.current) {
-      embedRef.current.setAttribute("data-zeffy-embed", "");
-      embedRef.current.setAttribute("data-form-url", ZEFFY_EMBED_PATH);
-    }
-    if (iframeRef.current) {
-      iframeRef.current.setAttribute(
-        "data-zeffy-embed-src",
-        `https://www.zeffy.com${ZEFFY_EMBED_PATH}`,
-      );
-    }
-
-    // Load the Zeffy embed script (idempotent)
-    const SCRIPT_ID = "zeffy-embed-v2";
-    if (document.getElementById(SCRIPT_ID)) return;
-
-    const script = document.createElement("script");
-    script.id = SCRIPT_ID;
-    script.src = ZEFFY_EMBED_SCRIPT;
-    script.onerror = () => {
-      // On script failure, show the iframe fallback
-      if (fallbackRef.current) {
-        fallbackRef.current.style.display = "block";
-      }
-      if (iframeRef.current) {
-        iframeRef.current.src = `https://www.zeffy.com${ZEFFY_EMBED_PATH}`;
-      }
-    };
-    document.head.appendChild(script);
-  }, []);
-
   return (
-    <div>
-      {/* Primary embed target — Zeffy script replaces this div with the form */}
-      <div ref={embedRef} />
-
-      {/* Iframe fallback — hidden unless the script fails to load */}
-      <div ref={fallbackRef} style={{ display: "none" }}>
-        <div
-          style={{
-            position: "relative",
-            overflow: "hidden",
-            height: "650px",
-            width: "100%",
-          }}
-        >
-          <iframe
-            ref={iframeRef}
-            title="Donation form powered by Zeffy"
-            style={{
-              position: "absolute",
-              border: 0,
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              width: "100%",
-              height: "100%",
-            }}
-          />
-        </div>
-      </div>
+    <div
+      className="relative w-full rounded-xl overflow-hidden"
+      style={{ height: "650px" }}
+    >
+      <iframe
+        src={ZEFFY_EMBED_URL}
+        title="Donation form powered by Zeffy"
+        className="absolute inset-0 w-full h-full border-0"
+        allow="payment"
+      />
     </div>
   );
 }
