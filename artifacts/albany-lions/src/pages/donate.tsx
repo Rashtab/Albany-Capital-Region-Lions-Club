@@ -4,7 +4,7 @@ import { Heart, AlertTriangle, CheckCircle2, ChevronRight, Mail, Phone } from "l
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { donationInfo, clubInfo, sponsorshipTiers } from "@/data/clubData";
-import { ZeffyDonateEmbed, ZeffyQRCode } from "@/components/zeffy-donate";
+import { ZeffyDonateEmbed, ZeffyQRCode, ZeffyNotice } from "@/components/zeffy-donate";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -61,6 +61,10 @@ export default function Donate() {
             className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm"
           >
             <ZeffyDonateEmbed />
+          </motion.div>
+
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2} className="mt-4">
+            <ZeffyNotice />
           </motion.div>
 
           {/* QR code — mobile / other device */}

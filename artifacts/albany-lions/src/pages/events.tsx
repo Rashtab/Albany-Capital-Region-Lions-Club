@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageMeta } from "@/components/PageMeta";
 import {
   Calendar, Clock, MapPin, ExternalLink, Mail,
-  Loader2, ChevronRight, ChevronLeft, X, ZoomIn,
+  Loader2, ChevronRight, ChevronLeft, X, ZoomIn, Play,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -355,6 +355,81 @@ export default function Events() {
             <p className="text-primary-foreground/80 mt-6 max-w-xl mx-auto">
               Join us at our upcoming events and be part of the difference we make in the Albany Capital Region.
             </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── CHARTER NIGHT 2026 FEATURED HIGHLIGHT ── */}
+      <section className="py-14 bg-gradient-to-br from-[#0a1f5c] to-[#050f30] text-white">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <span className="h-1 w-8 bg-[#f0c84a] rounded-full" />
+              <span className="text-xs font-black uppercase tracking-widest text-[#f0c84a]">
+                Featured Event
+              </span>
+              <span className="h-1 flex-1 bg-[#f0c84a]/20 rounded-full" />
+            </div>
+
+            <div className="bg-white/5 border border-[#c8960c]/40 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="flex flex-col lg:flex-row">
+                {/* Left — thumbnail / poster */}
+                <div className="lg:w-64 xl:w-72 shrink-0 bg-gradient-to-br from-[#1a3580] to-[#050f30] flex items-center justify-center p-8">
+                  <img
+                    src="/charter-night-2026/uploads/docx_img_image1.png"
+                    alt="Albany Capital Region Lions Club Logo"
+                    className="w-40 h-40 object-contain drop-shadow-lg"
+                  />
+                </div>
+
+                {/* Right — info */}
+                <div className="p-8 lg:p-10 flex flex-col justify-center flex-1 gap-4">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className="bg-[#c8960c]/20 text-[#f0c84a] border border-[#c8960c]/50 font-bold">
+                      ★ Milestone
+                    </Badge>
+                    <Badge className="bg-white/10 text-white/80 border border-white/20 font-semibold text-xs">
+                      Past Event
+                    </Badge>
+                  </div>
+
+                  <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
+                    Charter Night &amp;{" "}
+                    <span className="text-[#f0c84a]">Installation Ceremony</span>
+                  </h2>
+
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 text-sm text-white/80">
+                      <Calendar className="h-4 w-4 text-[#f0c84a] shrink-0" />
+                      <span className="font-semibold">Sunday, May 3, 2026</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-white/70">
+                      <MapPin className="h-4 w-4 text-[#f0c84a] shrink-0" />
+                      Albany Capital Region, NY
+                    </div>
+                  </div>
+
+                  <p className="text-white/65 text-sm leading-relaxed max-w-xl">
+                    Our historic charter night and installation ceremony — the founding moment of the
+                    Albany Capital Region Lions Club. Watch the full photo slideshow with music from
+                    that memorable evening.
+                  </p>
+
+                  <div className="flex flex-wrap gap-3 mt-2">
+                    <a href="/charter-night-2026">
+                      <Button className="bg-[#c8960c] hover:bg-[#a07000] text-[#0a1f5c] font-black gap-2 px-6">
+                        <Play className="h-4 w-4 fill-current" />
+                        Watch Slideshow
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

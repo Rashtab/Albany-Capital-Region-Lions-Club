@@ -3,8 +3,12 @@ import cors from "cors";
 import path from "path";
 import pinoHttp from "pino-http";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { pool } from "@workspace/db";
 import router from "./routes/index.js";
 import { logger } from "./lib/logger.js";
+
+const PgSession = connectPgSimple(session);
 
 const app: Express = express();
 
@@ -52,17 +56,21 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session middleware — must come before routes
+// Session middleware — PostgreSQL-backed store for multi-instance safety
 app.use(
   session({
+    store: new PgSession({
+      pool,
+      tableName: "user_sessions",
+      createTableIfMissing: true,
+    }),
     secret: process.env["SESSION_SECRET"] ?? "fallback-dev-secret",
     resave: false,
     saveUninitialized: false,
     name: "lions_sid",
     cookie: {
       httpOnly: true,
-      // false because the Replit proxy terminates TLS; the browser sees HTTPS
-      secure: false,
+      secure: process.env["NODE_ENV"] === "production",
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     },

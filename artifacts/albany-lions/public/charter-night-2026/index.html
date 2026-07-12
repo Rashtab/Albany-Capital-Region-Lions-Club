@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charter Night &amp; Installation Ceremony — Albany Capital Region Lions Club</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --navy: #0a1f5c;
+    --gold: #c8960c;
+    --gold-light: #f0c84a;
+    --white: #fffef8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#000; font-family:'DM Sans',sans-serif; }
+
+  /* ── Stage ── */
+  #stage { width:1920px; height:1080px; position:absolute; top:0; left:0; transform-origin:top left; overflow:hidden; }
+
+  /* ── Slide base ── */
+  .slide { position:absolute; inset:0; width:1920px; height:1080px; opacity:0; pointer-events:none; transition:opacity 0.9s ease; overflow:hidden; }
+  .slide.active { opacity:1; pointer-events:auto; z-index:2; }
+
+  .bg-navy-grad { background: radial-gradient(ellipse at 30% 30%, #1a3580 0%, #0a1f5c 50%, #050f30 100%); }
+  .bg-dark      { background: radial-gradient(ellipse at 60% 50%, #0d2060 0%, #060e2e 100%); }
+
+  /* corner ornament */
+  .corner { position:absolute; width:120px; height:120px; opacity:.22; pointer-events:none; }
+  .corner.tl{top:20px;left:20px;} .corner.tr{top:20px;right:20px;transform:scaleX(-1);}
+  .corner.bl{bottom:20px;left:20px;transform:scaleY(-1);} .corner.br{bottom:20px;right:20px;transform:scale(-1,-1);}
+
+  /* particles */
+  .particles { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+  .particle  { position:absolute; border-radius:50%; background:var(--gold-light); animation:float-up linear infinite; opacity:0; }
+  @keyframes float-up {
+    0%   { transform:translateY(100px) scale(0); opacity:0; }
+    10%  { opacity:.15; }
+    90%  { opacity:.05; }
+    100% { transform:translateY(-200px) scale(.5); opacity:0; }
+  }
+
+  /* UI overlays */
+  #slide-counter { position:fixed; bottom:20px; right:28px; font-size:16px; color:rgba(255,255,255,.3); z-index:100; letter-spacing:.06em; }
+  #progress-bar  { position:fixed; bottom:0; left:0; height:4px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); z-index:100; }
+  #pause-hint {
+    position:fixed; top:20px; right:24px; font-size:14px; cursor:pointer; z-index:100;
+    letter-spacing:.06em; color:rgba(255,255,255,.2);
+    opacity:0; transition:opacity 0.4s;
+  }
+  #pause-hint.visible { opacity:1; }
+  #pause-hint.is-paused { color:rgba(240,200,74,.75); opacity:1; }
+
+  #sound-hint {
+    position:fixed; top:20px; left:24px; font-size:14px; cursor:pointer; z-index:100;
+    letter-spacing:.06em; color:rgba(255,255,255,.2);
+    opacity:0; transition:opacity 0.4s;
+  }
+  #sound-hint.visible  { opacity:1; }
+  #sound-hint.is-muted { color:rgba(240,200,74,.75); opacity:1; }
+
+  #nav-controls {
+    position:fixed; top:20px; left:50%; transform:translateX(-50%);
+    display:flex; gap:28px; z-index:100;
+  }
+  #nav-start, #nav-end {
+    font-size:16px; cursor:pointer; letter-spacing:.06em;
+    color:rgba(255,255,255,.2);
+    opacity:0; transition:opacity 0.4s, color 0.2s;
+  }
+  #nav-start.visible, #nav-end.visible { opacity:1; }
+  #nav-start:hover, #nav-end:hover { color:rgba(240,200,74,.85); }
+
+  /* ════════════════════════════════
+     HERO (Welcome / Closing)
+  ════════════════════════════════ */
+  .slide-hero .hero-inner {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:80px 200px; gap:28px;
+  }
+  .slide-hero .hero-logo { width:500px; height:500px; }
+  .slide-hero .hero-logo img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 0 50px rgba(240,200,74,.6)); }
+  .slide-hero .eyebrow  { font-size:22px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold-light); opacity:.85; }
+  .slide-hero .big-title{ font-family:'Crimson Pro',serif; font-size:80px; font-weight:700; color:#fff; line-height:1.1; text-shadow:0 4px 40px rgba(0,0,0,.6); }
+  .slide-hero .big-title span { color:var(--gold-light); }
+  .slide-hero .sub      { font-size:28px; color:rgba(255,255,255,.65); letter-spacing:.04em; }
+  .slide-hero .date-badge {
+    display:inline-flex; align-items:center; gap:18px;
+    background:rgba(255,255,255,.08); border:1px solid rgba(240,200,74,.4);
+    border-radius:6px; padding:16px 36px; font-size:24px; color:var(--gold-light); letter-spacing:.1em;
+  }
+  .slide-hero .tagline { font-family:'Crimson Pro',serif; font-style:italic; font-size:38px; color:var(--gold-light); opacity:.85; }
+  .slide-hero .dist    { font-size:18px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+
+  /* ════════════════════════════════
+     PROGRAM
+  ════════════════════════════════ */
+  .slide-program .prog-layout { position:absolute; inset:0; display:grid; grid-template-columns:380px 1fr; }
+  .slide-program .prog-left {
+    background:linear-gradient(180deg,#c8960c 0%,#8a6200 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:48px 32px; text-align:center; gap:18px;
+  }
+  .slide-program .prog-logo { width:300px; height:300px; }
+  .slide-program .prog-logo img { width:100%; height:100%; object-fit:contain; }
+  .slide-program .prog-left-title { font-family:'Crimson Pro',serif; font-size:55px; font-weight:700; color:var(--navy); line-height:1.2; }
+  .slide-program .prog-left-sub   { font-size:45 px; color:rgba(10,31,92,.7); letter-spacing:.1em; text-transform:uppercase; }
+  .slide-program .prog-left-date  { font-size:18px; color:var(--navy); font-weight:600; background:rgba(255,255,255,.3); padding:8px 20px; border-radius:4px; }
+  .slide-program .prog-right      { padding:44px 72px 44px 60px; display:flex; flex-direction:column; justify-content:center; }
+  .slide-program .prog-header     { font-family:'Crimson Pro',serif; font-size:60px; font-weight:700; color:var(--gold-light); margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid rgba(240,200,74,.3); }
+  .slide-program .prog-list       { display:grid; grid-template-columns:1fr 1fr; gap:0 40px; list-style:none; }
+  .slide-program .prog-list li    { display:flex; align-items:flex-start; gap:12px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.07); font-size:28px; color:rgba(255,255,255,.9); line-height:1.3; }
+  .slide-program .prog-list li .num { font-family:'Crimson Pro',serif; font-size:30px; color:var(--gold-light); opacity:.7; flex-shrink:0; min-width:26px; padding-top:2px; }
+  .slide-program .prog-list li.hl   { color:var(--gold-light); font-weight:500; }
+
+  /* ════════════════════════════════
+     MESSAGE (with portrait photo)
+  ════════════════════════════════ */
+  .slide-message .msg-layout { position:absolute; inset:0; display:grid; grid-template-columns:420px 1fr; }
+  .slide-message .msg-photo { position:relative; overflow:hidden; }
+  .slide-message .msg-photo img { width:100%; height:100%; object-fit:cover; object-position:center top; filter:brightness(.9); }
+  .slide-message .msg-photo::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to right, rgba(5,15,48,.3) 0%, transparent 60%),
+               linear-gradient(to top, rgba(5,15,48,.7) 0%, transparent 40%);
+  }
+  .slide-message .msg-photo-name { position:absolute; bottom:32px; left:0; right:0; text-align:center; z-index:2; padding:0 16px; }
+  .slide-message .msg-photo-name .pn { font-family:'Crimson Pro',serif; font-size:26px; font-weight:700; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.8); line-height:1.2; }
+  .slide-message .msg-photo-name .pt { font-size:14px; color:var(--gold-light); letter-spacing:.06em; margin-top:4px; opacity:.9; text-shadow:0 1px 6px rgba(0,0,0,.8); }
+  .slide-message .msg-content { padding:60px 80px 60px 64px; display:flex; flex-direction:column; justify-content:center; gap:20px; overflow:hidden; }
+  .slide-message .msg-from   { font-size:14px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .slide-message .msg-name   { font-family:'Crimson Pro',serif; font-size:52px; font-weight:700; color:#fff; line-height:1.05; }
+  .slide-message .msg-title  { font-size:20px; color:var(--gold-light); font-weight:400; letter-spacing:.03em; line-height:1.4; }
+  .slide-message .msg-divider{ width:80px; height:2px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .slide-message .msg-body   { font-size:30px; color:rgba(255,255,255,.82); line-height:1.7; font-family:'Crimson Pro',serif; font-style:italic; border-left:4px solid var(--gold); padding-left:24px; }
+  .slide-message .msg-sign   { font-size:22px; color:rgba(255,255,255,.45); line-height:1.6; }
+
+  /* ════════════════════════════════
+     HIGHLIGHT
+  ════════════════════════════════ */
+  .slide-highlight .hl-layout { position:absolute; inset:0; display:grid; grid-template-columns:1fr 560px; }
+  .slide-highlight .hl-content { padding:80px 80px 80px 100px; display:flex; flex-direction:column; justify-content:center; gap:24px; }
+  .slide-highlight .hl-eyebrow { font-size:20px; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .slide-highlight .hl-title   { font-family:'Crimson Pro',serif; font-size:72px; font-weight:700; color:#fff; line-height:1.1; }
+  .slide-highlight .hl-title span { color:var(--gold-light); }
+  .slide-highlight .hl-rule    { width:120px; height:2px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .slide-highlight .hl-body    { font-size:26px; color:rgba(255,255,255,.78); line-height:1.65; }
+  .slide-highlight .hl-photo   { position:relative; overflow:hidden; }
+  .slide-highlight .hl-photo img { width:100%; height:100%; object-fit:contain; object-position:center center; background:#000; }
+  .slide-highlight .hl-photo::before {
+    content:''; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(to right, rgba(5,15,48,.5) 0%, transparent 25%);
+  }
+
+  /* ════════════════════════════════
+     COMMITTEE
+  ════════════════════════════════ */
+  .slide-committee .com-layout { position:absolute; inset:0; display:grid; grid-template-columns:320px 1fr; }
+  .slide-committee .com-left {
+    background:linear-gradient(180deg,#c8960c 0%,#a07000 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:18px; padding:60px 28px; text-align:center;
+  }
+  .slide-committee .com-logo { width:300px; height:300px; }
+  .slide-committee .com-logo img { width:100%; height:100%; object-fit:contain; }
+  .slide-committee .com-left-title { font-family:'Crimson Pro',serif; font-size:32px; font-weight:700; color:var(--navy); line-height:1.2; }
+  .slide-committee .com-right { padding:52px 72px; display:flex; flex-direction:column; justify-content:center; }
+  .slide-committee .com-title { font-family:'Crimson Pro',serif; font-size:60px; font-weight:700; color:var(--gold-light); margin-bottom:24px; border-bottom:1px solid rgba(240,200,74,.3); padding-bottom:14px; }
+  .slide-committee .com-grid  { display:grid; grid-template-columns:1fr 1fr; gap:0 48px; }
+  .com-row { display:flex; justify-content:space-between; align-items:center; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.07); gap:12px; }
+  .com-row .role { font-size:28px; color:var(--gold-light); font-weight:500; opacity:.85; flex-shrink:0; min-width:200px; }
+  .com-row .name { font-size:28px; color:#fff; font-family:'Crimson Pro',serif; }
+
+  /* ════════════════════════════════
+     MEMBERS (with photos)
+  ════════════════════════════════ */
+  .slide-members .mem-head {
+    position:absolute; top:0; left:0; right:0; height:150px;
+    background:var(--navy); display:flex; align-items:center; padding:0 80px; gap:22px;
+    border-bottom:3px solid var(--gold);
+  }
+  .slide-members .mem-head-logo { width:90px; height:90px; flex-shrink:0; }
+  .slide-members .mem-head-logo img { width:100%; height:100%; object-fit:contain; }
+  .slide-members .mem-head-title { font-family:'Crimson Pro',serif; font-size:44px; font-weight:700; color:var(--gold-light); }
+  .slide-members .mem-body {
+    position:absolute; top:150px; left:0; right:0; bottom:0;
+    padding:28px 80px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-content:start;
+  }
+  .mem-card { background:rgba(255,255,255,.04); border:1px solid rgba(200,150,12,.2); border-radius:8px; overflow:hidden; display:flex; flex-direction:column; }
+  .mem-card .mc-photo {
+    width:100%; aspect-ratio:8.5 / 11;
+    overflow:hidden; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, rgba(10,31,92,.55), rgba(13,32,96,.35));
+  }
+  .mem-card .mc-photo img {
+    max-width:100%; max-height:100%;
+    width:auto; height:auto;
+    object-fit:contain;
+  }
+  .mem-card .mc-info { padding:18px 20px; display:flex; flex-direction:column; gap:4px; }
+  .mem-card .mc-role { font-size:13px; color:var(--gold-light); letter-spacing:.08em; text-transform:uppercase; font-weight:600; }
+  .mem-card .mc-name { font-family:'Crimson Pro',serif; font-size:24px; font-weight:700; color:#fff; line-height:1.2; }
+  .mem-card .mc-bio  { font-size:14px; color:rgba(255,255,255,.55); line-height:1.55; margin-top:4px; }
+
+  /* ════════════════════════════════
+     EVENT PHOTO (gallery — one image per slide)
+  ════════════════════════════════ */
+  .slide-event-photo { display:flex; flex-direction:column; }
+  .slide-event-photo .ep-head {
+    background:var(--navy); padding:22px 80px; border-bottom:3px solid var(--gold);
+    display:flex; align-items:center; gap:22px; flex-shrink:0;
+  }
+  .slide-event-photo .ep-logo { width:60px; height:60px; object-fit:contain; flex-shrink:0; }
+  .slide-event-photo .ep-eyebrow { font-size:14px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .slide-event-photo .ep-title { font-family:'Crimson Pro',serif; font-size:34px; font-weight:700; color:#fff; line-height:1.15; }
+  .slide-event-photo .ep-title span { color:var(--gold-light); }
+  .slide-event-photo .ep-body {
+    flex:1; min-height:0; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at center, #0d2060 0%, #050f30 100%);
+  }
+  .slide-event-photo .ep-body img {
+    max-width:100%; max-height:100%;
+    width:auto; height:auto;
+    object-fit:contain;
+    box-shadow:0 12px 50px rgba(0,0,0,.6);
+  }
+
+  /* ════════════════════════════════
+     SPONSOR FLYER (one image per slide)
+  ════════════════════════════════ */
+  .slide-sponsor-flyer { display:flex; flex-direction:column; }
+  .slide-sponsor-flyer .sf-head {
+    background:var(--navy); padding:24px 80px; border-bottom:3px solid var(--gold);
+    display:flex; align-items:center; gap:24px; flex-shrink:0;
+  }
+  .slide-sponsor-flyer .sf-logo { width:70px; height:70px; object-fit:contain; flex-shrink:0; }
+  .slide-sponsor-flyer .sf-eyebrow { font-size:16px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .slide-sponsor-flyer .sf-title   { font-family:'Crimson Pro',serif; font-size:40px; font-weight:700; color:#fff; line-height:1.15; }
+  .slide-sponsor-flyer .sf-title span { color:var(--gold-light); }
+  .slide-sponsor-flyer .sf-body {
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:36px; overflow:hidden;
+    background:radial-gradient(ellipse at center, #0d2060 0%, #050f30 100%);
+  }
+  .slide-sponsor-flyer .sf-body img {
+    max-width:100%; max-height:100%; object-fit:contain;
+    box-shadow:0 16px 60px rgba(0,0,0,.7); border-radius:4px;
+    background:#fff;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ═══ S-00a BANNER (intro) ═══ -->
+<div class="slide active" data-duration="6000" data-screen-label="00 Banner" style="background:#000;">
+  <img src="uploads/banner.png" alt="Albany Capital Region Lions Club" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+</div>
+
+<!-- ═══ S-00 WELCOME ═══ -->
+<div class="slide slide-hero bg-navy-grad" data-duration="8000" data-screen-label="01 Welcome">
+  <div class="particles" id="p-welcome"></div>
+  <svg class="corner tl" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <svg class="corner tr" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <svg class="corner bl" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <svg class="corner br" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <div class="hero-inner">
+    <div class="hero-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="eyebrow">Lions Club International · District 20-R2</div>
+    <div class="big-title">Welcome to Albany Capital Region<br><span>Lions Club</span></div>
+    <div class="sub">Charter Night &amp; Installation Ceremony</div>
+    <div class="date-badge"><span>⭐</span><span>Sunday, May 3, 2026</span><span>⭐</span></div>
+  </div>
+</div>
+
+<!-- ═══ PROGRAM (template — cloned into all data-is-prog slides) ═══ -->
+<div class="slide slide-program bg-dark" id="prog-template" data-duration="45000" data-screen-label="02 Program">
+  <div class="prog-layout">
+    <div class="prog-left">
+      <div class="prog-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+      <div class="prog-left-title">Charter Night &amp; Installation Ceremony</div>
+      <div class="prog-left-sub">Albany Capital Region Lions Club</div>
+      <div class="prog-left-date">May 3, 2026</div>
+    </div>
+    <div class="prog-right">
+      <div class="prog-header">Program of Events</div>
+      <ul class="prog-list">
+        <li><span class="num">01</span>Registration and Guest Arrival</li>
+        <li><span class="num">02</span>Call to Order</li>
+        <li><span class="num">03</span>Invocation / Prayer</li>
+        <li><span class="num">04</span>Pledge of Allegiance</li>
+        <li><span class="num">05</span>National Anthem: USA &amp; Bangladesh</li>
+        <li><span class="num">06</span>Toast</li>
+        <li><span class="num">07</span>Welcome Address by President</li>
+        <li style="font-size: 26px"><span class="num" >08</span>Introduction of Distinguished Guests &amp; Dignitaries</li>
+        <li><span class="num">09</span>Address by Chief Guest &amp; Honorable Guests</li>
+        <li><span class="num">10</span>Ceremonial Opening</li>
+        <li><span class="num">11</span>Installation of Club Officers &amp; Oath Ceremony</li>
+        <!-- <li class="hl"><span class="num">11</span>Installation of Officers &amp; Oath Ceremony</li> -->
+        <li><span class="num">12</span>ROAR Recitation</li>
+        <li><span class="num">13</span>Presentation of Insignia - Collar, Gavel</li>
+        <li style="font-size: 25px"><span class="num">14</span>Recognition/Presentation of Certificates or Mementos</li>
+         <!-- <li><span class="num">15</span>State of NY Proclamation &amp; Citations</li> -->
+          
+        <li style="font-size: 24px"><span class="num" >15</span>Special Recognition from the Assembly of New York State</li>
+        <li><span class="num">16</span>Award Ceremony</li>
+        <li><span class="num">17</span>Cultural Segment</li>
+        <li><span class="num">18</span>Zumba Session &amp; Open Dance Floor</li>
+        <li><span class="num">19</span>Vote of Thanks</li>
+        <li><span class="num">20</span>Benediction</li>
+        <li><span class="num">21</span>Closing Remarks</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: Kathy Hochul ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="03.0 Kathy">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Kathy_Hochul.jpg" alt="Kathy Hochul">
+      <div class="msg-photo-name"><div class="pn">Kathy Hochul</div><div class="pt">Governor, New York State</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Kathy Hochul</div>
+      <div class="msg-title">Governor, New York State</div>
+      <div class="msg-divider"></div>
+     
+      <div class="msg-body">"Dear Friends:
+        <br>
+It is my pleasure to send greetings to everyone gathered for the Albany Capital Region Lions Club Installation Ceremony.
+<br><br>
+Since its founding, the Albany Capital Region Lions Club has remained committed to supporting upstate New Yorkers and improving the quality of life for Albany County residents.
+By bringing together a network of volunteers who dedicate theit time and talents to tackle some of the most pressing humanitarian challenges, you continue to create accessible opportunities for personal and community growth.
+<br><br>
+Today, you come together to not only celebrate the great work your organization has done but also welcome new leaders who will help to guide the organization in its efforts to support and uplift members of the community. On behalf of all New Yorkers, I am grateful for everyone's dedication to creating a more prosperous state.
+<br><br>
+Best wishes for an enjoyable event"</div>
+      <div class="msg-sign">— Kathy Hochul, Governor, New York State</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: NYC Mayor Zohran Mamdani ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="03 NYC Mayor">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Zohran_Mamdani.jpg" alt="Zohran Mamdani">
+      <div class="msg-photo-name"><div class="pn">Zohran Mamdani</div><div class="pt">Mayor, City of New York</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Zohran Mamdani</div>
+      <div class="msg-title">Mayor, The City of New York</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"I am pleased to extend my warm congratulations to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony. 
+        <br><br>
+        Your dedication to community service and collective action reflects a deep commitment to building stronger, more inclusive communities. The work you do to support those in need and bring people together across the Capital Region is both meaningful and impactful. 
+        <br><br>
+        I commend the leadership and members of the Club for their continued efforts in advancing service, compassion, and civic engagement. Your contributions play an important role in fostering connection and positive change."</div>
+      <div class="msg-sign">— Zohran Mamdani, Mayor, The City of New York</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: Albany Mayor Dr. Applyrs ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="04 Albany Mayor">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Dorcey_Applyrs.jpg" alt="Dr. Dorcey L. Applyrs">
+      <div class="msg-photo-name"><div class="pn">Dr. Dorcey L. Applyrs</div><div class="pt">Mayor, City of Albany</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Dr. Dorcey L. Applyrs</div>
+      <div class="msg-title">Mayor, City of Albany</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"In recognition of your commitment to service and innovation in the City of Albany, I commend the leadership and members of the Albany Capital Region Lions Club on the occasion of your Installation Ceremony.
+        <br><br>
+        The Lion's Club has long been a symbol of service, compassion, and community leadership. Your continued dedication to humanitarian efforts and local engagement reflects the very best of Albany's spirit, bringing people together to serve, uplift, and create meaningful change. I applaud your ongoing efforts to address community needs, support those most vulnerable, and inspire the next generation of changemakers. Your work strengthens not only our local community, but also contributes to a broader global mission of service and solidarity. 
+        <br><br>
+        On behalf of the City of Albany, I extend my best wishes for your continued success, growth, and impact in all your endeavors."</div>
+      <div class="msg-sign">— Dr. Dorcey L. Applyrs, Mayor, City of Albany</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: Assemblywoman Rajkumar ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="06 Assemblywoman">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Jennifer_Rajkumar.jpg" alt="Jenifer Rajkumar">
+      <div class="msg-photo-name"><div class="pn">Jenifer Rajkumar</div><div class="pt">Assembly Member, NYS District 38</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Jenifer Rajkumar</div>
+      <div class="msg-title">Assembly Member, NYS Assembly District 38</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"I extend my warmest congratulations and best wishes to the Albany Capital Region Lions Club on your Installation Ceremony. 
+        <br><br>
+        The Lions Club has long been a beacon of service, compassion, and community leadership. Your unwavering commitment to uplifting communities, supporting those in need, and advancing humanitarian causes reflects the very best of our shared values. I commend the leadership and members for their dedication to making a meaningful difference across the Capital Region. Your efforts not only strengthen local communities but also contribute to a broader mission of service and global solidarity. 
+        <br><br>
+        As you begin a new chapter of leadership, I wish you continued success, growth, and impact in all your endeavors. May your work continue to inspire positive change and empower future generations of leaders."</div>
+      <div class="msg-sign">— Jenifer Rajkumar, Assembly Member, NYS Assembly District 38</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROGRAM #2 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="05 Program"></div>
+
+<!-- ═══ MSG: International President A.P. Singh ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="07 Intl President">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/AP_Singh.jpg" alt="A.P. Singh">
+      <div class="msg-photo-name"><div class="pn">A.P. Singh</div><div class="pt">International President, LCI</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">A.P. Singh</div>
+      <div class="msg-title">International President, Lions Clubs International</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"It is my great pleasure to extend warm congratulations to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony. 
+        <br><br>
+        Your commitment to service, leadership, and community impact reflects the enduring values of Lions Clubs International. Through your dedication and collective efforts, you continue to make a meaningful difference in the lives of those you serve while strengthening the spirit of volunteerism in your community. 
+        <br><br>
+        I commend the leadership and members of the Club for their passion, teamwork, and unwavering focus on service. Your contributions embody our global mission of 'We Serve' and inspire others to lead with compassion and purpose. As you begin this new term of leadership, I wish you a successful Installation Ceremony and continued growth, unity, and success in all your service initiatives."</div>
+      <div class="msg-sign">— A.P. Singh, International President, Lions Clubs International</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: International Director Nazmul Haque ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="08 Intl Director">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Nazmul_Haque.jpg" alt="Lion Nazmul Haque">
+      <div class="msg-photo-name"><div class="pn">Lion Nazmul Haque</div><div class="pt">International Director 2025–2027</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Lion Nazmul Haque</div>
+      <div class="msg-title">International Director 2025–2027, Lions Clubs International</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"I am ecstatic to share my warm greetings with the Albany Capital Region Lions Club on the occasion of your Installation Ceremony. 
+        <br><br>
+        Your commitment to service, leadership, and community engagement reflects the true spirit of Lions Clubs International. I commend the dedication of your members in serving those in need and strengthening the bonds within your community. 
+        <br><br>
+        The impactful initiatives undertaken by your Club demonstrate a strong commitment to compassion, volunteerism, and meaningful service. Your efforts contribute not only to the well-being of the Capital Region but also to the broader global mission of Lions. 
+        <br><br>
+        As you begin this new leadership term, I wish you a successful Installation Ceremony and continued growth, unity, and success in all your future endeavors."</div>
+      <div class="msg-sign">— Lion Nazmul Haque, International Director 2025–2027</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ MSG: District Governor Asef Bari ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="10 District Governor">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Asef_Bari.jpg" alt="Asef Bari">
+      <div class="msg-photo-name"><div class="pn">Lion Asef Bari</div><div class="pt">District Governor, District 20-R2</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Lion Asef Bari</div>
+      <div class="msg-title">District Governor, District 20-R2, Lions Clubs International</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"I am delighted to extend my warm congratulations to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony. 
+        <br><br>
+        Your dedication to service, leadership, and community engagement reflects the core values of Lions Clubs International. The work you do to support those in need and strengthen your local community is truly commendable and continues to make a lasting impact across the Capital Region. 
+        <br><br>
+        I applaud the commitment of your members and leaders as you continue to advance humanitarian service and build stronger community connections. Your efforts are an important part of our shared mission of 'We Serve.' As you begin this new term, I wish you a successful Installation Ceremony and continued achievement in all your service initiatives."</div>
+      <div class="msg-sign">— Lion Asef Bari, District Governor, District 20-R2</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: 1st Vice DG Nina Smith ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="11 1st Vice DG">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Nina_Smith.png" alt="Nina L. Smith">
+      <div class="msg-photo-name"><div class="pn">Nina L. Smith, PMJF</div><div class="pt">1st Vice District Governor</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Nina L. Smith, PMJF</div>
+      <div class="msg-title">First Vice District Governor &amp; Elect District Governor 2026–2027, District 20-R2, Lions Clubs International</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"It is my pleasure to extend warm greetings to the Albany Capital Region Lions Club on the occasion of your Installation Ceremony. 
+        <br><br>
+        Your dedication to service, leadership, and community engagement exemplifies the mission and values of Lions Clubs International. I commend the commitment of your members in addressing community needs, fostering unity, and making a meaningful impact in the Capital Region. The work you are doing to promote service, compassion, and volunteerism is both inspiring and impactful. 
+        
+        Your continued efforts strengthen not only your local community but also contribute to the broader Lions network of service.
+        <br><br>
+        As you embark on this new leadership term, I wish you a successful Installation Ceremony and continued growth and success in all your initiatives."</div>
+      <div class="msg-sign">— Nina L. Smith, PMJF, First Vice District Governor &amp; Elect District Governor 2026–2027</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: 2nd Vice DG Shah Nawaz ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="11b 2nd Vice DG">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Shah_Nawaz.jpg" alt="Shah Nawaz">
+      <div class="msg-photo-name"><div class="pn">Shah Nawaz, PMJF</div><div class="pt">2nd Vice District Governor</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Shah Nawaz, PMJF</div>
+      <div class="msg-title">2nd Vice District Governor &amp; Elect 1st Vice Governor 2026–2027, District 20-R2, Lions Clubs International</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"I am pleased to extend my heartfelt greetings to the Albany Capital Region Lions Club on your Installation Ceremony. 
+        <br><br>
+        Your continued commitment to service, leadership, and community support reflects the true spirit of Lions Clubs International. The dedication shown by your members in serving those in need and strengthening community bonds is truly commendable. 
+        <br><br>
+        I appreciate the efforts of the Club in advancing meaningful service initiatives and upholding the values of compassion, integrity, and volunteerism. Your work continues to make a positive difference in the Capital Region and beyond. As you begin this new chapter of leadership, I wish you a successful Installation Ceremony and continued success in all your endeavors."</div>
+      <div class="msg-sign">— Shah Nawaz, PMJF, 2nd Vice District Governor, District 20-R2</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: Cabinet Secretary Ahsan Habib ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="16000" data-screen-label="11c Cabinet Secretary">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Distinguished/Ahsan_Habib.jpg" alt="Ahsan Habib">
+      <div class="msg-photo-name"><div class="pn">Ahsan Habib, PMJF</div><div class="pt">District Cabinet Secretary</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Ahsan Habib, PMJF</div>
+      <div class="msg-title">District Cabinet Secretary, District 20-R2, Lions Clubs International</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"It is with immense joy and great pride that I extend my warmest greetings on the auspicious occasion of the Charter Night and Installation Ceremony of the Albany Capital Region Lions Club. 
+        <br><br> 
+        Today marks a significant milestone as we officially embark on a journey of service, leadership, and community engagement under the banner of Lions Clubs International. 
+        As Lions and Leos, we are united by a profound commitment to serve with compassion, integrity, and dedication. 
+        <br><br>
+        Our mission is clear — to uplift communities, empower individuals, and create lasting positive change. Together, we are more than a network of volunteers — we are a global force for good. Through strong leadership, compassionate service, and unwavering dedication, we continue to uphold the true spirit of 'Service for Life.' 
+        <br><br>
+        Let us make this Charter Night a memorable and inspiring beginning of a remarkable journey."</div>
+      <div class="msg-sign">— Ahsan Habib, PMJF, District Cabinet Secretary, District 20-R2</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROGRAM #3 ═══ -->
+<!-- <div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="09 Program"></div> -->
+
+
+<!-- ═══ PROGRAM #4 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="12 Program"></div>
+
+<!-- ═══ MSG: Charter President Tahmina ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="14000" data-screen-label="13 Charter President">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Tahmina Sharif Sonia.jpeg" alt="Tahmina Sharif Sonia">
+      <div class="msg-photo-name"><div class="pn">Tahmina Sharif Sonia</div><div class="pt">Charter President, ACRLC</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from our</div>
+      <div class="msg-name">Tahmina Sharif Sonia</div>
+      <div class="msg-title">Charter President, Albany Capital Region Lions Club</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"It is both an honor and a privilege, as Charter President, to warmly welcome you to Albany — the vibrant heart of New York's Capital Region. 
+        <br><br>
+        As proud members of Lions Clubs International, we are guided by a clear and meaningful mission: to empower volunteers to serve their communities, meet humanitarian needs, encourage peace and promote international understanding. Today's ceremony is more than a formal installation; it is a reaffirmation of our purpose and responsibility. 
+        <br><br>
+        Together, we are more than a network of volunteers. We are a global force for humanitarian impact, uplifting lives and building stronger communities through service and compassion."</div>
+      <div class="msg-sign">— Tahmina Sharif Sonia, Charter President, Albany Capital Region Lions Club</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MSG: Charter VP Zakia Nizam ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="14 Charter VP">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Zakia Nizam.jpeg" alt="Zakia Nizam">
+      <div class="msg-photo-name"><div class="pn">Zakia Nizam</div><div class="pt">Charter Vice President, ACRLC</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Zakia Nizam</div>
+      <div class="msg-title">Charter Vice President, Albany Capital Region Lions Club</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"Warm greetings to you all on the occasion of our Installation Ceremony in Albany — New York's Capital Region. 
+        This moment reflects not just a transition of leadership, but a renewed pledge to service, unity, and meaningful action. I extend my heartfelt thanks to all members for electing me as Vice President.
+        
+        <br><br>
+         Your trust is a great honor, and I am committed to serving with sincerity, integrity, and dedication. Albany's diverse and inclusive spirit inspires our mission. 
+         As we begin this new journey, let us move forward together with vision, teamwork, and purpose. 
+        <br><br>
+        Through collaboration and commitment, we can expand our impact across the Capital Region and beyond."</div>
+      <div class="msg-sign">— Zakia Nizam, Charter Vice President, Albany Capital Region Lions Club</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ MSG: Charter Secretary Anika ═══ -->
+<div class="slide slide-message bg-navy-grad" data-duration="13000" data-screen-label="16 Charter Secretary">
+  <div class="msg-layout">
+    <div class="msg-photo">
+      <img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Anika Subah Ahmed.jpeg" alt="Anika Subah Ahmad Upoma">
+      <div class="msg-photo-name"><div class="pn">Anika Subah Ahmad Upoma</div><div class="pt">Charter Secretary, ACRLC</div></div>
+    </div>
+    <div class="msg-content">
+      <div class="msg-from">Message from</div>
+      <div class="msg-name">Anika Subah Ahmad Upoma</div>
+      <div class="msg-title">Charter Secretary, Albany Capital Region Lions Club</div>
+      <div class="msg-divider"></div>
+      <div class="msg-body">"It is a great honor for me to extend my heartfelt greetings to you all on the occasion of our Installation Ceremony here in Albany, the heart of New York's Capital Region. 
+        <br><br>
+        This special gathering marks not only a transition of leadership but also a renewed commitment to service, unity, and purposeful action. Albany, with its rich history and vibrant multicultural community, stands as a symbol of inclusion and collaboration. Effective service is built on strong teamwork, thoughtful planning, and open communication. 
+        <br><br>
+        Together, we can further strengthen our presence in Albany and across the Capital Region, reaching more people and creating lasting positive change."</div>
+      <div class="msg-sign">— Anika Subah Ahmad Upoma, Charter Secretary, Albany Capital Region Lions Club</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROGRAM #5 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="25000" data-is-prog="1" data-screen-label="15 Program"></div>
+
+
+<!-- ═══ MILESTONE: First Bangladeshi American President ═══ -->
+<div class="slide slide-highlight bg-navy-grad" data-duration="20000" data-screen-label="17 Milestone">
+  <div class="hl-layout">
+    <div class="hl-content">
+      <div class="hl-eyebrow">Historic Milestone</div>
+      <div class="hl-title">First <span>Bangladeshi American</span><br>Female Charter President<br>in New York</div>
+      <div class="hl-rule"></div>
+      <div class="hl-body">We proudly congratulate Lion Tahmina Sharif Sonia on her election as the first Bangladeshi American female Charter President in New York. We extend our sincerest felicitations for your continued success, visionary leadership, and lasting impact. May your tenure be distinguished by excellence, inspiration, and transformative service.</div>
+    </div>
+    <div class="hl-photo">
+      <img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Tahmina Sharif Sonia.jpeg" alt="Tahmina Sharif Sonia">
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROGRAM #6 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="18 Program"></div>
+
+<!-- ═══ EXECUTIVE COMMITTEE ═══ -->
+<div class="slide slide-committee bg-dark" data-duration="10000" data-screen-label="19 Exec Committee">
+  <div class="com-layout">
+    <div class="com-left">
+      <div class="com-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+      <div class="com-left-title">Executive Committee</div>
+      <div style="font-size:14px;color:rgba(10,31,92,.65);letter-spacing:.08em;text-transform:uppercase;">District 20-R2</div>
+    </div>
+    <div class="com-right">
+      <div class="com-title">Charter Officers &amp; Directors</div>
+      <div class="com-grid">
+        <div>
+          <div class="com-row"><span class="role">President</span><span class="name">Tahmina Sharif Sonia</span></div>
+          <div class="com-row"><span class="role">Vice President</span><span class="name">Zakia Nizam</span></div>
+          <div class="com-row"><span class="role">General Secretary</span><span class="name">Anika Subah Ahmad Upoma</span></div>
+          <div class="com-row"><span class="role">Treasurer</span><span class="name">Abdus Salam</span></div>
+          <div class="com-row"><span class="role">LCIF Coordinator</span><span class="name">Rashtab Mahmud</span></div>
+          <div class="com-row"><span class="role">Public Relations</span><span class="name">Aditya Shaheen</span></div>
+          <div class="com-row"><span class="role">Cultural Secretary</span><span class="name">Nadira Mujumder</span></div>
+        </div>
+        <div>
+          <div class="com-row"><span class="role">Women Affairs</span><span class="name">Mossa. Nurunnahar</span></div>
+          <div class="com-row"><span class="role">Tail Twister</span><span class="name">Tofazzal Hossain</span></div>
+          <div class="com-row"><span class="role">Health &amp; Wellness</span><span class="name">Marzana Khandoker</span></div>
+          <div class="com-row"><span class="role">Club Service Exec.</span><span class="name">Tania Zaman</span></div>
+          <div class="com-row"><span class="role">Director</span><span class="name">Quazi Mahtab Uddin</span></div>
+          <div class="com-row"><span class="role">Director</span><span class="name">Henry Rashid</span></div>
+          <div class="com-row"><span class="role">Director</span><span class="name">Sajedur Akanda</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MEMBERS 1A ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="20a Members 1">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Tahmina Sharif Sonia.jpeg" alt="Tahmina"></div>
+      <div class="mc-info"><div class="mc-role">Charter President</div><div class="mc-name">Tahmina Sharif Sonia</div><div class="mc-bio">MBA in HR Management, Empire State University. 4+ years as General Secretary of OBAC. Pursuing PhD in Organizational Leadership.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Zakia Nizam.jpeg" alt="Zakia"></div>
+      <div class="mc-info"><div class="mc-role">Vice President</div><div class="mc-name">Zakia Nilufar Nizam</div><div class="mc-bio">Special Education Consultant. Master's degrees from Dhaka University and SUNY Albany. Passionate about inclusion and service.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Anika Subah Ahmed.jpeg" alt="Anika"></div>
+      <div class="mc-info"><div class="mc-role">General Secretary</div><div class="mc-name">Anika Subah Ahmad Upoma</div><div class="mc-bio">Ed.M. Harvard 2023. Assistant Director at SUNY Albany. UN Representative. Founder of Evolution360.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MEMBERS 1B ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="20b Members 1">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Abdus Salam.jpeg" alt="Abdus Salam"></div>
+      <div class="mc-info"><div class="mc-role">Treasurer</div><div class="mc-name">Abdus Salam</div><div class="mc-bio">Professional Engineer focused on transportation innovation. Strong background in community service and youth leadership.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Rashtab Mahmud.jpeg" alt="Rashtab"></div>
+      <div class="mc-info"><div class="mc-role">LCIF Coordinator</div><div class="mc-name">Rashtab Mahmud</div><div class="mc-bio">IT Specialist at NYS ITS. Former Microsoft Student Partner. National Corresponding Secretary of ASAAL.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Aditya Shaheen.jpeg" alt="Aditya"></div>
+      <div class="mc-info"><div class="mc-role">Public Relations</div><div class="mc-name">Aditya Shaheen</div><div class="mc-bio">Journalist with 30+ years experience. Senior News Editor, Channel i Bangladesh. Traveled 35+ countries professionally.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ MEMBERS 2A ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="22a Members 2">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Nadira Mujumdar.jpeg" alt="Nadira"></div>
+      <div class="mc-info"><div class="mc-role">Cultural Secretary</div><div class="mc-name">Nadira Mujumder</div><div class="mc-bio">Works with North Colonie School District. Mother of three. Passionate about helping children and community service.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Mossa. Nurunnahar.jpeg" alt="Mossa"></div>
+      <div class="mc-info"><div class="mc-role">Women Affairs</div><div class="mc-name">Mossa Nurunnahar</div><div class="mc-bio">Certified Medical Assistant with 15+ years in healthcare. Committed to health education and community outreach.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Marzana Khandoker.jpeg" alt="Marzana"></div>
+      <div class="mc-info"><div class="mc-role">Health &amp; Wellness</div><div class="mc-name">Marzana Khandoker, MSN, RN-BC</div><div class="mc-bio">Clinical Informatics Specialist with 13 years nursing experience. Promotes digital health literacy.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MEMBERS 2B ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="22b Members 2">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Tania Zaman.jpeg" alt="Tania"></div>
+      <div class="mc-info"><div class="mc-role">Club Service Executive</div><div class="mc-name">Tania Zaman</div><div class="mc-bio">Law degree holder, national high jump gold medalist, banking executive. Works with Niskayuna School District.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Tofazzal Hossain.jpeg" alt="Tofazzal"></div>
+      <div class="mc-info"><div class="mc-role">Tail Twister &amp; Director</div><div class="mc-name">Tofazzal Hossain</div><div class="mc-bio">USPS Postal Operations Associate. Former Lab Technician at Albany Medical Center. Enjoys vlogging, cooking, and fishing.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Quazi Mahtab Uddin.jpeg" alt="Quazi"></div>
+      <div class="mc-info"><div class="mc-role">Director</div><div class="mc-name">Quazi Mahtab Uddin</div><div class="mc-bio">Research Specialist at NY CREATES. 20+ years in semiconductor industry including IBM and GlobalFoundries.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MEMBERS 3A ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="23a Members 3">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Henry Rashid.jpeg" alt="Henry"></div>
+      <div class="mc-info"><div class="mc-role">Director</div><div class="mc-name">Henry Rashid</div><div class="mc-bio">Entrepreneur and real estate investor. 30+ years of business experience in Chicago. Originally from Bangladesh, in the U.S. since 1988.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Sajedur Akanda.jpeg" alt="Sajedur"></div>
+      <div class="mc-info"><div class="mc-role">Director</div><div class="mc-name">Sajedur Akanda</div><div class="mc-bio">Research Scientist at GE Aerospace Research. PhD in Mechanical Engineering, The Ohio State University.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Dewan A Sarowar.jpeg" alt="Dewan"></div>
+      <div class="mc-info"><div class="mc-role">Director</div><div class="mc-name">Dewan A. Sarowar</div><div class="mc-bio">Community leader. Council Member, City of Hudson for 8 years. Shipping Manager at HAVE INC for 22+ years.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MEMBERS 3B ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="23b Members 3">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Maksudul Hasan Khan.jpeg" alt="Maksudul"></div>
+      <div class="mc-info"><div class="mc-role">Director</div><div class="mc-name">Maksudul Hasan Khan</div><div class="mc-bio">Change Manager at NYS ITS. PMI-certified Project Manager with Computer Science background.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Nusrat Sharmin.jpeg" alt="Nusrat"></div>
+      <div class="mc-info"><div class="mc-role">Executive Member</div><div class="mc-name">Nusrat Sharmin</div><div class="mc-bio">Architect at Jacobs Engineering. Master's in Urban Planning. Passionate about community service.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Laila Khaleda.jpeg" alt="Laila"></div>
+      <div class="mc-info"><div class="mc-role">Executive Member</div><div class="mc-name">Laila Khaleda</div><div class="mc-bio">Independent journalist and editor with 20+ years experience. Human rights and development activist.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MEMBERS 4A ═══ -->
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="24a Members 4">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our Charter Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Shanaz Mashud.jpeg" alt="Shanaz"></div>
+      <div class="mc-info"><div class="mc-role">Executive Member</div><div class="mc-name">Shanaz Mashud</div><div class="mc-bio">Devoted homemaker and mother of three. Passionate about helping others and contributing to society through the Lions Club.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Moshfaq Ahmed Asif.jpeg" alt="Moshfaq"></div>
+      <div class="mc-info"><div class="mc-role">Executive Member</div><div class="mc-name">Moshfaq Ahmed Asif</div><div class="mc-bio">Licensed Professional Engineer in New York. Squad Leader, Bridge Design Bureau at NYS DOT. Values connection and community.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Montasina Haider.jpeg" alt="Montasina"></div>
+      <div class="mc-info"><div class="mc-role">Executive Member</div><div class="mc-name">Montasina Haidar</div><div class="mc-bio">Project Manager and Facility Planner with 10+ years on NYS projects. PMP-certified Mechanical Engineering graduate.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide slide-members bg-dark" data-duration="9000" data-screen-label="24a Members 4">
+  <div class="mem-head">
+    <div class="mem-head-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="mem-head-title">Meet Our New Members</div>
+  </div>
+  <div class="mem-body">
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Farhana_Islam.jpg" alt="Farhana"></div>
+      <div class="mc-info"><div class="mc-role">Member</div><div class="mc-name">Farhana Islam</div><div class="mc-bio">STEA at North Colonie School District, Farhana Istan is dedicated to service, community engagement, and supporting youth and families through Lions Club initiatives.</div></div>
+    </div>
+    <div class="mem-card">
+      <div class="mc-photo"><img src="uploads/Profile Pictures of Members_Albany Capital Region Lions Club/Nasima_Akter.jpg" alt="Nasima"></div>
+      <div class="mc-info"><div class="mc-role">Member</div><div class="mc-name">Nasima Akter Nisha</div><div class="mc-bio">President of WE and MD of Revere Corp, Nasima Akter Nisha empowers over a million women entrepreneurs through leadership in e-commerce and digital inclusion.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ PROGRAM #7 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="21 Program"></div>
+
+
+
+<!-- ═══ Districts 2nd Annual Meeting ═══ -->
+<div class="slide slide-event-photo bg-dark" data-duration="10000" data-screen-label="25.01 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div>
+  <div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/1.jpeg" alt="District 2nd Annual Meeting"></div> 
+
+  <div style="position:absolute;bottom:0;left: 170px;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 60%,transparent 100%);">     
+    <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">Albany Capital Region Lions Club Charter was formally announced at the District 20-R2 general meeting in Jackson Heights, New York City on February 6, 2026 (Friday).</div>
+  </div>
+</div>
+
+<!-- ═══ GROUP PHOTOS: First Meeting ═══ -->
+<div class="slide bg-dark" data-duration="10000" data-screen-label="25 First Meeting" style="display:flex;flex-direction:column;">
+  <div style="background:var(--navy);padding:36px 80px;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:24px;">
+    <img src="uploads/docx_img_image1.png" style="width:80px;height:80px;object-fit:contain;" alt="">
+    <div>
+      <div style="font-size:18px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;">Our Founding Moment</div>
+      <div style="font-family:'Crimson Pro',serif;font-size:48px;font-weight:700;color:#fff;line-height:1.1;">Charter Inagural Conclave and Executive Board Formation · <span style="color:var(--gold-light);">February 8, 2026</span></div>
+    </div> 
+  </div>
+
+  <div style="flex:1;position:relative;overflow:hidden;">
+     <!-- <div class="ep-body"><img src="uploads/Events/02-08-2026_First Meeting/pdf_photo_12_245795.jpg" alt="First Meeting"></div>  -->
+    <img src="uploads/Events/02-08-2026_First Meeting/pdf_photo_12_245795.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center center;" alt="First Meeting">
+
+    <div style="position:absolute;bottom:0;left: 170px;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 60%,transparent 100%);">         
+      <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">Albany Capital Region Lions Club Charter Executive Board was formed on February 8, 2026 (Sunday) at the residence of Vice President Zakia Nilufar.</div>
+    </div>  
+  </div>
+</div>
+  
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.02 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div>
+    <div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div>
+  </div>
+</div> 
+    <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/2.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>
+
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.03 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/3.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.04 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/4.jpg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.05 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/5.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.06 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/6.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.07 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/7.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.08 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/8.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.09 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/9.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.10 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/10.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.11 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/11.JPG" alt="District 2nd Annual Meeting"></div> 
+</div>  
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.12 Districts 2nd Annual Meeting"> 
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · February 6, 2026</div><div class="ep-title">District 20-R2 <span>2nd General Meeting</span></div></div></div> 
+  <div class="ep-body"><img src="uploads/Events/02-06-2026_Districts 2nd Annual Meeting/12.jpeg" alt="District 2nd Annual Meeting"></div> 
+</div>
+
+
+
+
+<!-- ═══ Iftar Get Together (3 Photos) ═══ -->
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.01 Lions Iftar Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 7, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Iftar Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-07-2026_Iftar Get together/1.jpg" alt="Lions Iftar Get Together"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.02 Lions Iftar Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY· March 7, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Iftar Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-07-2026_Iftar Get together/2.jpg" alt="Lions Iftar Get Together"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="25.03 Lions Iftar Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 7, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Iftar Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-07-2026_Iftar Get together/3.jpg" alt="Lions Iftar Get Together"></div>
+</div>
+
+<!-- ═══ PROGRAM #8 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="24 Program"></div>
+
+<!-- ═══ SPRING CONVENTION ═══ -->
+<div class="slide bg-dark" data-duration="14000" data-screen-label="26 Spring Convention" style="display:flex;flex-direction:column;">
+  <div style="background:var(--navy);padding:36px 80px;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:24px;">
+    <img src="uploads/docx_img_image1.png" style="width:80px;height:80px;object-fit:contain;" alt="">
+    <div>
+      <div style="font-size:18px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;">District 20-R2 · March 2026</div>
+      <div style="font-family:'Crimson Pro',serif;font-size:48px;font-weight:700;color:#fff;line-height:1.1;">Spring <span style="color:var(--gold-light);">Convention 2026</span></div>
+    </div>
+  </div>
+  <div style="flex:1;position:relative;overflow:hidden;">
+    <img src="uploads/Events/03-22-2026_Spring Convention/658368733_27329813153275391_7675333575341318947_n.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;" alt="Spring Convention">
+    <!-- <div style="position:absolute;bottom:0;left:0;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 0%,transparent 100%);">
+      <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">President Tahmina Sharif Sonia received the Award of Excellence from International Director Lion Nazmul Haque and District Governor Asef Bari.</div>
+    </div> -->
+    
+    <div style="position:absolute;bottom:0;left: 170px;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 60%,transparent 100%);">         
+      <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">President Tahmina Sharif Sonia received the Award of Excellence from International Director Lion Nazmul Haque and District Governor Asef Bari.</div>
+    </div> 
+
+  </div>
+</div>
+
+<!-- ═══ SPRING CONVENTION GALLERY (24 photos) ═══ -->
+ <div class="slide slide-event-photo bg-dark" data-duration="8000" data-screen-label="26.21 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/658953008_27329812339942139_6719885944769756001_n.jpg" alt="Spring Convention"></div>
+
+   <div style="position:absolute;bottom:0;left: 700px;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 60%,transparent 100%);">         
+      <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">The Award of Excellence!</div>
+    </div> 
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.01 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/658138737_27329818183274888_5144718517033310575_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.02 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659080083_27329819236608116_8403862632037547446_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.03 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/657170638_27329824959940877_7160008379873549711_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.04 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/WhatsApp Image 2026-04-18 at 4.51.41 AM.jpeg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.05 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/660159449_27329829713273735_2326270760096400055_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.06 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/662509903_27329817939941579_7055871740958051907_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.07 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/660532668_27329815713275135_8307670286658515926_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.08 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659634467_27329829429940430_2589865739915104268_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.09 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/661213735_27329821953274511_2613966495426069028_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.10 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659142988_27329831493273557_8666769162277819709_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.11 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659080083_27329814346608605_345116296583840873_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.12 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659190846_27338065105783529_5936683302501544713_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.13 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659142810_27329814616608578_7127971519937103089_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.14 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659838771_27329812919942081_5536429888456845101_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.15 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/661047750_27342935765296463_6855499252572700307_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.16 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/662403874_27329811583275548_6050078312485094749_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.17 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659827450_27338064329116940_7936053785895768580_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.18 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/pdf_photo_17_212473.jpg" alt="Spring Convention"></div>
+
+      <!-- <div style="position:absolute;bottom:0;left: 170px;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 60%,transparent 100%);">         
+      <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">President Tahmina Sharif Sonia received the Award of Excellence from International Director Lion Nazmul Haque and District Governor Asef Bari.</div>
+    </div>  -->
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.19 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/659829676_27338067249116648_1986983784978650012_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.20 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/663042370_27329814116608628_8525675026473977089_n.jpg" alt="Spring Convention"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.22 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/660970208_27329815199941853_5232342538291491060_n.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.23 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/DSC_0784.jpg" alt="Spring Convention"></div>
+</div>
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="26.24 Spring Convention">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">District 20-R2 · March 22, 2026</div><div class="ep-title">Spring <span>Convention 2026</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-22-2026_Spring Convention/DSC_0805.jpg" alt="Spring Convention"></div>
+</div>
+
+<!-- ═══ PROGRAM #9 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="27 Program"></div>
+
+
+<!-- ═══ Bangladesh Independence Day (12 Photos) ═══ -->
+
+<div class="slide slide-event-photo bg-dark" data-duration="10000" data-screen-label="28.01 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/1.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.02 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/2.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.03 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/3.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.04 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/4.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.05 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/5.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.06 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/6.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.07 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/7.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.08 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/8.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.09 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/9.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.10 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/10.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.11 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/11.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.12 Bangladesh Independence Day at Albany Capitol">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, New York · March 24, 2026</div><div class="ep-title">Bangladesh Independence Day <span>at Albany Capitol</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-24-2026_Bangladesh Day 2026 at Capitol/12.jpg" alt="Bangladesh Independence Day at Albany Capitol"></div>
+</div>
+
+
+<!-- ═══ PROGRAM #9 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="27 Program"></div>
+
+<!-- ═══ EID / COMMUNITY ═══ -->
+<div class="slide slide-event-photo bg-dark" data-duration="10000" data-screen-label="28.01 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/1.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+
+  <div style="position:absolute;bottom:0;left: 300px;right:0;padding:32px 80px;background:linear-gradient(to top,rgba(5,15,48,.85) 60%,transparent 100%);">         
+      <div style="font-size:24px;color:rgba(255,255,255,.85);font-family:'Crimson Pro',serif;font-style:italic;">Albany Capital Region Charter Members Signed the Lions Club Certificate at the Charter President Tahmina Sharif Sonia's Residence!</div>
+    </div> 
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.02 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/2.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.03 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/3.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.04 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/4.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.05 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/5.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.06 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/6.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.07 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/7.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.08 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/8.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+<div class="slide slide-event-photo bg-dark" data-duration="5000" data-screen-label="28.09 Albany Capital Region Lions Club Eid Get Together">
+  <div class="ep-head"><img class="ep-logo" src="uploads/docx_img_image1.png" alt="Logo"><div><div class="ep-eyebrow">Albany, NY · March 27, 2026</div><div class="ep-title">Albany Capital Region Lions Club <span>Eid Get Together</span></div></div></div>
+  <div class="ep-body"><img src="uploads/Events/03-27-2026_Eid Gettogether/9.jpg" alt="Albany Capital Region Lions Club Eid Get Together"></div>
+</div>
+
+
+<!-- ═══ PROGRAM #10 ═══ -->
+<div class="slide slide-program bg-dark" data-duration="45000" data-is-prog="1" data-screen-label="30 Program"></div>
+
+<!-- ═══ Special Guest FLYERS (one per slide) ═══ -->
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="15000" data-screen-label="30.1 Special Guest">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Special Guest</div>
+      <div class="sf-title">Thank You to Our <span>Special Guest</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/Singer Guest/pdf_photo_40_62776.jpg" alt="Sponsor Flyer 1"></div>
+</div>
+
+
+<!-- ═══ SPONSORSHIP ═══ -->
+<div class="slide slide-committee bg-dark" data-duration="10000" data-screen-label="29 Sponsorship">
+  <div class="com-layout">
+    <div class="com-left">
+      <div class="com-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+      <div class="com-left-title">Support Our Mission</div>
+      <div style="font-size:14px;color:rgba(10,31,92,.65);letter-spacing:.08em;text-transform:uppercase;margin-top:8px;">Sponsorship 2026</div>
+    </div>
+    <div class="com-right">
+      <div class="com-title">Sponsorship &amp; Advertising 2026</div>
+      <div class="com-grid">
+        <div>
+          <div class="com-row"><span class="role" style="color:#f0c84a;">Platinum</span><span class="name">$10,000+ · Top branding, Speaking slot, VIP seating</span></div>
+          <div class="com-row"><span class="role">Gold</span><span class="name">$5,000 · Prominent logo, VIP table, Social media</span></div>
+          <div class="com-row"><span class="role">Silver</span><span class="name">$2,500 · Logo placement, Reserved seating</span></div>
+          <div class="com-row"><span class="role">Bronze</span><span class="name">$1,000 · Website recognition, Event acknowledgment</span></div>
+          <div class="com-row"><span class="role">Community</span><span class="name">$500 · Program listing, Social mention</span></div>
+          <div class="com-row"><span class="role">Friend</span><span class="name">$100–$499 · Donor recognition</span></div>
+        </div>
+        <div>
+          <div style="padding-bottom:10px;margin-bottom:4px;border-bottom:1px solid rgba(240,200,74,.2);font-size:13px;color:var(--gold-light);text-transform:uppercase;letter-spacing:.1em;">Magazine Advertising</div>
+          <div class="com-row"><span class="role">Full Page</span><span class="name">$1000 · Premium placement</span></div>
+          <div class="com-row"><span class="role">Half Page</span><span class="name">$500 · Strong visibility</span></div>
+          <div class="com-row"><span class="role">Quarter Page</span><span class="name">$250 · Small business friendly</span></div>
+          <div class="com-row"><span class="role">Business Card</span><span class="name">$125 · Compact recognition</span></div>
+          <div style="margin-top:20px;font-size:17px;color:rgba(255,255,255,.4);font-style:italic;font-family:'Crimson Pro',serif;">"Our sponsors invest in Albany's future."</div>
+          <div style="margin-top:6px;font-size:15px;color:rgba(255,255,255,.3);">845.216.5523 · albanylionsclub.org</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ═══ SPONSOR FLYERS (one per slide) ═══ -->
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="31 Sponsor 1">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_37_232206.jpg" alt="Sponsor Flyer 1"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="32 Sponsor 2">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_38_95512.jpg" alt="Sponsor Flyer 2"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="33 Sponsor 3">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_39_59961.jpg" alt="Sponsor Flyer 3"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="34 Sponsor 4">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_41_75932.jpg" alt="Sponsor Flyer 4"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="35 Sponsor 5">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_42_60691.jpg" alt="Sponsor Flyer 5"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="36 Sponsor 6">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_43_241682.jpg" alt="Sponsor Flyer 6"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="37 Sponsor 7">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_44_123392.jpg" alt="Sponsor Flyer 7"></div>
+</div>
+
+
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="39 Sponsor 9">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_46_74089.jpg" alt="Sponsor Flyer 8"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="40 Sponsor 10">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_47_51962.jpg" alt="Sponsor Flyer 10"></div>
+</div>
+
+<div class="slide slide-sponsor-flyer bg-dark" data-duration="8000" data-screen-label="38 Sponsor 9">
+  <div class="sf-head">
+    <img class="sf-logo" src="uploads/docx_img_image1.png" alt="Logo">
+    <div>
+      <div class="sf-eyebrow">With Gratitude · Our Sponsors</div>
+      <div class="sf-title">Thank You to Our <span>Sponsors</span></div>
+    </div>
+  </div>
+  <div class="sf-body"><img src="uploads/sponsors/pdf_photo_45_172385.jpg" alt="Sponsor Flyer 10"></div>
+</div>
+
+<!-- ═══ CLOSING ═══ -->
+<div class="slide slide-hero bg-navy-grad" data-duration="10000" data-screen-label="31 Closing">
+  <div class="particles" id="p-closing"></div>
+  <svg class="corner tl" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <svg class="corner tr" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <svg class="corner bl" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <svg class="corner br" viewBox="0 0 120 120" fill="none"><path d="M10 110L10 10L110 10" stroke="#f0c84a" stroke-width="2"/><circle cx="10" cy="10" r="5" fill="#f0c84a"/></svg>
+  <div class="hero-inner">
+    <div class="hero-logo"><img src="uploads/docx_img_image1.png" alt="Logo"></div>
+    <div class="big-title">Thank You for Supporting<br><span>Lions Clubs International</span></div>
+    <div class="sub">Albany Capital Region Lions Club · District 20-R2</div>
+    <div style="width:200px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
+    <div class="tagline">"We Serve • We Lead • We Impact"</div>
+    <div class="dist">Charter Night &amp; Installation Ceremony · May 3, 2026</div>
+  </div>
+</div>
+
+</div><!-- /#stage -->
+
+<div id="slide-counter"></div>
+<div id="progress-bar" style="width:0%"></div>
+<div id="pause-hint">⏸</div>
+<div id="nav-controls">
+  <div id="nav-start" title="Jump to first slide">⏮</div>
+  <div id="nav-end" title="Jump to last slide">⏭</div>
+</div>
+<div id="sound-hint">🔇 MUTED</div>
+<audio id="bg-audio" src="uploads/videos/Lions Clubs Anthem We Serve - Lions International.mp3" loop preload="auto"></audio>
+
+<script>
+// Clone program slides from template into all placeholder slides
+const progTemplate = document.getElementById('prog-template');
+document.querySelectorAll('[data-is-prog="1"]').forEach(el => {
+  el.innerHTML = progTemplate.innerHTML;
+  el.classList.add('slide-program');
+});
+
+// Scale stage to fill viewport, letterboxed, centered
+function scaleStage() {
+  const s = document.getElementById('stage');
+  const sc = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const ox = Math.round((window.innerWidth  - 1920 * sc) / 2);
+  const oy = Math.round((window.innerHeight - 1080 * sc) / 2);
+  s.style.transform = `translate(${ox}px,${oy}px) scale(${sc})`;
+}
+scaleStage();
+window.addEventListener('resize', scaleStage);
+
+// Floating gold particles for hero slides
+function makeParticles(id, n) {
+  const c = document.getElementById(id);
+  if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = Math.random() * 4 + 1;
+    p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${Math.random()*20}%;animation-delay:${Math.random()*8}s;animation-duration:${6+Math.random()*8}s;`;
+    c.appendChild(p);
+  }
+}
+makeParticles('p-welcome', 30);
+makeParticles('p-closing', 30);
+
+// ── Slideshow engine ──────────────────────────────────────────────────────────
+const slides    = Array.from(document.querySelectorAll('.slide'));
+const counter   = document.getElementById('slide-counter');
+const bar       = document.getElementById('progress-bar');
+const hint      = document.getElementById('pause-hint');
+const navStart  = document.getElementById('nav-start');
+const navEnd    = document.getElementById('nav-end');
+const audio     = document.getElementById('bg-audio');
+const soundHint = document.getElementById('sound-hint');
+audio.volume = 0.5;
+let audioPlaying = false;
+
+function updateSoundHint() {
+  if (audioPlaying) {
+    soundHint.textContent = '🔊';
+    soundHint.classList.remove('is-muted');
+  } else {
+    soundHint.textContent = '🔇 MUTED';
+    soundHint.classList.add('is-muted');
+    soundHint.classList.add('visible');
+  }
+}
+
+function toggleSound() {
+  if (audioPlaying) {
+    audio.pause();
+  } else {
+    audio.play().catch(() => {});
+  }
+}
+
+audio.addEventListener('play',  () => { audioPlaying = true;  updateSoundHint(); });
+audio.addEventListener('pause', () => { audioPlaying = false; updateSoundHint(); });
+soundHint.addEventListener('click', e => { e.stopPropagation(); toggleSound(); });
+updateSoundHint();
+
+let cur = 0, timer = null, pTimer = null, paused = false;
+let pStart = 0, pDur = 0, pElapsed = 0, wasPlayingAudio = false;
+
+// Resume from saved position
+const saved = parseInt(localStorage.getItem('acrlc_v3') || '0');
+if (saved > 0 && saved < slides.length) cur = saved;
+
+function showSlide(i) {
+  slides.forEach((s, j) => s.classList.toggle('active', j === i));
+  counter.textContent = (i + 1) + ' / ' + slides.length;
+  localStorage.setItem('acrlc_v3', i);
+}
+
+function startProgress(dur) {
+  pDur = dur; pElapsed = 0; pStart = performance.now();
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  clearInterval(pTimer);
+  pTimer = setInterval(() => {
+    if (paused) return;
+    bar.style.width = Math.min(((performance.now() - pStart) / pDur) * 100, 100) + '%';
+  }, 50);
+}
+
+function getDur(i) { return parseInt(slides[i].dataset.duration || '8000'); }
+
+function next() { playFrom(cur + 1); }
+
+// Move to slide i and keep the show playing (auto-advance re-armed).
+function playFrom(i) {
+  cur = (i + slides.length) % slides.length;
+  showSlide(cur);
+  schedule();
+}
+
+// Move to slide i but stay paused: reset the frame's timing, no auto-advance.
+function freezeAt(i) {
+  clearTimeout(timer);
+  cur = (i + slides.length) % slides.length;
+  showSlide(cur);
+  startProgress(getDur(cur));   // resets progress bar + timing; interval idles while paused
+}
+
+// Used by the start/end controls — respects the current pause state.
+function jumpTo(i) {
+  if (paused) freezeAt(i);
+  else        playFrom(i);
+}
+
+function schedule() {
+  clearTimeout(timer);
+  const d = getDur(cur);
+  startProgress(d);
+  timer = setTimeout(next, d);
+}
+
+function updateHint() {
+  if (paused) {
+    hint.textContent = '▶ PAUSED';
+    hint.classList.add('is-paused');
+    hint.classList.add('visible');
+  } else {
+    hint.textContent = '⏸';
+    hint.classList.remove('is-paused');
+  }
+}
+
+function togglePause() {
+  paused = !paused;
+  updateHint();
+  if (paused) {
+    clearTimeout(timer);
+    pElapsed = performance.now() - pStart;
+    wasPlayingAudio = audioPlaying;        // remember, so resume won't override a manual mute
+    if (audioPlaying) audio.pause();
+  } else {
+    pStart = performance.now() - pElapsed;
+    timer = setTimeout(next, pDur - pElapsed);
+    if (wasPlayingAudio) audio.play().catch(() => {});
+  }
+}
+
+// Briefly reveal pause + sound icons on mouse activity
+let hintTimer;
+function flashHint() {
+  if (!paused)       hint.classList.add('visible');
+  if (audioPlaying)  soundHint.classList.add('visible');
+  navStart.classList.add('visible');
+  navEnd.classList.add('visible');
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => {
+    if (!paused)      hint.classList.remove('visible');
+    if (audioPlaying) soundHint.classList.remove('visible');
+    navStart.classList.remove('visible');
+    navEnd.classList.remove('visible');
+  }, 2000);
+}
+
+// Auto-hide cursor after 3 s of inactivity (clean TV/kiosk display)
+let cursorTimer;
+function resetCursor() {
+  document.body.style.cursor = '';
+  clearTimeout(cursorTimer);
+  cursorTimer = setTimeout(() => { document.body.style.cursor = 'none'; }, 3000);
+}
+document.addEventListener('mousemove', () => { resetCursor(); flashHint(); });
+resetCursor();
+
+// Click stage to skip to next slide (when playing)
+document.getElementById('stage').addEventListener('click', () => {
+  if (!paused) { clearTimeout(timer); clearInterval(pTimer); next(); }
+});
+
+// Pause hint click
+hint.addEventListener('click', e => { e.stopPropagation(); togglePause(); });
+
+// Jump to first / last slide (works while paused too, staying paused)
+navStart.addEventListener('click', e => { e.stopPropagation(); jumpTo(0); });
+navEnd.addEventListener('click',   e => { e.stopPropagation(); jumpTo(slides.length - 1); });
+
+// Keyboard controls
+window.addEventListener('keydown', e => {
+  switch (e.key) {
+    case ' ': case 'p': case 'P':
+      e.preventDefault();
+      togglePause();
+      break;
+    case 'ArrowRight': case 'ArrowDown':
+      if (paused) break;              // no stepping through slides while paused
+      playFrom(cur + 1);
+      break;
+    case 'ArrowLeft': case 'ArrowUp':
+      if (paused) break;              // no stepping through slides while paused
+      playFrom(cur - 1);
+      break;
+    case 'Home':
+      jumpTo(0);
+      break;
+    case 'End':
+      jumpTo(slides.length - 1);
+      break;
+    case 'f': case 'F':
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+      else document.exitFullscreen();
+      break;
+    case 'm': case 'M':
+      e.preventDefault();
+      toggleSound();
+      break;
+  }
+});
+
+// Request fullscreen + start music on first user gesture (browser autoplay policy)
+function onFirstGesture() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+  audio.play().catch(() => {});
+  document.removeEventListener('click', onFirstGesture);
+  document.removeEventListener('keydown', onFirstGesture);
+}
+document.addEventListener('click', onFirstGesture);
+document.addEventListener('keydown', onFirstGesture);
+
+showSlide(cur);
+schedule();
+
+
+</script>
+</body>
+</html>

@@ -21,6 +21,7 @@ import CalendarPage from "@/pages/calendar";
 import MagazinePage from "@/pages/magazine";
 import ProjectsPage from "@/pages/projects";
 import ProjectDetailPage from "@/pages/project-detail";
+import CharterNight2026 from "@/pages/charter-night-2026";
 
 // Admin Pages (no Layout wrapper)
 import AdminLogin from "@/pages/admin/login";
@@ -56,6 +57,7 @@ function PublicRouter() {
         <Route path="/gallery" component={Gallery} />
         <Route path="/donate" component={Donate} />
         <Route path="/contact" component={Contact} />
+        <Route path="/charter-night-2026" component={CharterNight2026} />
         <Route path="/sponsors/magazine-advertisers-2026" component={MagazineAdvertisers} />
         <Route component={NotFound} />
       </Switch>
