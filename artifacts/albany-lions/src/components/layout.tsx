@@ -7,6 +7,37 @@ import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
 import clubLogo from "@assets/WhatsApp_Image_2026-04-16_at_10.35.09_PM_-_Copy_1777727127815.jpeg";
 import { useState, useEffect } from "react";
 import { ZeffyDonateButton } from "@/components/zeffy-donate";
+import { Helmet } from "react-helmet-async";
+
+const ORGANIZATION_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Albany Capital Region Lions Club",
+  "alternateName": "ACRLC",
+  "url": "https://albanylionsclub.org",
+  "logo": "https://albanylionsclub.org/opengraph.jpg",
+  "description":
+    "The Albany Capital Region Lions Club serves the Albany and Schenectady communities through vision care, hunger relief, youth programs, and community service. District 20-R2, Lions Clubs International.",
+  "foundingDate": "2026",
+  "areaServed": [
+    { "@type": "City", "name": "Albany", "addressRegion": "NY" },
+    { "@type": "City", "name": "Schenectady", "addressRegion": "NY" },
+  ],
+  "memberOf": {
+    "@type": "Organization",
+    "name": "Lions Clubs International",
+    "url": "https://www.lionsclubs.org",
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "general",
+    "email": "lionsclubalbanycapitalregion@gmail.com",
+  },
+  "sameAs": [
+    "https://www.facebook.com/albanycapitalregionlionsclub",
+    "https://www.instagram.com/albanycapitalregionlionsclub/",
+  ],
+});
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -34,6 +65,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <Helmet>
+        <script type="application/ld+json">{ORGANIZATION_JSON_LD}</script>
+      </Helmet>
       {/* Top Banner */}
       <div className="bg-primary text-primary-foreground py-1.5 px-4 text-sm font-medium flex justify-center items-center gap-2">
         <span className="text-secondary font-bold">&#9670;</span>

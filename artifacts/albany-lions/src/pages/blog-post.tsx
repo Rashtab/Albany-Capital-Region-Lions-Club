@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "wouter";
+import { Helmet } from "react-helmet-async";
 import { PageMeta } from "@/components/PageMeta";
 import { Calendar, Tag, ArrowLeft, Loader2, User, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,24 @@ export default function BlogPostPage() {
     );
   }
 
+  const articleJsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.excerpt ?? `Read "${post.title}" on the Albany Capital Region Lions Club blog.`,
+    "image": post.coverImageUrl ?? "https://albanylionsclub.org/opengraph.jpg",
+    "url": `https://albanylionsclub.org/blog/${post.slug}`,
+    "datePublished": post.publishedAt ?? undefined,
+    "author": post.authorName
+      ? { "@type": "Person", "name": post.authorName }
+      : { "@type": "Organization", "name": "Albany Capital Region Lions Club" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Albany Capital Region Lions Club",
+      "logo": { "@type": "ImageObject", "url": "https://albanylionsclub.org/opengraph.jpg" },
+    },
+  });
+
   return (
     <div className="flex flex-col">
       <PageMeta
@@ -71,6 +90,9 @@ export default function BlogPostPage() {
         image={post.coverImageUrl}
         type="article"
       />
+      <Helmet>
+        <script type="application/ld+json">{articleJsonLd}</script>
+      </Helmet>
       {/* Cover image hero */}
       {post.coverImageUrl && (
         <div className="w-full max-h-[480px] overflow-hidden bg-muted flex items-center justify-center">

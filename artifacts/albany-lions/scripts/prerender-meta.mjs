@@ -2,13 +2,18 @@
  * Post-build prerender script.
  *
  * 1. Generates per-route HTML files for all static public routes so that
- *    Replit's static file server serves them directly with baked-in metadata
+ *    the static file server serves them directly with baked-in metadata
  *    (before the catch-all /index.html rewrite).
  *
  * 2. Queries the database for all published blog posts and projects, and
- *    generates a per-slug HTML file for each so that social crawlers and
- *    search bots receive route-specific title, description, og:image, and
- *    canonical tags in the initial HTML response — without running JavaScript.
+ *    generates a per-slug HTML file for each.  For dynamic-content routes
+ *    (/blog/:slug, /projects/:slug) the script also injects the actual page
+ *    body into <div id="root"> so that non-JS crawlers (social bots, AI
+ *    crawlers, Google's deferred rendering queue) can read the real content
+ *    from the initial HTML response.
+ *
+ *    Because main.tsx uses createRoot (not hydrateRoot), React replaces
+ *    whatever is in #root on client load — no hydration-mismatch concerns.
  */
 
 import fs from "node:fs";
@@ -97,6 +102,16 @@ const staticRoutes = {
   },
 };
 
+const CAUSE_LABELS = {
+  sight: "Vision Care",
+  hunger: "Hunger Relief",
+  youth: "Youth Programs",
+  environment: "Environment",
+  diabetes: "Diabetes Awareness",
+  disaster_relief: "Disaster Relief",
+  community: "Community Service",
+};
+
 // ── HTML helpers ─────────────────────────────────────────────────────────────
 
 function escHtml(str) {
@@ -112,6 +127,13 @@ function escAttr(str) {
     .replace(/"/g, "&quot;");
 }
 
+function formatDate(d) {
+  if (!d) return "";
+  const date = new Date(d);
+  if (isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
 /**
  * Inject route-specific metadata into an HTML string.
  *
@@ -121,7 +143,7 @@ function escAttr(str) {
  * because the Vite build output may not include all static tags from the
  * source index.html.
  */
-function injectMeta(html, { title, description, canonicalUrl, ogImage, ogType = "website" }) {
+function injectMeta(html, { title, description, canonicalUrl, ogImage, ogType = "website", bodyHtml, jsonLd }) {
   const img = ogImage || OG_IMAGE;
   let out = html;
 
@@ -129,17 +151,15 @@ function injectMeta(html, { title, description, canonicalUrl, ogImage, ogType = 
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${escHtml(title)}</title>`);
 
   // 2. Strip any existing description / og:* / twitter:* / canonical tags
-  //    (they may be present from the source index.html fallback or a prior prerender run)
   out = out.replace(/[ \t]*<meta name="description"[^>]*>\n?/g, "");
   out = out.replace(/[ \t]*<meta property="og:[^>]*>\n?/g, "");
   out = out.replace(/[ \t]*<meta name="twitter:[^>]*>\n?/g, "");
   out = out.replace(/[ \t]*<link rel="canonical"[^>]*>\n?/g, "");
-  // Remove leftover OG comment lines
   out = out.replace(/[ \t]*<!-- Open Graph -->\n?/g, "");
   out = out.replace(/[ \t]*<!-- Twitter Card -->\n?/g, "");
 
-  // 3. Insert fresh metadata block before </head>
-  const block = [
+  // 3. Build metadata block
+  const metaBlock = [
     `    <meta name="description" content="${escAttr(description)}" />`,
     `    <!-- Open Graph -->`,
     `    <meta property="og:type" content="${escAttr(ogType)}" />`,
@@ -156,9 +176,27 @@ function injectMeta(html, { title, description, canonicalUrl, ogImage, ogType = 
     `    <meta name="twitter:description" content="${escAttr(description)}" />`,
     `    <meta name="twitter:image" content="${escAttr(img)}" />`,
     `    <link rel="canonical" href="${escAttr(canonicalUrl)}" />`,
-  ].join("\n");
+  ];
 
-  out = out.replace("</head>", `${block}\n  </head>`);
+  // 4. Append structured data JSON-LD if provided
+  if (jsonLd) {
+    metaBlock.push(
+      `    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`,
+    );
+  }
+
+  out = out.replace("</head>", `${metaBlock.join("\n")}\n  </head>`);
+
+  // 5. Inject body content into <div id="root"> if provided.
+  //    main.tsx uses createRoot (not hydrateRoot), so React fully replaces
+  //    this on client load — no hydration mismatch.  Non-JS crawlers read
+  //    the prerendered body text from the initial HTTP response.
+  if (bodyHtml) {
+    out = out.replace(
+      '<div id="root"></div>',
+      `<div id="root">${bodyHtml}</div>`,
+    );
+  }
 
   return out;
 }
@@ -177,39 +215,111 @@ function writeRouteFile(route, html) {
   }
 }
 
-// ── Database helpers ─────────────────────────────────────────────────────────
+// ── Body content builders ────────────────────────────────────────────────────
 
-const CAUSE_LABELS = {
-  sight: "Vision Care",
-  hunger: "Hunger Relief",
-  youth: "Youth Programs",
-  environment: "Environment",
-  diabetes: "Diabetes Awareness",
-  disaster_relief: "Disaster Relief",
-  community: "Community Service",
-};
+/**
+ * Build crawler-visible body HTML for a blog post.
+ * The markup is intentionally minimal — styled HTML is not needed because
+ * crawlers only care about the text content.  Semantic elements (h1, p,
+ * article) help search engines understand structure.
+ */
+function buildBlogPostBody(post) {
+  const dateStr = formatDate(post.publishedAt);
+  const contentParas = (post.content || "")
+    .split(/\n\n+/)
+    .filter(Boolean)
+    .map((p) => `<p>${escHtml(p.trim())}</p>`)
+    .join("\n");
+
+  const tagsHtml =
+    Array.isArray(post.tags) && post.tags.length > 0
+      ? `<div><strong>Tags:</strong> ${post.tags.map(escHtml).join(", ")}</div>`
+      : "";
+
+  return `
+<article style="max-width:800px;margin:0 auto;padding:2rem 1rem;font-family:sans-serif">
+  <nav><a href="/blog">← Back to Blog</a></nav>
+  ${post.category ? `<div><strong>${escHtml(post.category)}</strong></div>` : ""}
+  ${dateStr ? `<time datetime="${escAttr(post.publishedAt || "")}">${escHtml(dateStr)}</time>` : ""}
+  <h1>${escHtml(post.title)}</h1>
+  ${post.authorName ? `<p>By <strong>${escHtml(post.authorName)}</strong></p>` : ""}
+  ${post.excerpt ? `<blockquote><p>${escHtml(post.excerpt)}</p></blockquote>` : ""}
+  <section>
+    ${contentParas}
+  </section>
+  ${tagsHtml}
+</article>`;
+}
+
+/**
+ * Build crawler-visible body HTML for a project page.
+ */
+function buildProjectBody(proj) {
+  const causeLabel = CAUSE_LABELS[proj.causeArea] ?? proj.causeArea ?? "Community Service";
+  const dateStr = proj.projectDate ? formatDate(proj.projectDate + "T00:00:00") : "";
+
+  const metrics = proj.impactMetrics;
+  const metricsHtml =
+    metrics && typeof metrics === "object" && Object.keys(metrics).length > 0
+      ? `<section>
+        <h2>Impact</h2>
+        <ul>
+          ${metrics.peopleServed ? `<li>${escHtml(String(metrics.peopleServed))} people served</li>` : ""}
+          ${metrics.hoursVolunteered ? `<li>${escHtml(String(metrics.hoursVolunteered))} volunteer hours</li>` : ""}
+          ${metrics.fundsRaised ? `<li>$${escHtml(String(metrics.fundsRaised))} raised</li>` : ""}
+          ${metrics.itemsCollected ? `<li>${escHtml(String(metrics.itemsCollected))} items collected</li>` : ""}
+        </ul>
+      </section>`
+      : "";
+
+  const partnersHtml =
+    Array.isArray(proj.partnerOrgs) && proj.partnerOrgs.length > 0
+      ? `<section>
+        <h2>Partner Organizations</h2>
+        <ul>${proj.partnerOrgs.map((o) => `<li>${escHtml(o)}</li>`).join("")}</ul>
+      </section>`
+      : "";
+
+  return `
+<article style="max-width:800px;margin:0 auto;padding:2rem 1rem;font-family:sans-serif">
+  <nav><a href="/projects">← Back to Projects</a></nav>
+  <div><strong>${escHtml(causeLabel)}</strong></div>
+  <h1>${escHtml(proj.title)}</h1>
+  ${dateStr ? `<time datetime="${escAttr(proj.projectDate || "")}">${escHtml(dateStr)}</time>` : ""}
+  ${proj.description ? `<section><p>${escHtml(proj.description)}</p></section>` : ""}
+  ${metricsHtml}
+  ${partnersHtml}
+</article>`;
+}
+
+// ── Database helpers ─────────────────────────────────────────────────────────
 
 /**
  * Fetch published blog posts for prerendering.
- * Returns array of { slug, title, excerpt, coverImageUrl }.
+ * Includes content, author, tags, and dates needed for body generation.
  */
 async function fetchBlogPosts(pool) {
   const { rows } = await pool.query(
-    `SELECT slug, title, excerpt, cover_image_url AS "coverImageUrl"
+    `SELECT slug, title, excerpt, content, cover_image_url AS "coverImageUrl",
+            category, author_name AS "authorName", tags,
+            published_at AS "publishedAt"
      FROM blog_posts
-     WHERE published = true AND deleted_at IS NULL
-     ORDER BY created_at DESC`,
+     WHERE published = true AND status = 'published' AND deleted_at IS NULL
+     ORDER BY published_at DESC`,
   );
   return rows;
 }
 
 /**
  * Fetch published projects for prerendering.
- * Returns array of { slug, title, description, gallery, causeArea }.
+ * Includes description, impact metrics, partner orgs, and gallery.
  */
 async function fetchProjects(pool) {
   const { rows } = await pool.query(
-    `SELECT slug, title, description, gallery, cause_area AS "causeArea"
+    `SELECT slug, title, description, gallery, cause_area AS "causeArea",
+            project_date AS "projectDate",
+            impact_metrics AS "impactMetrics",
+            partner_orgs AS "partnerOrgs"
      FROM projects
      WHERE status = 'published' AND deleted_at IS NULL
      ORDER BY created_at DESC`,
@@ -228,7 +338,7 @@ if (!fs.existsSync(indexPath)) {
 const baseHtml = fs.readFileSync(indexPath, "utf-8");
 let count = 0;
 
-// 1. Static routes
+// 1. Static routes — metadata only (body content is in the React bundle)
 console.log("\n[prerender-meta] Static routes:");
 for (const [route, meta] of Object.entries(staticRoutes)) {
   const canonicalUrl = `${SITE_URL}${route}`;
@@ -268,12 +378,34 @@ if (!dbUrl) {
         const ogImage = post.coverImageUrl || OG_IMAGE;
         const canonicalUrl = `${SITE_URL}/blog/${slug}`;
 
+        const jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": post.title,
+          "description": description,
+          "image": ogImage,
+          "url": canonicalUrl,
+          "datePublished": post.publishedAt || undefined,
+          "author": post.authorName
+            ? { "@type": "Person", "name": post.authorName }
+            : { "@type": "Organization", "name": SITE_NAME },
+          "publisher": {
+            "@type": "Organization",
+            "name": SITE_NAME,
+            "logo": { "@type": "ImageObject", "url": OG_IMAGE },
+          },
+        };
+
+        const bodyHtml = buildBlogPostBody(post);
+
         const html = injectMeta(baseHtml, {
           title,
           description,
           canonicalUrl,
           ogImage,
           ogType: "article",
+          bodyHtml,
+          jsonLd,
         });
         writeRouteFile(`/blog/${slug}`, html);
         count++;
@@ -303,11 +435,14 @@ if (!dbUrl) {
           (Array.isArray(gallery) && gallery[0]?.url) ? gallery[0].url : OG_IMAGE;
         const canonicalUrl = `${SITE_URL}/projects/${slug}`;
 
+        const bodyHtml = buildProjectBody(proj);
+
         const html = injectMeta(baseHtml, {
           title,
           description,
           canonicalUrl,
           ogImage,
+          bodyHtml,
         });
         writeRouteFile(`/projects/${slug}`, html);
         count++;
