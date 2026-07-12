@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { PageMeta } from "@/components/PageMeta";
 import { Eye, Users, Heart, Globe, Accessibility, TreePine, ChevronRight, Calendar, Clock, MapPin, ArrowRight, Quote, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -85,12 +86,44 @@ export default function Home() {
       .catch(() => {});
   }, []);
 
+  const orgJsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": clubInfo.name,
+    "url": clubInfo.website,
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://albanylionsclub.org/opengraph.jpg",
+    },
+    "description": clubInfo.description,
+    "foundingDate": clubInfo.founded,
+    "email": clubInfo.email,
+    "telephone": clubInfo.phone,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "3311 East Lydius St",
+      "addressLocality": "Schenectady",
+      "addressRegion": "NY",
+      "postalCode": "12303",
+      "addressCountry": "US",
+    },
+    "sameAs": [clubInfo.facebook, clubInfo.instagram, clubInfo.twitter],
+    "memberOf": {
+      "@type": "Organization",
+      "name": "Lions Clubs International",
+      "url": "https://www.lionsclubs.org",
+    },
+  });
+
   return (
     <div className="flex flex-col">
       <PageMeta
         path="/"
         description="The Albany Capital Region Lions Club serves Albany and Schenectady through vision care, hunger relief, youth programs, and community service. Join us — We Serve, We Lead, We Impact."
       />
+      <Helmet>
+        <script type="application/ld+json">{orgJsonLd}</script>
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-8">
         <img

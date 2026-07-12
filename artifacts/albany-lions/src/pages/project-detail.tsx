@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { PageMeta } from "@/components/PageMeta";
 import {
   ArrowLeft, Calendar, Users, Clock, DollarSign, Package, Building2,
@@ -137,6 +138,31 @@ export default function ProjectDetailPage() {
   const metrics = project.impactMetrics ?? {};
   const activeMetrics = METRIC_CARDS.filter((m) => metrics[m.key] !== undefined && metrics[m.key]! > 0);
 
+  const projectJsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": project.title,
+    "description": project.description ?? undefined,
+    "startDate": project.projectDate ?? undefined,
+    "image": project.gallery?.[0]?.url ?? undefined,
+    "url": `https://albanylionsclub.org/projects/${project.slug}`,
+    "organizer": {
+      "@type": "Organization",
+      "name": "Albany Capital Region Lions Club",
+      "url": "https://albanylionsclub.org",
+    },
+  });
+
+  const breadcrumbJsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://albanylionsclub.org/" },
+      { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://albanylionsclub.org/projects" },
+      { "@type": "ListItem", "position": 3, "name": project.title, "item": `https://albanylionsclub.org/projects/${project.slug}` },
+    ],
+  });
+
   return (
     <div className="flex flex-col">
       <PageMeta
@@ -145,6 +171,10 @@ export default function ProjectDetailPage() {
         description={project.description ?? `Learn about the "${project.title}" project by the Albany Capital Region Lions Club — serving our community through ${CAUSE_LABELS[project.causeArea] ?? "community service"}.`}
         image={project.gallery?.[0]?.url ?? null}
       />
+      <Helmet>
+        <script type="application/ld+json">{projectJsonLd}</script>
+        <script type="application/ld+json">{breadcrumbJsonLd}</script>
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[42vh] flex items-end bg-primary overflow-hidden">
         {heroImg ? (
