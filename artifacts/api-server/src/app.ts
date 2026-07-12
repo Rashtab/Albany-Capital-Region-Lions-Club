@@ -57,12 +57,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware — PostgreSQL-backed store for multi-instance safety
+// NOTE: the user_sessions table is created by startup-seed.ts on first boot.
+// Do NOT use createTableIfMissing: true — esbuild strips the table.sql asset.
 app.use(
   session({
     store: new PgSession({
       pool,
       tableName: "user_sessions",
-      createTableIfMissing: true,
     }),
     secret: process.env["SESSION_SECRET"] ?? "fallback-dev-secret",
     resave: false,

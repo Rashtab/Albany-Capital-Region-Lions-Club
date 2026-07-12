@@ -39,8 +39,31 @@ const SITE_SETTINGS_DEFAULTS = [
 
 const DEFAULT_PASSWORD = "AlbanyLions@2026";
 
+/**
+ * Creates the connect-pg-simple session table if it doesn't exist.
+ * Must run before the HTTP server starts so express-session can save sessions.
+ * We do this manually because connect-pg-simple's createTableIfMissing reads
+ * a bundled table.sql file that esbuild does not copy into dist/.
+ */
+async function ensureSessionTable(): Promise<void> {
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS "user_sessions" (
+      "sid"    varchar         NOT NULL COLLATE "default",
+      "sess"   json            NOT NULL,
+      "expire" timestamp(6)   NOT NULL,
+      CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE
+    )
+  `);
+  await db.execute(sql`
+    CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "user_sessions" ("expire")
+  `);
+}
+
 export async function seedIfEmpty(): Promise<void> {
   try {
+    // Always ensure session table exists (safe to call on every boot)
+    await ensureSessionTable();
+
     const [{ count }] = await db
       .select({ count: sql<string>`count(*)` })
       .from(members);

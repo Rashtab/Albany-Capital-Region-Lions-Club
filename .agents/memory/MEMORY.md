@@ -1,2 +1,3 @@
 - [Session+RBAC auth system](session-rbac-auth.md) — JWT+admin_users retired; session-cookie + members table + DB-backed role/member permissions with lockout guard on access_control.
 - [Case-insensitive email lookup](case-insensitive-email.md) — getMemberByEmail uses LOWER() SQL because emails stored with mixed case; always normalize to lowercase before querying.
+- [connect-pg-simple + esbuild](connect-pg-simple-esbuild.md) — Never use createTableIfMissing:true; esbuild strips table.sql. Create user_sessions table via raw SQL in startup-seed.ts instead.
