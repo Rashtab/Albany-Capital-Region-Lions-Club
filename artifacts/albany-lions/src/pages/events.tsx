@@ -3,13 +3,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageMeta } from "@/components/PageMeta";
 import {
   Calendar, Clock, MapPin, ExternalLink, Mail,
-  Loader2, ChevronRight, ChevronLeft, X, ZoomIn, Play,
+  Loader2, ChevronRight, ChevronLeft, X, ZoomIn, Play, CalendarDays,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { apiFetch } from "@/lib/auth";
-import { parseISO, format } from "date-fns";
+import {
+  parseISO, format,
+  startOfMonth, endOfMonth, eachDayOfInterval, getDay,
+  isSameDay, isToday, addMonths, subMonths,
+} from "date-fns";
 
 /* ── types ─────────────────────────────────────────────────── */
 interface CalEvent {
@@ -305,6 +309,9 @@ export default function Events() {
   const [events, setEvents]       = useState<CalEvent[]>([]);
   const [loading, setLoading]     = useState(true);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDay, setSelectedDay]   = useState<Date | null>(null);
+  const [calView, setCalView]           = useState<"calendar" | "list">("calendar");
 
   useEffect(() => {
     apiFetch<CalEvent[]>("/api/calendar")
@@ -323,6 +330,14 @@ export default function Events() {
 
   /* index of a given event inside the FULL events array (for the modal) */
   const globalIndex = (ev: CalEvent) => events.findIndex((e) => e.id === ev.id);
+
+  /* ── calendar helpers ── */
+  const calMonthStart   = startOfMonth(currentMonth);
+  const calDays         = eachDayOfInterval({ start: calMonthStart, end: endOfMonth(currentMonth) });
+  const calStartDow     = getDay(calMonthStart);
+  const getEventsForDay = (day: Date) => events.filter((e) => isSameDay(parseISO(e.eventDate), day));
+  const selectedDayEvents = selectedDay ? getEventsForDay(selectedDay) : [];
+  const calUpcoming     = events.filter((e) => parseISO(e.eventDate) >= today);
 
   return (
     <div className="flex flex-col">
@@ -431,6 +446,174 @@ export default function Events() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── EMBEDDED CALENDAR ── */}
+      <section className="py-14 bg-muted/30 border-b border-border">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="flex items-center gap-2 mb-6">
+            <span className="h-1 w-8 bg-secondary rounded-full" />
+            <span className="text-xs font-black uppercase tracking-widest text-secondary">Event Calendar</span>
+            <span className="h-1 flex-1 bg-secondary/20 rounded-full" />
+          </div>
+
+          {/* View toggle */}
+          <div className="flex gap-2 mb-6">
+            <Button
+              variant={calView === "calendar" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCalView("calendar")}
+              className="gap-1.5"
+            >
+              <Calendar className="h-4 w-4" /> Calendar View
+            </Button>
+            <Button
+              variant={calView === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCalView("list")}
+              className="gap-1.5"
+            >
+              <CalendarDays className="h-4 w-4" /> List View
+            </Button>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="h-7 w-7 animate-spin text-primary" />
+            </div>
+          ) : calView === "calendar" ? (
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Month grid */}
+              <div className="flex-1 bg-card border border-border rounded-2xl p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-5">
+                  <button
+                    onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+                    className="p-2 rounded-full hover:bg-muted transition-colors"
+                  >
+                    <ChevronLeft className="h-5 w-5 text-primary" />
+                  </button>
+                  <h3 className="text-lg font-black text-primary">
+                    {format(currentMonth, "MMMM yyyy")}
+                  </h3>
+                  <button
+                    onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+                    className="p-2 rounded-full hover:bg-muted transition-colors"
+                  >
+                    <ChevronRight className="h-5 w-5 text-primary" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-7 mb-2">
+                  {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map((d) => (
+                    <div key={d} className="text-center text-xs font-bold text-muted-foreground py-1">{d}</div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-1">
+                  {Array.from({ length: calStartDow }).map((_, i) => (
+                    <div key={`empty-${i}`} />
+                  ))}
+                  {calDays.map((day) => {
+                    const dayEvents = getEventsForDay(day);
+                    const isSelected = selectedDay && isSameDay(day, selectedDay);
+                    const todayDay = isToday(day);
+                    return (
+                      <button
+                        key={day.toISOString()}
+                        onClick={() => setSelectedDay(selectedDay && isSameDay(day, selectedDay) ? null : day)}
+                        className={`aspect-square flex flex-col items-center justify-start p-1 rounded-lg text-sm font-semibold transition-all border ${
+                          isSelected
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : todayDay
+                            ? "bg-secondary/20 text-primary border-secondary"
+                            : "hover:bg-muted border-transparent text-foreground"
+                        }`}
+                      >
+                        <span>{format(day, "d")}</span>
+                        {dayEvents.length > 0 && (
+                          <div className="flex gap-0.5 mt-0.5 flex-wrap justify-center">
+                            {dayEvents.slice(0, 3).map((e) => (
+                              <span key={e.id} className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-secondary" : "bg-primary"}`} />
+                            ))}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Side panel */}
+              <div className="lg:w-72 shrink-0">
+                {selectedDay ? (
+                  <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+                    <h4 className="font-black text-primary mb-4 text-sm uppercase tracking-wide">
+                      {format(selectedDay, "MMMM d, yyyy")}
+                    </h4>
+                    {selectedDayEvents.length === 0 ? (
+                      <p className="text-muted-foreground text-sm">No events on this day.</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {selectedDayEvents.map((e) => (
+                          <div key={e.id} className="p-3 bg-muted/50 rounded-xl border border-border">
+                            <p className="font-bold text-sm text-foreground leading-snug mb-1">{e.title}</p>
+                            {e.eventTime && <p className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" />{e.eventTime}</p>}
+                            {e.location && <p className="text-xs text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" />{e.location}</p>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+                    <h4 className="font-black text-primary mb-4 text-sm uppercase tracking-wide">Upcoming Events</h4>
+                    {calUpcoming.length === 0 ? (
+                      <p className="text-muted-foreground text-sm">No upcoming events.</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {calUpcoming.slice(0, 5).map((e) => (
+                          <div key={e.id} className="p-3 bg-muted/50 rounded-xl border border-border">
+                            <p className="font-bold text-sm text-foreground leading-snug mb-1">{e.title}</p>
+                            <p className="text-xs font-semibold text-secondary mb-0.5">{format(parseISO(e.eventDate), "MMM d, yyyy")}</p>
+                            {e.eventTime && <p className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" />{e.eventTime}</p>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            /* List view */
+            <div className="space-y-3">
+              {calUpcoming.length === 0 ? (
+                <div className="text-center py-16 text-muted-foreground">
+                  <Calendar className="h-12 w-12 mx-auto mb-3 opacity-25" />
+                  <p className="font-semibold">No upcoming events</p>
+                </div>
+              ) : calUpcoming.map((e, i) => (
+                <motion.div key={e.id} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.04 }}
+                  className="bg-card border border-border rounded-xl p-4 flex items-start gap-4 hover:shadow-md hover:border-primary/30 transition-all"
+                >
+                  <div className="shrink-0 bg-primary/10 rounded-xl p-2 text-center min-w-14">
+                    <p className="text-xs font-bold text-primary">{format(parseISO(e.eventDate), "MMM")}</p>
+                    <p className="text-xl font-black text-primary leading-none">{format(parseISO(e.eventDate), "d")}</p>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-black text-foreground mb-1">{e.title}</p>
+                    {e.description && <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{e.description}</p>}
+                    <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
+                      {e.eventTime && <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{e.eventTime}</span>}
+                      {e.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{e.location}</span>}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

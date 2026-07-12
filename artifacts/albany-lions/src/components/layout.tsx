@@ -45,7 +45,7 @@ const navLinks = [
   { name: "Leadership", href: "/leadership" },
   { name: "Blog", href: "/blog" },
   { name: "Projects", href: "/projects" },
-  { name: "Calendar", href: "/calendar" },
+  { name: "Events", href: "/events" },
   { name: "Magazine", href: "/magazine" },
   { name: "Sponsors", href: "/sponsors" },
   { name: "Gallery", href: "/gallery" },

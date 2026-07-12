@@ -3,7 +3,7 @@ import { PageMeta } from "@/components/PageMeta";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Send, Heart } from "lucide-react";
 import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { clubInfo } from "@/data/clubData";
 import { Link } from "wouter";
 import { ChevronRight } from "lucide-react";
+import { ZeffyDonateButton } from "@/components/zeffy-donate";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -147,6 +148,31 @@ export default function Contact() {
                     <p className="text-foreground font-semibold">{clubInfo.address}</p>
                   </div>
                 </div>
+              </div>
+
+              {/* Donation QR */}
+              <div className="mb-8">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">Support Our Mission</p>
+                <ZeffyDonateButton
+                  className="w-full text-left group"
+                >
+                  <div className="flex items-center gap-4 p-4 rounded-xl border border-border hover:border-primary/40 hover:shadow-md transition-all bg-card cursor-pointer">
+                    <img
+                      src="/donate-qr.jpg"
+                      alt="Scan to donate"
+                      className="w-20 h-20 rounded-lg border border-border shrink-0 object-contain group-hover:scale-105 transition-transform"
+                    />
+                    <div>
+                      <p className="font-bold text-foreground text-sm mb-0.5 flex items-center gap-1.5">
+                        <Heart className="h-3.5 w-3.5 text-red-500 fill-current" />
+                        Donate Now
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Scan this QR code or click to open the donation form. Zero platform fees via Zeffy.
+                      </p>
+                    </div>
+                  </div>
+                </ZeffyDonateButton>
               </div>
 
               {/* Social */}
